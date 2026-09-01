@@ -39,7 +39,7 @@ table.
 | `memory-bank/visualizations/skeleton.html` + `examples/` | `memory-bank/visualizations/A{NNNNNN}/viz.html` | **differs**, see below |
 | — | `memory-bank/verify/*.mjs` | **added**, see below |
 | `.claude/rules/visualization-principles.md` | same path | same role |
-| `.claude/skills/document-problem/` | `.claude/skills/explain-sequence/` | the assembly skill |
+| `.claude/skills/document-problem/` | `.claude/skills/document-sequence/` + `.claude/skills/explain-sequence/` | **one skill upstream, two here**, see below |
 | `README.md` | `README.md` | intro · Build & run · table of tasks with a Status column · where the write-ups live |
 
 ## Where it deliberately differs, and why
@@ -63,6 +63,14 @@ file allowed to consult the published terms.
 mathematical claims (a multiplication table's associativity, a device record's picture, a QR that
 must decode) which nothing external ever checks. These scripts check them, and a spec's
 `Status: done` cites a real run rather than a memory of one.
+
+**One skill upstream, two here.** `document-problem` there covers both halves of the job because
+the picture is a small static frame built from a template: designing it and writing it up are the
+same sitting. Here the picture is a whole interactive page that goes through many rounds before it
+settles, and the write-up is worth nothing until it has. `explain-sequence` owns the page;
+`document-sequence` — a step-for-step adaptation of `document-problem` — owns the README, the spec
+and the device records, and runs `verify/all.mjs` as its last step. Each artifact has exactly one
+owner.
 
 **No QR generator is committed.** There, `build.sh` refuses to build without `qr-repo.svg`. Here
 there is no build step to refuse, so `verify/pages.mjs` checks the footer exists and is pinned

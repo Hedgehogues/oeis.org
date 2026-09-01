@@ -89,8 +89,8 @@ count) before that check's real output is cited as evidence in the sequence's ow
 The devices catalog (`memory-bank/_terms.md`), its two meta-specs
 (`memory-bank/specs/approaches.md`, `memory-bank/specs/visualizations.md`), the applied per-sequence
 specs (`memory-bank/specs/tasks/`), the short auto-loaded rules file
-(`.claude/rules/visualization-principles.md`) and the assembly skill
-(`.claude/skills/explain-sequence/`) are all adapted from
+(`.claude/rules/visualization-principles.md`) and the two skills
+(`.claude/skills/explain-sequence/`, `.claude/skills/document-sequence/`) are all adapted from
 [Hedgehogues/project-euler](https://github.com/Hedgehogues/project-euler)'s own memory bank — same
 RFC discipline, same one-way "sequences point at the dictionary, never the reverse" rule, same
 insistence that every `Status: done` names a real, re-run check rather than a claim from memory,

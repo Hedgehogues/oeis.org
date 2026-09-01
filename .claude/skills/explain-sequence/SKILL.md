@@ -1,6 +1,6 @@
 ---
 name: explain-sequence
-description: Shows or extends a visual explanation of an OEIS sequence from this catalog. Diagram devices are [device::*] blocks in memory-bank/_terms.md (idea and picture in one record); each device's actual code lives inline in the memory-bank/visualizations/A{NNNNNN}/viz.html page(s) that render it — there is no separate build step, since these pages are meant to be opened live, not screenshotted. Adapted from Hedgehogues/project-euler's visualize-approach skill; see memory-bank/index.md for exactly what changed and why.
+description: Shows or extends a visual explanation of an OEIS sequence from this catalog. Diagram devices are [device::*] blocks in memory-bank/_terms.md (idea and picture in one record); each device's actual code lives inline in the memory-bank/visualizations/A{NNNNNN}/viz.html page(s) that render it — there is no separate build step, since these pages are meant to be opened live, not screenshotted. Builds and extends the picture; the write-up that follows (README, spec, new device records) is document-sequence's job. Hedgehogues/project-euler has one skill where this repo has two — see memory-bank/upstream.md for that split and why.
 ---
 
 # Explaining an OEIS sequence
@@ -84,9 +84,9 @@ the dictionary).
       draws, no lookup table) and `sequences/A{NNNNNN}/proof.mjs` (re-checks it with routines
       written from scratch — soundness, distinctness, completeness, agreement with the published
       terms), run both, and state the measured range honestly in `solution.mjs`'s header.
-   g. Run `node memory-bank/visualizations/capture.mjs` so the committed screenshots match the new
-      page, then write `sequences/A{NNNNNN}/README.md` and `memory-bank/specs/tasks/A{NNNNNN}.md`
-      (six sections, per `specs/tasks.md`).
+   g. Run `node memory-bank/visualizations/capture.mjs`, then **hand off to `document-sequence`**
+      for the README, the spec and any new `[device::*]` record. That skill owns those three
+      artifacts; writing them here as well would give each one two owners and two shapes.
 
 4. **No device matches — a new one, the full cycle, not a one-off drawing:**
    a. Check for an established name for the underlying idea (not necessarily the specific diagram)
@@ -97,9 +97,10 @@ the dictionary).
       and write out its `Limits`, marking which belong to the idea and which only to the drawing.
    c. Build it inline in the page that needs it; verify the render (both themes, the actual
       distinguishing feature's own size/contrast per principle 6).
-   d. Write the `[device::<Name>]` block in `_terms.md` — ONE block per device, fields modelled on
-      the existing ones. Do not create a separate "for the picture" block (duplication).
-   e. Only THEN show the result.
+   d. Add the device's own crop to `capture.mjs`, re-capture, and Read the PNG before showing
+      anything — the distinguishing feature is judged at its own size, not the icon's.
+   e. Only THEN show the result. The `[device::<Name>]` record itself is written by
+      `document-sequence`, which also runs `verify/catalog.mjs` over it.
 
 5. **Ambiguity** (two or more devices fit equally well, or it's unclear whether a request wants a
    new sequence page or an edit to an existing one) — ask, do not guess.

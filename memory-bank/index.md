@@ -86,5 +86,8 @@ problem's own folder there holds no picture files, and neither does a sequence's
   verifies it rather than reporting a yes
 - `.claude/rules/visualization-principles.md` — principles 1–12 (the short, auto-loaded form of the
   spec requirements)
-- `.claude/skills/explain-sequence/SKILL.md` — the skill: finds a device in `_terms.md`, or runs
-  the full add-a-device cycle, then opens the resulting page
+- `.claude/skills/explain-sequence/SKILL.md` — builds the picture: finds a device in `_terms.md`,
+  or runs the full add-a-device cycle, then opens the resulting page
+- `.claude/skills/document-sequence/SKILL.md` — writes the catalog write-up once the page and the
+  code exist: the sequence README, its task spec, and any new `[device::*]` record. Upstream has
+  one skill covering both; splitting them here keeps one owner per artifact
