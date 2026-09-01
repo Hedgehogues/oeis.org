@@ -16,8 +16,8 @@ no build step, no dependencies beyond a Google Fonts stylesheet link.
 | [A100001](sequences/A100001) | Self-dual `(n_3)` configurations | Fano plane, incidence matrix vs. its transpose |
 | [A000001](sequences/A000001) | Number of groups of order n | movements of an object → Cayley table → why the count jumps |
 
-![Точки = линии](sequences/A100001/screenshots/full.png)
-![Почему число видов скачет](sequences/A000001/screenshots/full.png)
+![Points = lines](sequences/A100001/screenshots/full.png)
+![Census of symmetries](sequences/A000001/screenshots/full.png)
 
 Each sequence's own `README.md` has the write-up — the framing, why it works, and links to its
 device(s) — and links to its RFC-style spec (requirements and acceptance criteria), which lives in

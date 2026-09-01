@@ -1,6 +1,6 @@
 # A100001 — Number of self-dual combinatorial configurations of type (n_3)
 
-![Точки = линии](screenshots/full.png)
+![Points = lines](screenshots/full.png)
 
 A configuration `(n_3)` is `n` points and `n` lines, each point on exactly 3 lines, each line
 holding exactly 3 points. Swapping the roles of points and lines gives the *dual* configuration;

@@ -79,12 +79,14 @@ themselves, which live in `sequences/A{NNNNNN}/README.md`.
   object, prove the mechanism and show the final count at once and was unreadable cold; rebuilt as
   an explicit Problem → 1 → 2 → 3 → 4 → Solution chain, each answer feeding the next. Traces to:
   MUST-decomposed-chain, MUST-chain-reuses-prior-frames.
-- **F13** (2026-09-01, this catalog's own construction) Unlike project-euler, this catalog has no
-  static-PNG build step: every page here is meant to be opened directly and interacted with
-  (hover states on `sequences/A100001/viz.html`'s Fano-plane points; live-computed group tables in
-  `sequences/A000001/viz.html`) — a build-to-PNG pipeline would throw away exactly the property
-  that makes these pages worth opening rather than screenshotting. Deliberate style difference, not
-  an omission. Traces to: the Architecture section below.
+- **F13** (2026-09-01, this catalog's own construction) Unlike project-euler, no page's SOURCE is
+  generated from a shared shell + `build.sh`: every page here is hand-built, self-contained, and
+  meant to be opened directly and interacted with (hover states on `sequences/A100001/viz.html`'s
+  Fano-plane points; live-computed group tables in `sequences/A000001/viz.html`) — baking a page
+  down to a static shell-assembled template would throw away exactly the property that makes it
+  worth opening rather than screenshotting. This does NOT mean no screenshots exist (see F16
+  below) — only that the live page, not a PNG, is the thing a build step would need to reproduce
+  to be "the same page". Traces to: the Architecture section below.
 - **F14** (2026-09-01) A page that embeds a claimed algebraic fact (a Cayley table's diagonal count,
   a group's associativity) can silently ship a wrong number if that fact is only checked by eye
   while authoring. `memory-bank/verify/group-tables.mjs` independently recomputes every group table
@@ -92,6 +94,20 @@ themselves, which live in `sequences/A{NNNNNN}/README.md`.
   self-inverse count) and was run live before this requirement was written: all 7 tables checked
   clean, including the 2 tables in the live page and the 5 in the kept draft. Traces to:
   MUST-embedded-math-verified.
+- **F15** (`visualization-principles.md` #13) Both pages originally shipped in Russian — a
+  deliberate choice at the time — and stayed that way even after the surrounding catalog
+  (`_terms.md`, this spec, `approaches.md`, the root README) was written entirely in English. The
+  inconsistency became visible only once screenshots existed: English documentation pointing at
+  Russian pictures. Both pages, both kept drafts, and every code comment were translated in one
+  pass; `grep -rlP '[Ѐ-ӿ]' --include='*.html' --include='*.mjs'` across the tracked tree returned
+  empty afterward. Traces to: MUST-english-only.
+- **F16** (`visualization-principles.md` #14) A single screenshot of a whole card (`sequences/
+  A000001/viz.html`'s "What counts" section) was reused as the `Picture:` field for four unrelated
+  device records (`MarkedAsymmetry`, `CayleyTable`, `SelfCancelDiagonal`, `StateMap`) — flagged
+  directly ("pictures repeat in many places"). The crop was too coarse, not the devices too similar:
+  re-cropped to one targeted element per device (`.grp` sub-widgets, `#s1b`/`#s1c` by id), leaving
+  only one legitimate remaining pair (`StateMap`/`MergedResultStrip`, two true facts visible in the
+  same single frame). Traces to: MUST-crop-per-device.
 
 ## Architecture
 
@@ -183,8 +199,8 @@ competitive-programming submission being checked against a judge.
   previous section's answer was before adding to it; the closing section contains at least one
   literal shrunk-recap element (see
   [device::MiniRecap](../_terms.md#deviceminirecap)). Status: done (F12;
-  `sequences/A000001/viz.html`'s Problem → 1 → 2 → 3 → 4 → Solution structure, plus its "Как ответы
-  складываются в итог" map).
+  `sequences/A000001/viz.html`'s Problem → 1 → 2 → 3 → 4 → Solution structure, plus its "How the answers
+  combine into the result" map).
 - A page that renders a checkable algebraic/numeric claim (a multiplication table's associativity,
   a sequence's early terms) MUST have that claim independently re-verified by a committed,
   re-runnable script, not only checked by eye while authoring — **MUST-embedded-math-verified** —
@@ -209,6 +225,17 @@ competitive-programming submission being checked against a judge.
   structurally distinct historical version, and the README's own prose (not a code comment) names
   the reason. Status: done (`sequences/A000001/drafts/`, two kept versions, reasons in
   `sequences/A000001/README.md`).
+- Every tracked page, comment and label MUST be in English — **MUST-english-only** — criterion:
+  `grep -rlP '[Ѐ-ӿ]' --include='*.html' --include='*.mjs' --include='*.md' .` (from the repo root)
+  is empty; after any translation, screenshots are regenerated so no PNG ships the old language.
+  Status: done (F15).
+- A screenshot embedded in a `[device::*]` record's `Picture:` field MUST target the specific
+  element that demonstrates that one device (an id, a `.grp`/sub-widget), not a larger ancestor
+  card shared with unrelated devices — **MUST-crop-per-device** — criterion: no single screenshot
+  file is referenced by more than two device records, and where two share a crop, the record for
+  each states IN PROSE that it is the same single frame showing two true facts at once (not merely
+  the same card). Status: done (F16) — the only remaining shared crop is
+  `StateMap`/`MergedResultStrip`, both prose-flagged as sharing one frame.
 
 ## Links
 - The layer below, which this spec may reference and which never references back:

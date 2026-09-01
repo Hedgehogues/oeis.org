@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Каталог симметрий</title>
+<title>Catalog of symmetries</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
 <style>
   :root{
@@ -114,17 +114,17 @@
 
   <header>
     <div class="eyebrow">OEIS · A000001</div>
-    <h1>Каталог симметрий</h1>
-    <p class="sub">Полка <b>n</b> — все разные предметы, которые можно повернуть или перевернуть ровно <b>n</b> способами так, что они выглядят как прежде. <b>Сколько предметов на полке</b> — это и есть число из ряда.</p>
-    <p class="sub rule"><b>Почему других нет.</b> Любое движение, повторённое, возвращает предмет за число шагов, которое делит <b>n</b> нацело. Над полкой — делители её номера; <span class="pinkw">розовые</span> (кроме 1 и n) — это разрешённые короткие возвраты, из них и строятся предметы с переворотами. Нет розовых — только вертушка.</p>
+    <h1>Catalog of symmetries</h1>
+    <p class="sub">Shelf <b>n</b> — every distinct object that can be rotated or flipped exactly <b>n</b> ways so it looks the same as before. <b>How many objects are on the shelf</b> is the number from the sequence.</p>
+    <p class="sub rule"><b>Why there are no others.</b> Any movement, repeated, returns the object after a number of steps that evenly divides <b>n</b>. Above the shelf are the divisors of its number; the <span class="pinkw">pink</span> ones (other than 1 and n) are the allowed short returns, and objects with flips are built from them. No pink ones — only a pinwheel.</p>
   </header>
 
   <section class="board">
     <div class="shelves" id="shelves"></div>
     <div class="foot">
       <div class="legend">
-        <span><svg viewBox="0 0 56 56" id="lg-spin"></svg>только крутится</span>
-        <span><svg viewBox="0 0 56 56" id="lg-flip"></svg>ещё и переворачивается</span>
+        <span><svg viewBox="0 0 56 56" id="lg-spin"></svg>rotates only</span>
+        <span><svg viewBox="0 0 56 56" id="lg-flip"></svg>also flips</span>
       </div>
       <div class="seq"><b>1 1 1 2 1 2 1 5</b> = <a href="https://oeis.org/A000001" target="_blank" rel="noopener">A000001</a></div>
     </div>
@@ -144,7 +144,7 @@
   function pt(cx,cy,r,a){ return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
   function f(v){ return v.toFixed(1); }
 
-  /* ---- вертушка: только повороты ---- */
+  /* ---- pinwheel: rotations only ---- */
   function pinwheel(n, s, opts){
     opts=opts||{};
     s=s||svg();
@@ -159,13 +159,13 @@
     s.appendChild(el('circle',{cx:cx,cy:cy,r:3.2,'class':'hub'}));
     return s;
   }
-  /* ---- клякса без симметрии ---- */
+  /* ---- blob with no symmetry ---- */
   function blob(){
     var s=svg();
     s.appendChild(el('path',{d:'M18,14 C26,6 40,10 42,20 C44,29 50,34 41,42 C33,50 20,46 15,38 C10,30 11,21 18,14 Z','class':'blob'}));
     return s;
   }
-  /* ---- прямоугольник: два переворота ---- */
+  /* ---- rectangle: two flips ---- */
   function rectangle(){
     var s=svg();
     s.appendChild(el('rect',{x:9,y:17,width:38,height:22,rx:2,'class':'flf'}));
@@ -173,13 +173,13 @@
     s.appendChild(el('line',{x1:4,y1:28,x2:52,y2:28,'class':'mir'}));
     return s;
   }
-  /* ---- правильный многоугольник с осями: повороты + перевороты ---- */
+  /* ---- regular polygon with axes: rotations + flips ---- */
   function polygonMirrors(sides){
     var s=svg();
     var cx=28, cy=28, R=20, verts=[], mids=[];
     for(var i=0;i<sides;i++) verts.push(pt(cx,cy,R,-Math.PI/2+i*2*Math.PI/sides));
     for(var j=0;j<sides;j++){ var p=verts[j], q=verts[(j+1)%sides]; mids.push([(p[0]+q[0])/2,(p[1]+q[1])/2]); }
-    /* оси: через центр, продолжены за фигуру */
+    /* axes: through the center, extended past the shape */
     var axes=[];
     if(sides%2===1){ verts.forEach(function(v){ axes.push(v); }); }
     else { verts.slice(0,sides/2).forEach(function(v){axes.push(v);}); mids.slice(0,sides/2).forEach(function(m){axes.push(m);}); }
@@ -190,20 +190,20 @@
     s.appendChild(el('polygon',{points:verts.map(function(v){return f(v[0])+','+f(v[1]);}).join(' '),'class':'flf'}));
     return s;
   }
-  /* ---- кирпич: три переворота ---- */
+  /* ---- brick: three flips ---- */
   function brick(){
     var s=svg();
     var o=7;
     s.appendChild(el('polygon',{points:'12,20 40,20 40,40 12,40','class':'flf'}));
     s.appendChild(el('polygon',{points:'12,20 '+(12+o)+','+(20-o)+' '+(40+o)+','+(20-o)+' 40,20','class':'flf'}));
     s.appendChild(el('polygon',{points:'40,20 '+(40+o)+','+(20-o)+' '+(40+o)+','+(40-o)+' 40,40','class':'flf'}));
-    /* три оси через центр */
+    /* three axes through the center */
     s.appendChild(el('line',{x1:6,y1:30,x2:52,y2:30,'class':'mir'}));
     s.appendChild(el('line',{x1:26,y1:8,x2:26,y2:50,'class':'mir'}));
     s.appendChild(el('line',{x1:15,y1:41,x2:41,y2:15,'class':'mir'}));
     return s;
   }
-  /* ---- толстая вертушка: повороты + один переворот (сквозь плоскость) ---- */
+  /* ---- thick pinwheel: rotations + one flip (through the plane) ---- */
   function thickPinwheel(){
     var s=svg();
     pinwheel(4, s, {dx:4, dy:4, cls:'sp2'});
@@ -213,27 +213,27 @@
   function ghost(){
     var d=document.createElement('div');
     d.className='obj ghost';
-    d.innerHTML='<span>вид есть,<br>предмета нет</span>';
+    d.innerHTML='<span>type exists,<br>no object</span>';
     return d;
   }
 
-  /* ---- полки 1..8: по одному предмету на каждый вид ---- */
-  /* третий элемент — длины возврата движений предмета (все они делят n) */
+  /* ---- shelves 1..8: one object per type ---- */
+  /* third element — the return lengths of the object's movements (all divide n) */
   var shelves=[
-    {n:1, items:[[blob,'ничего не сделать — только оставить как есть','1']]},
-    {n:2, items:[[function(){return pinwheel(2);},'поворот на пол-оборота: возврат за 2','2']]},
-    {n:3, items:[[function(){return pinwheel(3);},'поворот на треть: возврат за 3','3']]},
-    {n:4, items:[[function(){return pinwheel(4);},'поворот на четверть: возврат за 4','4'],
-                 [rectangle,'два независимых переворота: каждый возвращает за 2','2·2']]},
-    {n:5, items:[[function(){return pinwheel(5);},'поворот на пятую: возврат за 5','5']]},
-    {n:6, items:[[function(){return pinwheel(6);},'поворот на шестую: возврат за 6','6'],
-                 [function(){return polygonMirrors(3);},'треугольник: поворот за 3, переворот за 2','3·2']]},
-    {n:7, items:[[function(){return pinwheel(7);},'поворот на седьмую: возврат за 7','7']]},
-    {n:8, items:[[function(){return pinwheel(8);},'поворот на восьмую: возврат за 8','8'],
-                 [function(){return polygonMirrors(4);},'квадрат: поворот за 4, переворот за 2','4·2'],
-                 [brick,'коробка: три независимых переворота по 2','2·2·2'],
-                 [thickPinwheel,'вертушка из картона: поворот за 4, переворот насквозь за 2','4·2'],
-                 [null,'пятый вид симметрии — ни один предмет так не устроен','4·2']]}
+    {n:1, items:[[blob,'do nothing — just leave it as is','1']]},
+    {n:2, items:[[function(){return pinwheel(2);},'half-turn: returns in 2','2']]},
+    {n:3, items:[[function(){return pinwheel(3);},'third-turn: returns in 3','3']]},
+    {n:4, items:[[function(){return pinwheel(4);},'quarter-turn: returns in 4','4'],
+                 [rectangle,'two independent flips: each returns in 2','2·2']]},
+    {n:5, items:[[function(){return pinwheel(5);},'fifth-turn: returns in 5','5']]},
+    {n:6, items:[[function(){return pinwheel(6);},'sixth-turn: returns in 6','6'],
+                 [function(){return polygonMirrors(3);},'triangle: rotation in 3, flip in 2','3·2']]},
+    {n:7, items:[[function(){return pinwheel(7);},'seventh-turn: returns in 7','7']]},
+    {n:8, items:[[function(){return pinwheel(8);},'eighth-turn: returns in 8','8'],
+                 [function(){return polygonMirrors(4);},'square: rotation in 4, flip in 2','4·2'],
+                 [brick,'box: three independent flips of 2','2·2·2'],
+                 [thickPinwheel,'cardboard pinwheel: rotation in 4, through-flip in 2','4·2'],
+                 [null,'a fifth symmetry type — no object is built this way','4·2']]}
   ];
 
   function divisors(n){ var r=[]; for(var d=1;d<=n;d++) if(n%d===0) r.push(d); return r; }
@@ -243,7 +243,7 @@
     var col=document.createElement('div');
     col.className='col'+(sh.items.length>=5?' hot':'');
 
-    /* делители над полкой: крайние серые, средние розовые */
+    /* divisors above the shelf: the outer ones grey, the middle ones pink */
     var dv=document.createElement('div'); dv.className='divs';
     divisors(sh.n).forEach(function(d){
       var chip=document.createElement('span');
@@ -271,7 +271,7 @@
     host.appendChild(col);
   });
 
-  /* легенда */
+  /* legend */
   pinwheel(4, document.getElementById('lg-spin'));
   document.getElementById('lg-flip').replaceWith(polygonMirrors(4));
 })();

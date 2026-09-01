@@ -171,6 +171,46 @@ answer looks at it cold. The fix is a sequence of pictures — Problem → sub-q
   Problem → (1: what counts) → (2: which movements exist) → (3: how they combine) → (4: why it
   jumps) → Solution chain, each step's answer badge feeding directly into the next step's picture.
 
+## 13. The whole repository is in English
+
+Everything that ships in the public repository is written in English: pages, records, specs,
+scripts, comments, and therefore the text rendered into every screenshot. This mirrors
+project-euler's own principle 13 word for word — the two pages here originally shipped in Russian
+(a deliberate choice at the time, matching who they were built for) and were fully translated
+after the fact once the repository's screenshots made the inconsistency visible: catalog and specs
+in English, pictures in Russian, side by side on the same page.
+
+- MUST: a grep for Cyrillic across every tracked file (`.html`, `.md`, `.mjs`) is empty.
+- MUST: after translating a page, regenerate its screenshots (`memory-bank/visualizations/
+  capture.mjs`) — a translated source with stale, Russian-language PNGs is the same bug as an
+  edited page with stale screenshots of any kind (principle 12's "keep the chain in sync",
+  language version).
+- Precedent: both `sequences/A100001/viz.html` and `sequences/A000001/viz.html` (plus its two kept
+  drafts) were fully translated in one pass — title, headings, every JS-generated label and
+  tooltip, `<html lang>` — after the repository's own English specs and dictionary made Russian
+  screenshots read as a foreign element. `grep -rlP '[Ѐ-ӿ]' --include='*.html' --include='*.mjs'`
+  across the tracked tree is empty.
+
+## 14. A screenshot embedded in more than one place is a sign the crop is too coarse
+
+If the exact same picture is the `Picture:` field for several different device records, that
+usually doesn't mean the devices are the same — it means the crop was taken at the wrong
+granularity (a whole card, when the card holds three or four independently-recognizable devices
+stacked inside it). The fix is a tighter, targeted crop per device (a specific element id, a
+specific `.grp`/sub-widget), not a caption explaining which part of the shared image to look at.
+
+- MUST: before reusing an existing screenshot for a new device's `Picture:` field, check whether a
+  more specific element already exists in the page (an id, a bordered sub-group) that isolates just
+  that device; capture that instead of the enclosing card.
+- MUST NOT: rely on prose ("see the left/right side of this picture") to do the separating job a
+  tighter crop should do.
+- Precedent: one shared card screenshot originally served as the `Picture:` for four unrelated
+  records (`MarkedAsymmetry`, `CayleyTable`, `SelfCancelDiagonal`, `StateMap`) — re-cropped to four
+  distinct, non-overlapping images (`marked-asymmetry.png`, `cayley-table.png`,
+  `self-cancel-diagonal.png`, `state-map.png`) once flagged; only `StateMap` and
+  `MergedResultStrip` still legitimately share one crop, because they are two true facts visible in
+  the exact same single frame, not two devices spread across a bigger card.
+
 Trigger: any request to explain an OEIS sequence with a picture — a new device record, a
 per-sequence page, an edit to an existing visualization; an invocation of the `explain-sequence`
 skill; adding or editing any `[device::*]` record.
@@ -182,7 +222,10 @@ visible marker from an invisible one). Principle 5 is `LIGHTWEIGHT-GATE` (grep f
 with no adjacent label — checked by hand). Principle 8 is `LIGHTWEIGHT-GATE` (grep for a count
 badge with no `cy-self`/highlight class nearby). Principle 11 is a judgement call verified against
 the actual math (does a claimed relabeling really exist), same as `memory-bank/verify/*.mjs` does
-for group tables specifically. The risk of a principle not being applied at the moment a page ships
-is accepted explicitly; on this catalog's only page so far, the compensation was the user's own
-questions, asked roughly twenty times in one sitting before the page settled — which is exactly
-what should not be the mechanism going forward.
+for group tables specifically. Principle 13 is `LIGHTWEIGHT-GATE` (a Cyrillic grep over tracked
+`.html`/`.mjs` files — not wired into CI, checked by hand). Principle 14 is a judgement call (is a
+shared crop a real single fact, or two devices sharing too coarse a boundary). The risk of a
+principle not being applied at the moment a page ships is accepted explicitly; on this catalog so
+far, the compensation was the user's own questions, asked roughly twenty times in one sitting
+before the page settled, plus one direct correction each for the language and the repeated-crop
+problem — which is exactly what should not be the mechanism going forward.

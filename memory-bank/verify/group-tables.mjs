@@ -58,14 +58,14 @@ function checkGroup(name, n, f) {
     if (f(0, a) !== a || f(a, 0) !== a) return { ok: false, reason: '0 is not the identity' };
   }
   // Self-inverse count (diagonal cells equal to identity) — this is the number every page
-  // renders as a caption ("на диагонали: N" / the highlighted diagonal count).
+  // renders as the highlighted-diagonal count next to each table.
   let selfInverse = 0;
   for (let a = 0; a < n; a++) if (f(a, a) === 0) selfInverse++;
   return { ok: true, selfInverse };
 }
 
 const cases = [
-  // sequences/A000001/viz.html — the two groups compared throughout ("Что считаем" / 1c)
+  // sequences/A000001/viz.html — the two groups compared throughout ("What counts" / 1c)
   ['V4 (rectangle, rhombus)', 4, XOR(), 4],
   ['C4 (pinwheel)', 4, C(4), 2],
   // sequences/A000001/drafts/v1-heatmap.html — the 5 groups of order 8

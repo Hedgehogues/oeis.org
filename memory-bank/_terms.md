@@ -40,7 +40,7 @@ Recognized by: the argument needs to show WHERE a movement (rotation, reflection
 General case: works for any finite symmetry group acting on a 2D shape; the mark must sit at a
   point NOT fixed by any of the movements being compared (a mark on a mirror axis doesn't move
   under that mirror, and looks like a bug rather than a feature)
-Picture: ![Marked asymmetry](../sequences/A000001/screenshots/section-1-what-counts.png) —
+Picture: ![Marked asymmetry](../sequences/A000001/screenshots/marked-asymmetry.png) —
   `sequences/A000001/viz.html`, section 1a/1c (marked rectangle, rhombus, ellipse, "H", pinwheel)
 Reading order: the base shape first (undecorated, to register its own symmetry), then the same
   shape with the mark added, then the sequence of transformed copies
@@ -72,7 +72,7 @@ Recognized by: the argument depends on showing that combining any two of a FIXED
 General case: any finite group (or, more generally, any set with a closed binary operation) can be
   laid out this way; the table's shape (which cells repeat, which are self-inverse) is itself the
   object of study, independent of which concrete objects realize the group
-Picture: ![Cayley table](../sequences/A000001/screenshots/section-1-what-counts.png) —
+Picture: ![Cayley table](../sequences/A000001/screenshots/cayley-table.png) —
   `sequences/A000001/viz.html`, sections 1b/1c
 Reading order: one worked example first (a specific row + a specific column → the highlighted
   result, using the exact math the grid uses), THEN the full grid — never the raw grid first
@@ -103,7 +103,7 @@ General case: for a group of order n, the count of self-inverse elements (diagon
   the identity) is itself a structural invariant — a Klein four-group has n of them (every non-
   identity element is an involution), a cyclic group of even order n has exactly 2 (identity and
   the unique element of order 2)
-Picture: ![Self-cancel diagonal](../sequences/A000001/screenshots/section-1-what-counts.png) —
+Picture: ![Self-cancel diagonal](../sequences/A000001/screenshots/self-cancel-diagonal.png) —
   `sequences/A000001/viz.html`, section 1c (three tables, `cy-diag`/`cy-self` highlighting) and the
   "grpTwist"/"diagPairs" comparison in section 1a
 Reading order: the highlighted diagonal cells first (count them), THEN the summary badge — the
@@ -133,9 +133,10 @@ Recognized by: a row of small result tiles where all N values coincide reads as 
 General case: applies to any small, fixed-length row of computed results where the general
   algorithm is expected to sometimes agree and sometimes disagree across positions (so that
   "merged" is informative precisely because it's not the default look of the row)
-Picture: ![Merged result strip](../sequences/A000001/screenshots/section-1-what-counts.png) —
+Picture: ![Merged result strip](../sequences/A000001/screenshots/state-map.png) —
   `sequences/A000001/viz.html`, section 1a (the rectangle side of the pinwheel-vs-rectangle
-  comparison)
+  comparison). Shares this exact crop with
+  [device::StateMap](#devicestatemap) deliberately — see that record's `Picture:` field for why.
 Reading order: compare the two rows side by side first — one merged into a single bar, one staying
   as separate tiles — the shapes themselves are the finding, read before any label
 Limits:
@@ -165,8 +166,12 @@ General case: any single generator of a finite cyclic or dihedral-type action ca
   way; a single generator either has one orbit covering everything (a full ring) or several
   disjoint orbits of the same length (several rings/arcs) — never a mix, by the same divisibility
   fact [device::DivisorChips](#devicedivisorchips) makes explicit elsewhere on the same page
-Picture: ![State map](../sequences/A000001/screenshots/section-1-what-counts.png) —
-  `sequences/A000001/viz.html`, section 1a (pinwheel "cycle" ring vs. rectangle "pairs" arcs)
+Picture: ![State map](../sequences/A000001/screenshots/state-map.png) —
+  `sequences/A000001/viz.html`, section 1a (pinwheel "cycle" ring vs. rectangle "pairs" arcs).
+  Shares this exact crop with
+  [device::MergedResultStrip](#devicemergedresultstrip) deliberately: one frame, two true facts —
+  the ring/arcs contrast IS this device, the rectangle side's arcs merging into one shape is the
+  other device, visible in the same picture at once.
 Reading order: the arrows first (their shape — one ring vs. several two-way arcs), then the small
   icon sitting at each point (which actual state that position represents)
 Limits:
@@ -194,7 +199,7 @@ General case: for any step size on n points, the arrows partition all n points i
   points that cannot close into a loop of that length at all — this device is what
   [device::DivisorChips](#devicedivisorchips)'s claim ("possible lengths = divisors of n") looks
   like as an actual, checkable construction rather than a stated number-theory fact
-Picture: ![Orbit ring](../sequences/A000001/screenshots/section-2-orbit-ring.png) —
+Picture: ![Orbit ring](../sequences/A000001/screenshots/orbit-ring.png) —
   `sequences/A000001/viz.html`, section 2 (2a: one full ring; 2b: two/three shorter rings;
   2c: an attempted non-divisor length, its leftover points marked and left unlooped)
 Reading order: the arrows first (do they close into one ring, several equal rings, or fail to
@@ -222,8 +227,8 @@ Recognized by: the argument's next step is "there are N possible building blocks
 General case: works for any positive integer; a prime shows exactly two muted chips and nothing
   highlighted (the visual signature of "no extra options"); a highly composite number shows many
   highlighted chips (the visual signature of "many options")
-Picture: ![Divisor chips](../sequences/A000001/screenshots/section-4-divisor-chips.png) —
-  `sequences/A000001/viz.html`, sections 4a/4c and the "Решение" catalog shelves
+Picture: ![Divisor chips](../sequences/A000001/screenshots/divisor-chips.png) —
+  `sequences/A000001/viz.html`, sections 4a/4c and the "Solution" catalog shelves
 Reading order: the muted end-chips (1 and n) register first as "always present, uninformative",
   then the highlighted middle chips as the actual count that matters
 Limits:
@@ -273,7 +278,7 @@ General case: any monotonically-growing (or wildly-varying) integer sequence cha
   contiguous range of its index
 Picture: ![Log growth chart](../sequences/A100001/screenshots/log-growth-chart.png) — also
   `sequences/A000001/drafts/v1-heatmap.html` and `v2-symmetry-catalog.html` (growth
-  staircases for powers of two), `sequences/A000001/viz.html` (the "Проблема"/"Решение" column
+  staircases for powers of two), `sequences/A000001/viz.html` (the "Problem"/"Solution" column
   charts), `sequences/A100001/viz.html` (the self-dual-configuration growth chart)
 Reading order: the bar heights first (relative comparison), then the printed numbers (actual
   magnitude) — the two together, never the log-scaled height alone presented as if it were linear
@@ -301,9 +306,9 @@ Recognized by: a sequence's count includes at least one abstractly-valid case th
   fake in its place would misreport the case itself
 General case: any enumeration where the counted objects are defined by an algebraic/logical
   consistency condition that does not, in general, guarantee physical or geometric realizability
-Picture: ![Unrealized placeholder](../sequences/A000001/screenshots/solution-catalog.png) —
-  `sequences/A000001/viz.html` — the "Решение" catalog's dashed placeholder cells, and the
-  "почему у некоторых видов нет предмета" require-vs-give comparison panel
+Picture: ![Unrealized placeholder](../sequences/A000001/screenshots/unrealized-placeholder.png) —
+  `sequences/A000001/viz.html` — the "Solution" catalog's dashed placeholder cells, and the
+  "why some types have no object" require-vs-give comparison panel
 Reading order: the placeholder itself first (it exists in the count, drawn as absent-but-real),
   then, only on request/nearby, the comparison panel explaining the specific mismatch
 Limits:
@@ -328,8 +333,8 @@ Recognized by: a new section's motivation is exactly "recall what you just saw" 
 General case: any multi-section explanatory page where a later section's premise is a specific
   earlier picture (or a specific slice of it), not a new fact
 Picture: ![Mini-recap](../sequences/A000001/screenshots/assembly-map.png) —
-  `sequences/A000001/viz.html`, section 1a's opening bridge (the first four "Проблема"
-  columns, redrawn small) and the "Как ответы складываются в итог" map's per-node thumbnails
+  `sequences/A000001/viz.html`, section 1a's opening bridge (the first four "Problem"
+  columns, redrawn small) and the "How the answers combine into the result" map's per-node thumbnails
 Reading order: the shrunk recap first (recognize it as "the thing from before"), then whatever new
   element sits next to it
 Limits:
@@ -338,7 +343,7 @@ Limits:
 Source: no canonical citation; a direct application of visual continuity/consistency in
   information design, not packaged anywhere as a named technique.
 Example: built inline (the mini-bars in the 1a bridge IIFE; the `m-*-th` thumbnail nodes in the
-  "Как ответы складываются в итог" assembly map)
+  "How the answers combine into the result" assembly map)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
 
 ## [device::CombinationFork]
@@ -354,7 +359,7 @@ Recognized by: the argument needs to enumerate every way of combining a small, f
 General case: applies whenever the count being explained is "how many distinct outcomes", not "how
   many ways to try" — any enumeration with a known, checkable duplicate must visibly merge before a
   final number is stated
-Picture: ![Combination fork](../sequences/A000001/screenshots/section-3-combination-fork.png) —
+Picture: ![Combination fork](../sequences/A000001/screenshots/combination-fork.png) —
   `sequences/A000001/viz.html`, section 3 (block "6" alone; blocks "3"+"2" forking into two
   outcomes, one merged as a duplicate) and section 4b (three recipes — "8", "4+2", "2+2+2" —
   forking into six raw outcomes, one merged, five kept)

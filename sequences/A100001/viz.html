@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Плоскость Фано</title>
+<title>Fano plane</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
   :root{
@@ -330,12 +330,12 @@
 
   <header class="hero">
     <div class="eyebrow">OEIS · A100001</div>
-    <h1>Точки = <em>линии</em></h1>
-    <p class="dek">Фигура из точек и прямых, которая остаётся собой, даже если поменять точки и прямые ролями.</p>
+    <h1>Points = <em>lines</em></h1>
+    <p class="dek">A figure of points and lines that stays itself even if points and lines swap roles.</p>
     <div class="stats">
-      <div class="stat"><b>n = 7</b><span>первый пример</span></div>
-      <div class="stat"><b>19</b><span>известных значений</span></div>
-      <div class="stat"><b>1 992 044</b><span>фигур при n = 19</span></div>
+      <div class="stat"><b>n = 7</b><span>first example</span></div>
+      <div class="stat"><b>19</b><span>known values</span></div>
+      <div class="stat"><b>1,992,044</b><span>figures at n = 19</span></div>
     </div>
   </header>
 
@@ -344,7 +344,7 @@
     <article class="card">
       <h2>
         <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1L15 14H1Z" fill="none" stroke="var(--accent-point)" stroke-width="1.6"/><circle cx="8" cy="9" r="1.6" fill="var(--accent-line)"/></svg>
-        Конфигурация (7₃)
+        Configuration (7₃)
       </h2>
       <div class="fano-wrap">
         <svg id="fano" viewBox="0 0 400 360">
@@ -368,21 +368,21 @@
         </svg>
       </div>
       <div class="legend-row">
-        <span><span class="dot"></span>7 точек</span>
-        <span><span class="dash"></span>7 линий</span>
-        <span>по 3 на каждую</span>
+        <span><span class="dot"></span>7 points</span>
+        <span><span class="dash"></span>7 lines</span>
+        <span>3 on each</span>
       </div>
-      <p class="hint">Наведите на точку — увидите её 3 линии.</p>
+      <p class="hint">Hover a point to see its 3 lines.</p>
     </article>
 
     <article class="card">
       <h2>
         <svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 5h5M2 8h5M2 11h5" stroke="var(--accent-point)" stroke-width="1.6"/><path d="M9 5h5M9 8h5M9 11h5" stroke="var(--accent-line)" stroke-width="1.6"/></svg>
-        Двойственность
+        Duality
       </h2>
       <div class="duality">
         <div class="matrix-block">
-          <div class="matrix-label">точки → линии</div>
+          <div class="matrix-label">points → lines</div>
           <div class="matrix m-points" id="matrixM"></div>
         </div>
         <div class="swap">
@@ -390,20 +390,20 @@
           <span>≅</span>
         </div>
         <div class="matrix-block">
-          <div class="matrix-label">линии → точки</div>
+          <div class="matrix-label">lines → points</div>
           <div class="matrix m-lines" id="matrixMT"></div>
         </div>
       </div>
-      <p class="duality-note">Матрицы выглядят по-разному, но это <b>одна фигура</b>: существует переобозначение точек и линий, после которого одна превращается в другую.</p>
+      <p class="duality-note">The matrices look different, but it is <b>one figure</b>: some relabeling of points and lines turns one into the other.</p>
     </article>
 
     <article class="card card-growth">
       <div class="growth-head">
         <h2>
           <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1" y="9" width="3" height="6" fill="var(--accent-point)"/><rect x="6.5" y="5" width="3" height="10" fill="var(--accent-point)"/><rect x="12" y="1" width="3" height="14" fill="var(--accent-highlight)"/></svg>
-          Сколько их существует
+          How many exist
         </h2>
-        <div class="hint">n = 1…19 · логарифмическая шкала</div>
+        <div class="hint">n = 1…19 · log scale</div>
       </div>
       <div class="chart-scroll">
         <svg id="growth" viewBox="0 0 760 268">
@@ -428,7 +428,7 @@
           <!-- n=7..19 bars (height computed via log10(v+1)) -->
           <g>
             <rect class="bar first" x="268.8" y="221" width="24" height="11" rx="2"/><text class="n-label" x="280.8" y="248">7</text>
-            <text class="callout" x="280.8" y="210">Фано</text>
+            <text class="callout" x="280.8" y="210">Fano</text>
 
             <rect class="bar" x="306" y="221" width="24" height="11" rx="2"/><text class="n-label" x="318" y="248">8</text>
             <rect class="bar" x="343.2" y="211" width="24" height="21" rx="2"/><text class="n-label" x="355.2" y="248">9</text>
@@ -453,7 +453,7 @@
             <rect x="157.2" y="220" width="24" height="14" fill="transparent"><title>n=4: 0</title></rect>
             <rect x="194.4" y="220" width="24" height="14" fill="transparent"><title>n=5: 0</title></rect>
             <rect x="231.6" y="220" width="24" height="14" fill="transparent"><title>n=6: 0</title></rect>
-            <rect x="268.8" y="10" width="24" height="222" fill="transparent"><title>n=7: 1 (плоскость Фано)</title></rect>
+            <rect x="268.8" y="10" width="24" height="222" fill="transparent"><title>n=7: 1 (Fano plane)</title></rect>
             <rect x="306" y="10" width="24" height="222" fill="transparent"><title>n=8: 1</title></rect>
             <rect x="343.2" y="10" width="24" height="222" fill="transparent"><title>n=9: 3</title></rect>
             <rect x="380.4" y="10" width="24" height="222" fill="transparent"><title>n=10: 10</title></rect>
@@ -469,7 +469,7 @@
           </g>
         </svg>
       </div>
-      <p class="impossible-note"><b>n &lt; 7</b> — самая маленькая такая фигура требует минимум 7 точек, меньше не бывает.</p>
+      <p class="impossible-note"><b>n &lt; 7</b> — the smallest such figure needs at least 7 points, none smaller exists.</p>
     </article>
 
   </div>

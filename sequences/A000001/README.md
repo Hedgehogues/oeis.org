@@ -1,6 +1,6 @@
 # A000001 — Number of groups of order n
 
-![Почему число видов скачет](screenshots/full.png)
+![Census of symmetries](screenshots/full.png)
 
 `a(n)` counts the number of non-isomorphic groups of order `n` — 1 for every prime, 1 or 2 for a
 product of two primes, an explosion for powers of two (`a(1024) = 49 487 365 422`), and a jump
@@ -15,22 +15,34 @@ number of distinct **symmetry types** of an object with exactly `n` self-matchin
 
 **1 · What counts.** A rectangle, ellipse, "H" and pinwheel each carry a small off-axis mark
 ([marked asymmetry](../../memory-bank/_terms.md#devicemarkedasymmetry)), so applying a movement to
-a symmetric shape becomes visible instead of looking unchanged; their 4 movements are laid out as
-a row×column grid ([Cayley table](../../memory-bank/_terms.md#devicecayleytable)), one worked
-example shown before the full grid; which of them undo themselves in one repeat is highlighted
-directly in the table ([self-cancel diagonal](../../memory-bank/_terms.md#deviceselfcanceldiagonal)
-+ [merged result strip](../../memory-bank/_terms.md#devicemergedresultstrip)) rather than asserted
-as a bare count — and the same test run on a whole extra object (a pinwheel, on the same ring of
-states as [state map](../../memory-bank/_terms.md#devicestatemap)) shows it fails where the
-rectangle's family succeeds.
+a symmetric shape becomes visible instead of looking unchanged.
 
-![What counts](screenshots/section-1-what-counts.png)
+![Marked asymmetry](screenshots/marked-asymmetry.png)
+
+Their 4 movements are laid out as a row×column grid
+([Cayley table](../../memory-bank/_terms.md#devicecayleytable)), one worked example shown before
+the full grid.
+
+![Cayley table](screenshots/cayley-table.png)
+
+Which of them undo themselves in one repeat is highlighted directly in the table
+([self-cancel diagonal](../../memory-bank/_terms.md#deviceselfcanceldiagonal)) rather than asserted
+as a bare count.
+
+![Self-cancel diagonal](screenshots/self-cancel-diagonal.png)
+
+The same test run on a whole extra object (a pinwheel, on the same ring of states as
+[state map](../../memory-bank/_terms.md#devicestatemap)) shows it fails where the rectangle's
+family succeeds — its four repeated results don't
+[merge into one strip](../../memory-bank/_terms.md#devicemergedresultstrip) the way the rectangle's do.
+
+![State map](screenshots/state-map.png)
 
 **2 · Which movements exist.** Every possible repeat-length from 1 to `n` is tried directly on a
 ring of points ([orbit ring](../../memory-bank/_terms.md#deviceorbitring)): lengths that divide `n`
 close into equal loops, the one that doesn't leaves visibly stranded points.
 
-![Orbit ring](screenshots/section-2-orbit-ring.png)
+![Orbit ring](screenshots/orbit-ring.png)
 
 **3 · How they combine.** The two eligible building blocks for `n=6` are shown as labeled chips,
 forked into their two possible combinations, with the combination that just duplicates an existing
@@ -38,7 +50,7 @@ result shown dimmed rather than silently dropped
 ([combination fork](../../memory-bank/_terms.md#devicecombinationfork)) — the final count is what's
 left after that merge, not the raw number of attempts.
 
-![Combination fork](screenshots/section-3-combination-fork.png)
+![Combination fork](screenshots/combination-fork.png)
 
 **4 · Why the count jumps.** A number's divisors as a row of chips
 ([divisor chips](../../memory-bank/_terms.md#devicedivisorchips)), the two trivial ones muted, so
@@ -46,7 +58,7 @@ left after that merge, not the raw number of attempts.
 [combination fork](../../memory-bank/_terms.md#devicecombinationfork) from step 3 runs again on
 `n=8`'s three recipes, six raw outcomes merging down to five.
 
-![Divisor chips](screenshots/section-4-divisor-chips.png)
+![Divisor chips](screenshots/divisor-chips.png)
 
 It opens with the object itself before ever showing the sequence, works through *why* the count
 for `n=6` is 2 (which cycle lengths are even possible, how they combine, why one combination
@@ -58,14 +70,18 @@ answers together using
 ![How the answers combine](screenshots/assembly-map.png)
 
 The catalog at the end draws every symmetry type for `n=1..15` as an actual shape (rectangle,
-triangle, tetrahedron, ...), switches to a
+triangle, tetrahedron, ...) and switches to a
 [log growth chart](../../memory-bank/_terms.md#deviceloggrowthchart) of counted tiles for
-`n=16..30`, and closes with an
+`n=16..30`:
+
+![Solution catalog](screenshots/solution-catalog.png)
+
+It closes with an
 [unrealized placeholder](../../memory-bank/_terms.md#deviceunrealizedplaceholder) for the one
 order-8 type with no realizable object at all — paired with a panel naming exactly what the table
 demands versus what an actual rotation in space can deliver, not just an unexplained gap:
 
-![Solution catalog](screenshots/solution-catalog.png)
+![Unrealized placeholder](screenshots/unrealized-placeholder.png)
 
 **[Open the visualization →](viz.html)**
 
