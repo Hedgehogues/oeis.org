@@ -444,3 +444,50 @@ Source: [Wikipedia — Kolakoski sequence](https://en.wikipedia.org/wiki/Kolakos
 Example: built inline in `visualizations/A000002/viz.html` (the section-2a IIFE building
   `.kcol`/`.kmatch` columns)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::FundamentalDomainPlot]
+Class: entity
+Standard name: Fundamental domain (of the modular group SL(2,Z)/PSL(2,Z) acting on the upper
+  half-plane)
+Essence: Map each reduced object to a single point τ in the upper half of the complex plane by a
+  stated formula, and draw the fixed, standard fundamental-domain region — the classic "keyhole"
+  {|Re(τ)| ≤ 1/2, |τ| ≥ 1} — around the plotted points, so that an ALGEBRAIC finiteness claim (a
+  bounded search terminates) becomes a GEOMETRIC one that can be checked by eye (every point landed
+  inside one fixed shape, none outside it).
+Recognized by: the argument needs to show that a finite, algebraically-defined set is also
+  bounded in a fixed geometric region, so that "how many are there" has a picture to count from
+  rather than only a search that happens to terminate
+General case: applies to any construction that assigns a point of the upper half-plane to each
+  member of a finite algebraic set closed under the modular group's action (here, reduced binary
+  quadratic forms of a fixed discriminant via τ = (-b+i√|D|)/(2a)); a larger defining parameter
+  (here, a larger |D|) produces more points, always inside the same fixed region, never outside
+Picture: ![Fundamental domain plot](visualizations/A000003/screenshots/fundamental-domain-plot.png)
+  — `visualizations/A000003/viz.html`, section 3a (all reduced forms of one discriminant, plotted
+  and labelled) and the Solution section's shrunk reuse of the same drawing
+Reading order: the shaded region first (the fixed target shape, stated once via the legend's
+  formula), then the dashed centre line at Re(τ)=0 (an orientation reference), then the labelled
+  points themselves
+Limits:
+  - MUST: state the mapping formula once, explicitly, before the plot is shown (principle 1) — a
+    dot's POSITION is the entire argument; a viewer who doesn't know the formula sees only "dots in
+    a lens shape" with no idea why any one of them sits where it does.
+  - MUST: compute the drawing's scale from the actual range of values being plotted, not from a
+    fixed aspect ratio guessed in advance — a first version of this device fixed the vertical scale
+    independent of how tall the tallest point actually was, and every point but the shortest one
+    landed outside the visible canvas entirely, invisible with no error and no visual sign anything
+    was missing.
+  - MUST: when two points sit close together (here, a conjugate pair (a,b,c)/(a,-b,c) equidistant
+    from the centre line), their printed labels extend AWAY from each other (left-of-centre points
+    label leftward, right-of-centre rightward) rather than both extending the same direction, which
+    ran one label straight into the neighbouring point.
+Source: [Wikipedia — Fundamental domain](https://en.wikipedia.org/wiki/Fundamental_domain) and
+  [Wikipedia — Modular group](https://en.wikipedia.org/wiki/Modular_group) for the keyhole region
+  itself, both showing it as the standard fundamental domain for SL(2,Z)/PSL(2,Z) on the upper
+  half-plane. The specific correspondence used here — reduced positive-definite binary quadratic
+  forms of discriminant D mapping into this exact region via τ = (-b+i√|D|)/(2a) — is classical but
+  not documented under a named diagram on Wikipedia; cited instead to David A. Cox, *Primes of the
+  Form x² + ny²: Fermat, Class Field Theory, and Complex Multiplication* (2nd ed., Wiley, 2013),
+  chapter 2, which develops reduction theory of forms via exactly this correspondence.
+Example: built inline in `visualizations/A000003/viz.html` (`tau()`, `buildPlot()`, the
+  `.fd-region`/`.fd-dot`/`.fd-label` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

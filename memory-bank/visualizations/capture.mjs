@@ -85,6 +85,19 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000003/viz.html`,
+    outDir: `${VIZ}/A000003/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['reduction-minirecap.png', { css: '#cardReduce' }],       // device::MiniRecap (reused)
+      ['condition.png', { css: '#cardCondition' }],
+      ['fundamental-domain-plot.png', { css: '#cardDomain' }],   // device::FundamentalDomainPlot
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();
