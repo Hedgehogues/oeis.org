@@ -130,6 +130,13 @@ picture decodable, and the resulting confusion has nothing to do with verbosity.
   definition; the very next question was "what is this, what do these shapes mean" — the exact
   confusion principle 1 exists to prevent.
 
+- MUST: the defining line is marked as notation in the markup (`class="legend"`), not left among
+  the captions, so a pass that removes commentary has a boundary it can see.
+- Precedent, the second time: after the legend was restored by hand, a later redesign of the same
+  section removed it again — and nobody noticed for weeks, because the page still looked finished.
+  Found only when `verify/pages.mjs` was written and immediately failed. A rule that has to be
+  remembered gets forgotten; this one is now checked.
+
 ## 10. A log-scaled bar keeps its literal number printed on it
 
 Compressing several orders of magnitude onto one chart requires a log scale, or small values vanish
@@ -265,24 +272,28 @@ not in a caption beside it. Every page therefore ends with a QR code to
 Trigger: any request to explain an OEIS sequence with a picture — a new device record, a
 per-sequence page, an edit to an existing visualization; an invocation of the `explain-sequence`
 skill; adding or editing any `[device::*]` record.
-Mechanization: `PASSIVE — risk logged`. Principles 1, 2, 7, 9, 12 are judgement calls and are not
-script-checkable. Principle 3 is `LIGHTWEIGHT-GATE` (grep the page's CSS for a header/body class
-distinction — not wired into a script, checked by hand). Principle 4, 6, 10 require a rendered
-screenshot to verify (no static check distinguishes a merged bar from four separate ones, or a
-visible marker from an invisible one). Principle 5 is `LIGHTWEIGHT-GATE` (grep for bare `→` glyphs
-with no adjacent label — checked by hand). Principle 8 is `LIGHTWEIGHT-GATE` (grep for a count
-badge with no `cy-self`/highlight class nearby). Principle 11 is a judgement call verified against
-the actual math (does a claimed relabeling really exist), same as `memory-bank/verify/*.mjs` does
-for group tables specifically. Principle 13 is `LIGHTWEIGHT-GATE` (a Cyrillic grep over tracked
-`.html`/`.mjs` files — not wired into CI, checked by hand). Principle 14 is now `LIGHTWEIGHT-GATE`
-rather than a judgement call, because the shared-crop escape hatch is gone:
-`grep -oP '(?<=screenshots/)[a-z0-9-]+\.png' memory-bank/_terms.md | sort | uniq -c` must show no
-count above 1. Principle 15 is `LIGHTWEIGHT-GATE` (diff the `:root` token block and the fonts
-`<link>` across `memory-bank/visualizations/*/viz.html` — checked by hand). Principle 16 is
-`LIGHTWEIGHT-GATE`, and the only one with a decisive machine check available: decode the QR out of
-each captured `full.png` and compare the string to the repo URL. The risk of a
-principle not being applied at the moment a page ships is accepted explicitly; on this catalog so
-far, the compensation was the user's own questions — roughly twenty in one sitting before the
-page settled, then one direct correction each for the language, the repeated crops, the stale
-`MergedResultStrip` record and the mismatched design system — which is exactly what should not be
-the mechanism going forward.
+Mechanization: `node memory-bank/verify/all.mjs` exits non-zero on a violation of principles 9, 11,
+14, 15 and 16, and every one of those checks was proved by reintroducing the exact fault it exists
+for rather than merely written:
+
+| # | check | the fault it was tested against |
+|---|---|---|
+| 9 | `verify/pages.mjs` | deleting the legend that defines the corner marker |
+| 11 | `verify/group-tables.mjs` | a table that is not actually a group |
+| 14 | `verify/catalog.mjs` | renaming the element a device record describes, leaving the record pointing at nothing |
+| 15 | `verify/pages.mjs` | restoring the old teal accent and a different page ground |
+| 16 | `verify/qr.mjs` | re-theming the QR and shrinking it, then re-capturing |
+
+The rest stay judgement calls, and saying so is the point of listing them: principles 1, 2, 7 and
+12 are about whether a decomposition is honest, which no script decides. Principles 4, 6 and 10
+need a human looking at a rendered screenshot — nothing static distinguishes a merged bar from four
+touching ones, or a visible marker from an invisible one. Principles 3, 5, 8 and 13 have cheap
+greps (a header/body class distinction; a bare arrow glyph with no adjacent label; a count badge
+with no highlighted cells nearby; Cyrillic in a tracked file) that are run by hand and have not
+been worth wiring up.
+
+The history this file records is the argument for the table above. Every principle in it was
+learned from a correction rather than from foresight, and two were learned twice: the marker legend
+was deleted, restored after the reader asked what the shapes meant, then deleted again by a later
+redesign and noticed only when a check was finally written for it. The compensation so far has been
+the reader's own questions, which is exactly what should not be the mechanism going forward.

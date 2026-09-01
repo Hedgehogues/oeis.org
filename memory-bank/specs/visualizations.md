@@ -270,15 +270,28 @@ has no judge, so the check itself is committed.
 - Every page MUST end with a QR code to `https://github.com/Hedgehogues/oeis.org` and the address
   in text, inlined from the committed `memory-bank/visualizations/qr-repo.svg`, so a forwarded
   snapshot still leads back to the sources — **MUST-repo-qr** — criterion: the QR decodes to
-  exactly that URL when read out of the captured `full.png`, not out of the SVG. Status: done — the
-  code was generated at error-correction level M and decoded live 2026-09-01 from both
-  `A000001/screenshots/full.png` and `A100001/screenshots/full.png`, each returning
-  `https://github.com/Hedgehogues/oeis.org`.
+  exactly that URL when read out of the captured `full.png`, not out of the SVG —
+  `node memory-bank/verify/qr.mjs` exits 0. Status: done — run live 2026-09-01, both pages decoding
+  to `https://github.com/Hedgehogues/oeis.org`; the check itself was then tested by re-theming the
+  symbol and re-capturing, which made it fail as intended.
 - The QR MUST be rendered dark-on-light with fixed colours rather than through the theme tokens —
   **MUST-qr-not-themed** — criterion: the `.repo svg` rule sets literal colours, and the page's
-  dark-theme capture still decodes. Status: done — the first attempt followed the theme at 72px and
-  decoded from neither page; pinning the colours and enlarging to 104px fixed both. This is the one
-  deliberate exception to `MUST-one-visual-system`: a scanner is not a reader.
+  dark-theme capture still decodes — `node memory-bank/verify/pages.mjs` exits 0. Status: done —
+  the first attempt followed the theme at 72px and decoded from neither page; pinning the colours
+  and enlarging to 104px fixed both. This is the one deliberate exception to
+  `MUST-one-visual-system`: a scanner is not a reader.
+- A page that introduces its own notation MUST carry the line that defines it, marked as notation
+  (`class="legend"`) rather than left among the captions, so a pass that removes commentary cannot
+  remove it — **MUST-notation-survives-trimming** — criterion: `node memory-bank/verify/pages.mjs`
+  exits 0; a page that draws the corner marker without a legend fails it. Status: done — added
+  after finding the legend missing for the SECOND time: it was restored once by hand after the
+  reader asked what the shapes meant, then removed again by a later redesign and noticed only when
+  this check was written. The check was tested by deleting the legend, which made it fail.
+- Every device record's `Picture:` MUST name a crop that `capture.mjs` actually produces from a
+  selector that still resolves in the live page — **MUST-record-describes-live-element** —
+  criterion: `node memory-bank/verify/catalog.mjs` exits 0. Status: done — run live 2026-09-01,
+  all 12 records passing; the check was tested by renaming `#mergeDemo` in the page, which made it
+  name the exact record left describing nothing.
 
 ## Links
 - The layer below, which this spec may reference and which never references back:

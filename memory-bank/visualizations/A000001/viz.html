@@ -80,6 +80,15 @@
   .obj.dup{opacity:.4;border-style:dashed;}
   .item{display:flex;flex-direction:column;align-items:center;gap:4px;}
   .glabel{font-size:10.5px;color:var(--ink-faint);text-align:center;line-height:1.25;max-width:78px;}
+
+  /* .legend is NOTATION, not commentary: it is what binds the white dot to its meaning, and a
+     page that drops it leaves a mark no reader can decode. A "remove the prose" pass may take
+     .glabel/.subcap/.rowcap; it may never take this. Checked by verify/pages.mjs. */
+  .legend{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-soft);
+          background:var(--surface-2);border:1px dashed var(--line);border-radius:10px;
+          padding:7px 12px;align-self:flex-start;}
+  .legend svg{flex:none;}
+  .legend b{color:var(--ink);font-weight:600;}
   .op{font-family:'Literata',serif;font-size:22px;font-weight:700;color:var(--ink-faint);}
   .op.eq{color:var(--ok);} .op.ne{color:var(--bad);}
   .arr{color:var(--mute);font-size:16px;}
@@ -569,6 +578,19 @@
     return d;
   }
   var s1aHost=document.getElementById('s1a');
+
+  /* the marker convention, stated once — see .legend in the CSS above for why it is not prose */
+  (function(){
+    var lg=document.createElement('div'); lg.className='legend';
+    var sample=svg(); sample.style.width='56px'; sample.style.height='56px';
+    sample.appendChild(el('rect',{x:9,y:17,width:38,height:22,rx:2,'class':'flf'}));
+    sample.appendChild(el('circle',{cx:41,cy:19,r:4.6,'class':'marker'}));
+    var txt=document.createElement('div');
+    txt.innerHTML='<b>The white dot marks one corner.</b> Shapes here are symmetric, so a movement '+
+                  'would look like nothing happened — the dot is what shows where the shape went.';
+    lg.appendChild(sample); lg.appendChild(txt);
+    s1aHost.appendChild(lg);
+  })();
 
   /* group 1 (blue frame): from "Problem" to the 4 real movements */
   var grpReal=document.createElement('div'); grpReal.className='grp';

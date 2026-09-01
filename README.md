@@ -17,7 +17,15 @@ page each, opened directly in a browser, no build step.
 node sequences/A{NNNNNN}/solution.mjs [maxN]    # compute the sequence
 node sequences/A{NNNNNN}/proof.mjs [maxN]       # re-check what it computed
 node memory-bank/visualizations/capture.mjs     # re-capture every screenshot from the live pages
+node memory-bank/verify/all.mjs                 # run every check in the repository
 ```
+
+`verify/all.mjs` is what a spec's `Status: done` is allowed to cite. Each check under
+[`memory-bank/verify/`](memory-bank/verify/) exists because the thing it checks was once wrong in a
+way nothing noticed — a catalog record describing a widget a redesign had deleted, a page whose
+only line of notation a "remove the prose" pass had taken, a QR readable in its source file and
+unreadable in the snapshot that actually travels. Every one of them was tested by reintroducing
+that exact fault and confirming it fails.
 
 ## Sequences
 
@@ -88,6 +96,11 @@ RFC discipline, same one-way "sequences point at the dictionary, never the rever
 insistence that every `Status: done` names a real, re-run check rather than a claim from memory,
 same directory split (all visual artifacts in the memory bank, a task's own folder holding only its
 write-up and its code).
+
+What was compared against what, when, and where it deliberately differs is recorded file by file
+in [`memory-bank/upstream.md`](memory-bank/upstream.md), together with the command to redo the
+comparison — because "adapted from" was asserted here for a while before anyone actually diffed the
+two trees, and two of the files this README cited by name turned out not to exist upstream.
 
 Two things differ, both stated in the adapted files' own headers. Pages here are live and
 interactive rather than built to a static PNG, so there is no shared shell and no `build.sh` — see

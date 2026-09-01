@@ -106,14 +106,18 @@ check has to produce a witness and verify it, which is too much to restate in a 
 - Every sequence directory MUST contain `solution.mjs`, which computes `a(n)` from the definition
   the page draws and consults no table of published terms, and the task spec MUST have a
   requirement naming it — **MUST-implementation-present** — criterion: `node
-  sequences/A{NNNNNN}/solution.mjs` prints terms, and the file contains no array of known answers
-  that any computation reads from. Status: done (A000001 `solution.mjs`, A100001 `solution.mjs`).
+  sequences/A{NNNNNN}/solution.mjs` prints terms, and `node memory-bank/verify/code-split.mjs`
+  exits 0 — it fails on any numeric array long enough to be a table of answers. Status: done
+  (A000001 `solution.mjs`, A100001 `solution.mjs`); the check was tested by adding such a table,
+  which made it fail.
 - Every sequence directory MUST contain `proof.mjs`, which re-checks what `solution.mjs` returned
   using routines written independently of it, and the task spec MUST have a requirement whose
   `Status:` names a real run of it — **MUST-proof-independent** — criterion: `proof.mjs` re-derives
   its own isomorphism/validity tests rather than importing the ones the answer was produced with,
-  and checks soundness, distinctness, completeness and agreement with the published terms. Status:
-  done (A000001 `proof.mjs`, A100001 `proof.mjs`).
+  and checks soundness, distinctness, completeness and agreement with the published terms —
+  `node memory-bank/verify/code-split.mjs` exits 0, failing on any import of the equivalence
+  routine from `solution.mjs`. Status: done (A000001 `proof.mjs`, A100001 `proof.mjs`); the check
+  was tested by importing that routine, which made it fail.
 - An implementation's header MUST state the range it was actually measured over and where it stops,
   as measured wall-clock rather than a guess — **MUST-runtime-honest** — criterion: the header names
   the largest `n` that finishes, the time it took, and the first `n` that does not finish, each

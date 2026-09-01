@@ -33,6 +33,9 @@
 - [visualizations](specs/visualizations.md) — Status: draft — requirements on the PICTURE: an
   explicit Problem→...→Solution decomposition, self-contained live HTML (no build/PNG pipeline —
   see its Architecture section for why), embedded math independently re-verified
+- [upstream.md](upstream.md) — what this repository was compared against in
+  [Hedgehogues/project-euler](https://github.com/Hedgehogues/project-euler), when, file by file,
+  and where it deliberately differs; every "adapted from" sentence elsewhere points at a row of it
 - [tasks](specs/tasks.md) — Status: draft — requirements on a TASK SPEC's own format: six sections
   in order, devices must resolve, a `Status:` line must name real evidence, and every sequence
   directory carries the implementation/proof pair described below
@@ -54,10 +57,19 @@ problem's own folder there holds no picture files, and neither does a sequence's
 - `visualizations/capture.mjs` — regenerates every screenshot from the pages beside it
 - `visualizations/qr-repo.svg` — the repo QR every page inlines in its footer, so a forwarded
   snapshot leads back here; generated once at error-correction level M and committed
-- `verify/*.mjs` — independent, committed, re-runnable checks of any algebraic/numeric claim a page
-  embeds; a task spec's correctness requirement cites a real, executed run of these, never "done"
-  from memory. project-euler describes its cross-check in the spec's Status line; here the check is
-  committed as a file so anyone can re-run it
+- `verify/all.mjs` — runs every check below and reports one verdict; this is what a spec's
+  `Status: done` is allowed to cite. project-euler describes its cross-check in the spec's Status
+  line; here the check is committed so anyone can re-run it. Every one of these was tested by
+  reintroducing the exact fault it exists for:
+  - `verify/group-tables.mjs` — the multiplication tables the pages draw really are groups
+  - `verify/catalog.mjs` — every device record still describes an element that exists on its page,
+    from a crop `capture.mjs` really produces, and no two records share one
+  - `verify/pages.mjs` — the marker convention is stated, the QR is present and pinned outside the
+    theme, both themes are defined, nothing is loaded but the fonts
+  - `verify/code-split.mjs` — the implementation consults no published terms and the proof does not
+    borrow the routine it judges
+  - `verify/qr.mjs` — the QR decodes out of the captured PNG, the form that actually travels
+  - `verify/sequences.mjs` — each sequence's own proof at a bound quick enough to run after any edit
 
 ### Outside the memory bank
 - `sequences/A{NNNNNN}/README.md` — the sequence itself: what it counts, the framing chosen for its
