@@ -13,15 +13,22 @@ configuration, drawn the classic way (triangle + medians + incircle, 7 points, 7
 a point highlights the 3 lines through it, making the "3 lines per point" rule tangible rather
 than stated.
 
-Self-duality itself is shown as two 7×7 incidence matrices — the configuration's own matrix and
-its transpose — side by side, deliberately *not* forced to look identical. The honest point is
-that they look different as drawn, yet the configuration is still self-dual: what matters is that
-*some* relabeling of points and lines turns one into the other, not that the naive matrix is
-symmetric.
+One catalogued device (full write-up:
+[`memory-bank/_terms.md`](../../memory-bank/_terms.md#deviceincidencematrixpair)):
 
-A growth chart (log scale, `n=1..19`) closes it out, with the Fano plane's `n=7` marked as the
-first nonzero term.
+**Incidence matrix pair** — self-duality is shown as two 7×7 incidence matrices, the
+configuration's own matrix and its transpose, side by side, deliberately *not* forced to look
+identical. The honest point is that they look different as drawn, yet the configuration is still
+self-dual: what matters is that *some* relabeling of points and lines turns one into the other, not
+that the naive matrix is symmetric.
+[`[device::IncidenceMatrixPair]`](../../memory-bank/_terms.md#deviceincidencematrixpair)
+
+A [log growth chart](../../memory-bank/_terms.md#deviceloggrowthchart) (`n=1..19`) closes it out,
+with the Fano plane's `n=7` marked as the first nonzero term.
 
 **[Open the visualization →](viz.html)**
+
+Full requirements and acceptance criteria:
+[spec.md](../../memory-bank/specs/tasks/A100001.md).
 
 Source: [oeis.org/A100001](https://oeis.org/A100001)
