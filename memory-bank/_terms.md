@@ -40,8 +40,8 @@ Recognized by: the argument needs to show WHERE a movement (rotation, reflection
 General case: works for any finite symmetry group acting on a 2D shape; the mark must sit at a
   point NOT fixed by any of the movements being compared (a mark on a mirror axis doesn't move
   under that mirror, and looks like a bug rather than a feature)
-Picture: `sequences/A000001/viz.html`, section 1a/1c (marked rectangle, rhombus, ellipse, "H",
-  pinwheel)
+Picture: ![Marked asymmetry](../sequences/A000001/screenshots/section-1-what-counts.png) —
+  `sequences/A000001/viz.html`, section 1a/1c (marked rectangle, rhombus, ellipse, "H", pinwheel)
 Reading order: the base shape first (undecorated, to register its own symmetry), then the same
   shape with the mark added, then the sequence of transformed copies
 Limits:
@@ -72,7 +72,8 @@ Recognized by: the argument depends on showing that combining any two of a FIXED
 General case: any finite group (or, more generally, any set with a closed binary operation) can be
   laid out this way; the table's shape (which cells repeat, which are self-inverse) is itself the
   object of study, independent of which concrete objects realize the group
-Picture: `sequences/A000001/viz.html`, sections 1b/1c
+Picture: ![Cayley table](../sequences/A000001/screenshots/section-1-what-counts.png) —
+  `sequences/A000001/viz.html`, sections 1b/1c
 Reading order: one worked example first (a specific row + a specific column → the highlighted
   result, using the exact math the grid uses), THEN the full grid — never the raw grid first
 Limits:
@@ -102,8 +103,9 @@ General case: for a group of order n, the count of self-inverse elements (diagon
   the identity) is itself a structural invariant — a Klein four-group has n of them (every non-
   identity element is an involution), a cyclic group of even order n has exactly 2 (identity and
   the unique element of order 2)
-Picture: `sequences/A000001/viz.html`, section 1c (three tables, `cy-diag`/`cy-self` highlighting)
-  and the "grpTwist"/"diagPairs" comparison in section 1a
+Picture: ![Self-cancel diagonal](../sequences/A000001/screenshots/section-1-what-counts.png) —
+  `sequences/A000001/viz.html`, section 1c (three tables, `cy-diag`/`cy-self` highlighting) and the
+  "grpTwist"/"diagPairs" comparison in section 1a
 Reading order: the highlighted diagonal cells first (count them), THEN the summary badge — the
   badge is a confirmation of what's already visible, never the only evidence
 Limits:
@@ -120,6 +122,7 @@ Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations
 
 ## [device::MergedResultStrip]
 Class: entity
+Standard name: — (no established name found)
 Essence: When a row of individually-computed results turns out to be literally identical across
   every position, render them as one contiguous, gapless shape instead of separate tiles that
   happen to hold the same value — sameness becomes a property of the outline, not something the
@@ -130,7 +133,8 @@ Recognized by: a row of small result tiles where all N values coincide reads as 
 General case: applies to any small, fixed-length row of computed results where the general
   algorithm is expected to sometimes agree and sometimes disagree across positions (so that
   "merged" is informative precisely because it's not the default look of the row)
-Picture: `sequences/A000001/viz.html`, section 1a (the rectangle side of the pinwheel-vs-rectangle
+Picture: ![Merged result strip](../sequences/A000001/screenshots/section-1-what-counts.png) —
+  `sequences/A000001/viz.html`, section 1a (the rectangle side of the pinwheel-vs-rectangle
   comparison)
 Reading order: compare the two rows side by side first — one merged into a single bar, one staying
   as separate tiles — the shapes themselves are the finding, read before any label
@@ -161,7 +165,8 @@ General case: any single generator of a finite cyclic or dihedral-type action ca
   way; a single generator either has one orbit covering everything (a full ring) or several
   disjoint orbits of the same length (several rings/arcs) — never a mix, by the same divisibility
   fact [device::DivisorChips](#devicedivisorchips) makes explicit elsewhere on the same page
-Picture: `sequences/A000001/viz.html`, section 1a (pinwheel "cycle" ring vs. rectangle "pairs" arcs)
+Picture: ![State map](../sequences/A000001/screenshots/section-1-what-counts.png) —
+  `sequences/A000001/viz.html`, section 1a (pinwheel "cycle" ring vs. rectangle "pairs" arcs)
 Reading order: the arrows first (their shape — one ring vs. several two-way arcs), then the small
   icon sitting at each point (which actual state that position represents)
 Limits:
@@ -171,6 +176,37 @@ Limits:
 Source: [Wikipedia — Group action](https://en.wikipedia.org/wiki/Group_theory#Group_actions) ·
   [Wikipedia — Cyclic permutation](https://en.wikipedia.org/wiki/Cyclic_permutation)
 Example: built inline (`stateMap()`, modes `'cycle'` and `'pairs'`)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::OrbitRing]
+Class: entity
+Standard name: — (no established name for the diagram; the underlying idea is a group action's
+  orbit decomposition, standard in combinatorics)
+Essence: Place n points on a ring; from a chosen repeat-step, draw a directed arrow from every
+  point to "that point, then one more step" — the resulting arrows split into one or more disjoint
+  closed loops (2-cycles as a pair of opposite arcs, longer ones as a single directed ring), and
+  every loop the diagram produces is provably the same length.
+Recognized by: the argument needs to show WHY a specific repeat-length is or isn't achievable for
+  n positions — not by stating "length k divides n" but by actually trying to close a loop of that
+  length and showing what happens to the leftover points
+General case: for any step size on n points, the arrows partition all n points into disjoint loops
+  of one common length (`n / gcd(step, n)`); attempting a length that does not divide n leaves
+  points that cannot close into a loop of that length at all — this device is what
+  [device::DivisorChips](#devicedivisorchips)'s claim ("possible lengths = divisors of n") looks
+  like as an actual, checkable construction rather than a stated number-theory fact
+Picture: ![Orbit ring](../sequences/A000001/screenshots/section-2-orbit-ring.png) —
+  `sequences/A000001/viz.html`, section 2 (2a: one full ring; 2b: two/three shorter rings;
+  2c: an attempted non-divisor length, its leftover points marked and left unlooped)
+Reading order: the arrows first (do they close into one ring, several equal rings, or fail to
+  close at all), then the small icon at each point
+Limits:
+  - MUST: color-code each disjoint loop distinctly when a step splits the points into more than
+    one loop — otherwise multiple simultaneous loops read as one tangled diagram.
+  - MUST: an attempted non-divisor length visibly marks which points are left over (a distinct
+    color/style), not merely omit them — omission reads as an incomplete drawing, not a finding.
+Source: [Wikipedia — Group action](https://en.wikipedia.org/wiki/Group_theory#Group_actions) ·
+  [Wikipedia — Cyclic permutation](https://en.wikipedia.org/wiki/Cyclic_permutation)
+Example: built inline (`ringPartition()`)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
 
 ## [device::DivisorChips]
@@ -186,7 +222,8 @@ Recognized by: the argument's next step is "there are N possible building blocks
 General case: works for any positive integer; a prime shows exactly two muted chips and nothing
   highlighted (the visual signature of "no extra options"); a highly composite number shows many
   highlighted chips (the visual signature of "many options")
-Picture: `sequences/A000001/viz.html`, sections 2c/4a/4c and the "Решение" catalog shelves
+Picture: ![Divisor chips](../sequences/A000001/screenshots/section-4-divisor-chips.png) —
+  `sequences/A000001/viz.html`, sections 4a/4c and the "Решение" catalog shelves
 Reading order: the muted end-chips (1 and n) register first as "always present, uninformative",
   then the highlighted middle chips as the actual count that matters
 Limits:
@@ -209,7 +246,8 @@ Recognized by: the property being explained is a duality or self-duality that ho
   stronger, false fact (literal identity) in place of the true one (existence of an isomorphism)
 General case: applies to any structure with a natural incidence relation between two finite sets
   (points/lines, vertices/edges) where duality means swapping the two sets' roles
-Picture: `sequences/A100001/viz.html` (the Fano plane's matrix and its transpose)
+Picture: ![Incidence matrix pair](../sequences/A100001/screenshots/incidence-matrix-pair.png) —
+  `sequences/A100001/viz.html` (the Fano plane's matrix and its transpose)
 Reading order: each matrix on its own first (register that they look different), then the stated
   claim underneath (a relabeling exists) — never the reverse order, which would prime the viewer to
   see sameness that isn't drawn
@@ -233,7 +271,8 @@ Recognized by: the sequence spans several orders of magnitude within one chart, 
   would render the small early values as invisible slivers next to the largest one
 General case: any monotonically-growing (or wildly-varying) integer sequence charted over a
   contiguous range of its index
-Picture: `sequences/A000001/drafts/v1-heatmap.html` and `v2-symmetry-catalog.html` (growth
+Picture: ![Log growth chart](../sequences/A100001/screenshots/log-growth-chart.png) — also
+  `sequences/A000001/drafts/v1-heatmap.html` and `v2-symmetry-catalog.html` (growth
   staircases for powers of two), `sequences/A000001/viz.html` (the "Проблема"/"Решение" column
   charts), `sequences/A100001/viz.html` (the self-dual-configuration growth chart)
 Reading order: the bar heights first (relative comparison), then the printed numbers (actual
@@ -262,7 +301,8 @@ Recognized by: a sequence's count includes at least one abstractly-valid case th
   fake in its place would misreport the case itself
 General case: any enumeration where the counted objects are defined by an algebraic/logical
   consistency condition that does not, in general, guarantee physical or geometric realizability
-Picture: `sequences/A000001/viz.html` — the "Решение" catalog's dashed placeholder cells, and the
+Picture: ![Unrealized placeholder](../sequences/A000001/screenshots/solution-catalog.png) —
+  `sequences/A000001/viz.html` — the "Решение" catalog's dashed placeholder cells, and the
   "почему у некоторых видов нет предмета" require-vs-give comparison panel
 Reading order: the placeholder itself first (it exists in the count, drawn as absent-but-real),
   then, only on request/nearby, the comparison panel explaining the specific mismatch
@@ -287,7 +327,8 @@ Recognized by: a new section's motivation is exactly "recall what you just saw" 
   a sentence would only repeat information the picture already carries
 General case: any multi-section explanatory page where a later section's premise is a specific
   earlier picture (or a specific slice of it), not a new fact
-Picture: `sequences/A000001/viz.html`, section 1a's opening bridge (the first four "Проблема"
+Picture: ![Mini-recap](../sequences/A000001/screenshots/assembly-map.png) —
+  `sequences/A000001/viz.html`, section 1a's opening bridge (the first four "Проблема"
   columns, redrawn small) and the "Как ответы складываются в итог" map's per-node thumbnails
 Reading order: the shrunk recap first (recognize it as "the thing from before"), then whatever new
   element sits next to it
@@ -298,4 +339,37 @@ Source: no canonical citation; a direct application of visual continuity/consist
   information design, not packaged anywhere as a named technique.
 Example: built inline (the mini-bars in the 1a bridge IIFE; the `m-*-th` thumbnail nodes in the
   "Как ответы складываются в итог" assembly map)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::CombinationFork]
+Class: entity
+Standard name: — (no established name found)
+Essence: Show each available building block (or fixed combination of blocks) as a labeled chip,
+  draw the one or two distinct results each combination can produce, and merge any result that
+  duplicates one already produced by a different combination — so a "how many building blocks"
+  question ends at an ACTUAL deduplicated count, not the raw number of attempts.
+Recognized by: the argument needs to enumerate every way of combining a small, fixed set of
+  building blocks, where at least one combination is expected to reproduce a result some other
+  combination already gave — silently listing raw attempts would overcount
+General case: applies whenever the count being explained is "how many distinct outcomes", not "how
+  many ways to try" — any enumeration with a known, checkable duplicate must visibly merge before a
+  final number is stated
+Picture: ![Combination fork](../sequences/A000001/screenshots/section-3-combination-fork.png) —
+  `sequences/A000001/viz.html`, section 3 (block "6" alone; blocks "3"+"2" forking into two
+  outcomes, one merged as a duplicate) and section 4b (three recipes — "8", "4+2", "2+2+2" —
+  forking into six raw outcomes, one merged, five kept)
+Reading order: the building-block chips first, then each branch's result, then the merge itself
+  (a dimmed/duplicate-styled copy sitting beside the branch that already produced that result),
+  and only then the final count
+Limits:
+  - MUST: a duplicate result is shown as a visually distinct (dimmed, dashed) copy of the SAME
+    picture as its original, not merely omitted — an omitted branch reads as an incomplete
+    diagram, not a deliberate finding (the same discipline
+    [device::OrbitRing](#deviceorbitring)'s Limits state for stranded points).
+  - MUST NOT: state a final count without showing at least one duplicate being caught — a page that
+    only ever shows distinct results teaches the reader nothing about why deduplication matters.
+Source: no canonical citation for the diagram; the underlying idea is a special case of counting by
+  equivalence classes rather than by raw case enumeration, standard in combinatorics but not
+  packaged anywhere as a named diagram technique.
+Example: built inline (`recipe()` in section 4b; the equivalent hand-built fork in section 3)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

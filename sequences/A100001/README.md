@@ -1,5 +1,7 @@
 # A100001 — Number of self-dual combinatorial configurations of type (n_3)
 
+![Точки = линии](screenshots/full.png)
+
 A configuration `(n_3)` is `n` points and `n` lines, each point on exactly 3 lines, each line
 holding exactly 3 points. Swapping the roles of points and lines gives the *dual* configuration;
 one is **self-dual** if it's isomorphic to its own dual. `a(n)` counts how many self-dual
@@ -23,8 +25,12 @@ self-dual: what matters is that *some* relabeling of points and lines turns one 
 that the naive matrix is symmetric.
 [`[device::IncidenceMatrixPair]`](../../memory-bank/_terms.md#deviceincidencematrixpair)
 
+![Incidence matrix pair](screenshots/incidence-matrix-pair.png)
+
 A [log growth chart](../../memory-bank/_terms.md#deviceloggrowthchart) (`n=1..19`) closes it out,
 with the Fano plane's `n=7` marked as the first nonzero term.
+
+![Log growth chart](screenshots/log-growth-chart.png)
 
 **[Open the visualization →](viz.html)**
 

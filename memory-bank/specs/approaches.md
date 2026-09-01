@@ -41,11 +41,13 @@ MUST/MUST NOT/SHALL/SHOULD/SHOULD NOT/MAY as in RFC 2119. Terms live in `_terms.
 [device::SelfCancelDiagonal](../_terms.md#deviceselfcanceldiagonal),
 [device::MergedResultStrip](../_terms.md#devicemergedresultstrip),
 [device::StateMap](../_terms.md#devicestatemap),
+[device::OrbitRing](../_terms.md#deviceorbitring),
 [device::DivisorChips](../_terms.md#devicedivisorchips),
 [device::IncidenceMatrixPair](../_terms.md#deviceincidencematrixpair),
 [device::LogGrowthChart](../_terms.md#deviceloggrowthchart),
 [device::UnrealizedPlaceholder](../_terms.md#deviceunrealizedplaceholder),
-[device::MiniRecap](../_terms.md#deviceminirecap).
+[device::MiniRecap](../_terms.md#deviceminirecap),
+[device::CombinationFork](../_terms.md#devicecombinationfork).
 
 ## Scope
 **In scope:** the idea fields of `[device::*]` records — `Essence`, `Recognized by`,
@@ -98,7 +100,7 @@ existing record from its own README.
 ### Bounded Context and Aggregate Root
 - `device` — the only context. It has no separate aggregate-root record: the catalog-level
   invariants (schema, sourcing discipline) ARE the requirements below, not a block of their own.
-  `_terms.md` holds only the entities — the ten `[device::*]` records themselves.
+  `_terms.md` holds only the entities — the twelve `[device::*]` records themselves.
 
 ## Requirements
 > Statement — acceptance criterion — status.
@@ -106,7 +108,7 @@ existing record from its own README.
 ### MUST
 - Every record MUST carry Essence / Recognized by / General case / Source, and MUST NOT carry a
   field about a specific sequence — **MUST-entry-schema** — criterion: grepping each mandatory
-  heading yields as many lines as there are device records (10); there is no `Used in:` field.
+  heading yields as many lines as there are device records (12); there is no `Used in:` field.
   Status: done.
 - "Essence" MUST be a single sentence without formulas — **MUST-essence-plain** — criterion: the
   field contains no inline math notation beyond the plain word "n". Status: done.
@@ -120,8 +122,8 @@ existing record from its own README.
   contrasted..."), not a description of the drawing itself. Status: done.
 - Every record MUST carry its own `Source:` field, honestly stating "no established name found"
   when that's true rather than inventing or stretching a citation — **MUST-source** — criterion:
-  `grep -c '^Source:'` in `_terms.md` equals the number of device records (10). Status: done (10 of
-  10; 4 honestly cite no established name for the diagram itself while still sourcing the
+  `grep -c '^Source:'` in `_terms.md` equals the number of device records (12). Status: done (12 of
+  12; 10 honestly cite no established name for the diagram itself, some still sourcing the
   underlying math concept where one exists).
 - Where a `Source:` field cites a URL, it MUST be encyclopedic (Wikipedia or an equivalent
   reference work) and MUST resolve over the network — **MUST-canonical-source** /

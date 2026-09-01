@@ -23,9 +23,10 @@
 
 ## oeis — explaining sequences
 - [_terms.md](_terms.md) — the dictionary and the ONLY place descriptions live: context `device` —
-  MarkedAsymmetry, CayleyTable, SelfCancelDiagonal, MergedResultStrip, StateMap, DivisorChips,
-  IncidenceMatrixPair, LogGrowthChart, UnrealizedPlaceholder, MiniRecap (the catalog- and
-  shell-level invariants live in the two specs below, not as blocks of their own)
+  MarkedAsymmetry, CayleyTable, SelfCancelDiagonal, MergedResultStrip, StateMap, OrbitRing,
+  DivisorChips, IncidenceMatrixPair, LogGrowthChart, UnrealizedPlaceholder, MiniRecap,
+  CombinationFork (the catalog- and shell-level invariants live in the two specs below, not as
+  blocks of their own)
 - [approaches](specs/approaches.md) — Status: draft — requirements on the IDEA in a device record:
   atomic, recognizable from the situation, canonical source where one exists, no mention of a
   specific sequence
