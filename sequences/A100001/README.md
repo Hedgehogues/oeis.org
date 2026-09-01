@@ -15,6 +15,8 @@ configuration, drawn the classic way (triangle + medians + incircle, 7 points, 7
 a point highlights the 3 lines through it, making the "3 lines per point" rule tangible rather
 than stated.
 
+![Fano plane](screenshots/fano-plane.png)
+
 One catalogued device (full write-up:
 [`memory-bank/_terms.md`](../../memory-bank/_terms.md#deviceincidencematrixpair)):
 

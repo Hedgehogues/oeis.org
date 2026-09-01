@@ -133,10 +133,9 @@ Recognized by: a row of small result tiles where all N values coincide reads as 
 General case: applies to any small, fixed-length row of computed results where the general
   algorithm is expected to sometimes agree and sometimes disagree across positions (so that
   "merged" is informative precisely because it's not the default look of the row)
-Picture: ![Merged result strip](../sequences/A000001/screenshots/state-map.png) —
-  `sequences/A000001/viz.html`, section 1a (the rectangle side of the pinwheel-vs-rectangle
-  comparison). Shares this exact crop with
-  [device::StateMap](#devicestatemap) deliberately — see that record's `Picture:` field for why.
+Picture: ![Merged result strip](../sequences/A000001/screenshots/merged-result-strip.png) —
+  `sequences/A000001/viz.html`, section 1a (`#mergeDemo`): rectangle's 4 repeat-twice results
+  merged into one bar, contrasted with pinwheel's, which stay four separate tiles
 Reading order: compare the two rows side by side first — one merged into a single bar, one staying
   as separate tiles — the shapes themselves are the finding, read before any label
 Limits:
@@ -146,7 +145,10 @@ Limits:
 Source: no canonical citation; a direct, minimal application of the general principle that visual
   grouping (Gestalt "connectedness"/"common region") communicates categorical sameness faster than
   a value comparison does — not itself packaged as a named technique anywhere found.
-Example: built inline (`diagStrip()`'s `allSame` branch, later folded into `diagPairs()`)
+Example: built inline (`resultRow()`'s `allSame` branch, `#mergeDemo`) — an earlier version of this
+  device (`diagStrip()`) was folded into a since-removed `diagPairs()` widget and briefly had no
+  live picture at all; restored as its own dedicated widget once the gap was flagged directly
+  (`.claude/rules/visualization-principles.md` #14's own precedent note).
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
 
 ## [device::StateMap]
@@ -167,11 +169,7 @@ General case: any single generator of a finite cyclic or dihedral-type action ca
   disjoint orbits of the same length (several rings/arcs) — never a mix, by the same divisibility
   fact [device::DivisorChips](#devicedivisorchips) makes explicit elsewhere on the same page
 Picture: ![State map](../sequences/A000001/screenshots/state-map.png) —
-  `sequences/A000001/viz.html`, section 1a (pinwheel "cycle" ring vs. rectangle "pairs" arcs).
-  Shares this exact crop with
-  [device::MergedResultStrip](#devicemergedresultstrip) deliberately: one frame, two true facts —
-  the ring/arcs contrast IS this device, the rectangle side's arcs merging into one shape is the
-  other device, visible in the same picture at once.
+  `sequences/A000001/viz.html`, section 1a (pinwheel "cycle" ring vs. rectangle "pairs" arcs)
 Reading order: the arrows first (their shape — one ring vs. several two-way arcs), then the small
   icon sitting at each point (which actual state that position represents)
 Limits:

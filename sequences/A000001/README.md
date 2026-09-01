@@ -4,7 +4,10 @@
 
 `a(n)` counts the number of non-isomorphic groups of order `n` — 1 for every prime, 1 or 2 for a
 product of two primes, an explosion for powers of two (`a(1024) = 49 487 365 422`), and a jump
-from `a(31)=1` to `a(32)=51` with nothing in between hinting why.
+from `a(31)=1` to `a(32)=51` with nothing in between hinting why. The page opens on exactly that
+puzzle: thirty columns, heights all over the place, no visible rule.
+
+![The problem](screenshots/problem.png)
 
 ## The idea behind it
 
@@ -33,10 +36,16 @@ as a bare count.
 
 The same test run on a whole extra object (a pinwheel, on the same ring of states as
 [state map](../../memory-bank/_terms.md#devicestatemap)) shows it fails where the rectangle's
-family succeeds — its four repeated results don't
-[merge into one strip](../../memory-bank/_terms.md#devicemergedresultstrip) the way the rectangle's do.
+family succeeds: the pinwheel's movements walk one long ring, the rectangle's fold back in pairs.
 
 ![State map](screenshots/state-map.png)
+
+Repeat each movement twice and the same split shows up in the results themselves — the rectangle's
+four outcomes are all the identity, so they
+[merge into one bar](../../memory-bank/_terms.md#devicemergedresultstrip); the pinwheel's alternate,
+so they stay four separate tiles.
+
+![Merged result strip](screenshots/merged-result-strip.png)
 
 **2 · Which movements exist.** Every possible repeat-length from 1 to `n` is tried directly on a
 ring of points ([orbit ring](../../memory-bank/_terms.md#deviceorbitring)): lengths that divide `n`

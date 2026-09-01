@@ -2,6 +2,10 @@
 // targeted crop per device — so the devices catalog and each sequence's README show an actual
 // picture when browsed on GitHub (GitHub does not preview .html files inline).
 //
+// StateMap and MergedResultStrip get separate crops (were briefly one shared frame -- see
+// visualization-principles.md #14's own precedent note, corrected after the shared crop was
+// flagged: the two devices need genuinely distinct visualizations, not one picture for both).
+//
 // This does NOT replace the live page as the source of truth (see
 // memory-bank/specs/visualizations.md's Architecture section for why pages stay live HTML rather
 // than a build-only PNG pipeline) — it is a snapshot taken FROM the live page, committed for
@@ -56,7 +60,8 @@ const jobs = [
       ['marked-asymmetry.png', { css: '.grp', nth: 0 }],       // device::MarkedAsymmetry
       ['cayley-table.png', { css: '#s1b' }],                    // device::CayleyTable
       ['self-cancel-diagonal.png', { css: '#s1c' }],            // device::SelfCancelDiagonal
-      ['state-map.png', { css: '.grp', nth: 3 }],               // device::StateMap + MergedResultStrip
+      ['state-map.png', { css: '.grp', nth: 3 }],               // device::StateMap
+      ['merged-result-strip.png', { css: '#mergeDemo' }],       // device::MergedResultStrip
       ['orbit-ring.png', { css: '.card', nth: 2 }],             // device::OrbitRing
       ['combination-fork.png', { css: '.card', nth: 3 }],       // device::CombinationFork
       ['divisor-chips.png', { css: '#s4a' }],                   // device::DivisorChips

@@ -673,6 +673,39 @@
   grpTwist.appendChild(stateMap(rectMarked, 'pairs', 'rectangle · ↔'));
   s1aHost.appendChild(grpTwist);
 
+  /* group 5: merged result strip. repeat each of the 4 movements twice — rectangle's 4
+     outcomes are all identical (identity), so the tiles merge into one gapless bar; pinwheel's
+     alternate, so they stay four separate tiles. the shape of the row is the finding. */
+  function resultRow(mulFn, iconFn){
+    var vals=[0,1,2,3].map(function(i){return mulFn(i,i);});
+    var allSame=vals.every(function(v){return v===vals[0];});
+    var row=document.createElement('div'); row.style.cssText='display:flex;gap:'+(allSame?'0':'4')+'px;';
+    vals.forEach(function(v,i){
+      var b=document.createElement('div');
+      var rad=allSame?(i===0?'8px 0 0 8px':(i===3?'0 8px 8px 0':'0')):'8px';
+      b.style.cssText='width:40px;height:40px;border-radius:'+rad+';display:flex;align-items:center;justify-content:center;'+
+        (v===0?'background:var(--ok);':'background:var(--surface);border:1px solid var(--line);');
+      var ic=iconFn(v); ic.style.width='30px'; ic.style.height='30px';
+      b.appendChild(ic); row.appendChild(b);
+    });
+    return row;
+  }
+  var grpMerge=document.createElement('div'); grpMerge.id='mergeDemo'; grpMerge.className='grp'; grpMerge.style.borderLeftColor='var(--ok)';
+  (function(){
+    var a=document.createElement('div'); a.className='item';
+    a.appendChild(resultRow(mulV4, rectMarked));
+    var la=document.createElement('div'); la.className='glabel'; la.textContent='rectangle · always undoes itself';
+    a.appendChild(la); grpMerge.appendChild(a);
+  })();
+  var neq2=document.createElement('span'); neq2.className='op ne'; neq2.textContent='≠'; grpMerge.appendChild(neq2);
+  (function(){
+    var b=document.createElement('div'); b.className='item';
+    b.appendChild(resultRow(mulC4, pinRotated));
+    var lb=document.createElement('div'); lb.className='glabel'; lb.textContent='pinwheel · only half the time';
+    b.appendChild(lb); grpMerge.appendChild(b);
+  })();
+  s1aHost.appendChild(grpMerge);
+
   /* ============ 1b ============ */
   (function(){
     var host=document.getElementById('s1b');

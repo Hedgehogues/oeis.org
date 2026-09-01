@@ -4,56 +4,56 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fano plane</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
 <style>
   :root{
-    --bg:#EEF1EE;
+    --bg:#F1EFF6;
     --surface:#FFFFFF;
-    --surface-2:#F5F8F5;
-    --ink:#17231F;
-    --ink-soft:#54655E;
-    --ink-faint:#8B9A93;
-    --line:#DAE2DC;
-    --accent-point:#0E7C6B;
-    --accent-point-soft:rgba(14,124,107,.14);
-    --accent-line:#C57A2E;
-    --accent-line-soft:rgba(197,122,46,.16);
-    --accent-highlight:#B4483F;
-    --accent-highlight-soft:rgba(180,72,63,.12);
-    --shadow: 0 1px 2px rgba(20,30,26,.06), 0 10px 28px rgba(20,30,26,.06);
+    --surface-2:#F6F5FA;
+    --ink:#1C1A2E;
+    --ink-soft:#5D5977;
+    --ink-faint:#9691AE;
+    --line:#E1DFEC;
+    --accent-point:#3E5FA6;
+    --accent-point-soft:rgba(62,95,166,.14);
+    --accent-line:#B23E77;
+    --accent-line-soft:rgba(178,62,119,.16);
+    --accent-highlight:#C4534A;
+    --accent-highlight-soft:rgba(196,83,74,.12);
+    --shadow: 0 1px 2px rgba(24,20,40,.06), 0 10px 28px rgba(24,20,40,.06);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#0D1512;
-      --surface:#141F1B;
-      --surface-2:#182420;
-      --ink:#E7EEEA;
-      --ink-soft:#9FB2AA;
-      --ink-faint:#65786F;
-      --line:#243330;
-      --accent-point:#3FD8BD;
-      --accent-point-soft:rgba(63,216,189,.16);
-      --accent-line:#EFA85A;
-      --accent-line-soft:rgba(239,168,90,.18);
-      --accent-highlight:#E4776B;
-      --accent-highlight-soft:rgba(228,119,107,.16);
+      --bg:#131126;
+      --surface:#1B1830;
+      --surface-2:#211E3A;
+      --ink:#EDEBF7;
+      --ink-soft:#B4AFD1;
+      --ink-faint:#726D91;
+      --line:#332F52;
+      --accent-point:#7C9BE8;
+      --accent-point-soft:rgba(124,155,232,.16);
+      --accent-line:#E86FAE;
+      --accent-line-soft:rgba(232,111,174,.18);
+      --accent-highlight:#EE7C6E;
+      --accent-highlight-soft:rgba(238,124,110,.16);
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
     }
   }
   :root[data-theme="dark"]{
-    --bg:#0D1512;
-    --surface:#141F1B;
-    --surface-2:#182420;
-    --ink:#E7EEEA;
-    --ink-soft:#9FB2AA;
-    --ink-faint:#65786F;
-    --line:#243330;
-    --accent-point:#3FD8BD;
-    --accent-point-soft:rgba(63,216,189,.16);
-    --accent-line:#EFA85A;
-    --accent-line-soft:rgba(239,168,90,.18);
-    --accent-highlight:#E4776B;
-    --accent-highlight-soft:rgba(228,119,107,.16);
+    --bg:#131126;
+    --surface:#1B1830;
+    --surface-2:#211E3A;
+    --ink:#EDEBF7;
+    --ink-soft:#B4AFD1;
+    --ink-faint:#726D91;
+    --line:#332F52;
+    --accent-point:#7C9BE8;
+    --accent-point-soft:rgba(124,155,232,.16);
+    --accent-line:#E86FAE;
+    --accent-line-soft:rgba(232,111,174,.18);
+    --accent-highlight:#EE7C6E;
+    --accent-highlight-soft:rgba(238,124,110,.16);
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
   }
 
@@ -62,7 +62,7 @@
     margin:0;
     background:var(--bg);
     color:var(--ink);
-    font-family:'Public Sans', system-ui, sans-serif;
+    font-family:'Karla', system-ui, sans-serif;
     -webkit-font-smoothing:antialiased;
   }
   .page{
@@ -82,7 +82,7 @@
     padding-bottom:6px;
   }
   .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:12px;
     letter-spacing:.09em;
     text-transform:uppercase;
@@ -90,8 +90,7 @@
     font-weight:500;
   }
   h1{
-    font-family:'Fraunces', serif;
-    font-optical-sizing:auto;
+    font-family:'Literata', serif;
     font-weight:600;
     font-size:clamp(34px,6vw,54px);
     line-height:1.03;
@@ -127,7 +126,7 @@
     box-shadow:var(--shadow);
   }
   .stat b{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:17px;
     font-weight:600;
     color:var(--ink);
@@ -159,7 +158,7 @@
     align-items:center;
     gap:9px;
     margin:0;
-    font-family:'Public Sans', sans-serif;
+    font-family:'Karla', sans-serif;
     font-weight:700;
     font-size:15px;
     letter-spacing:.01em;
@@ -200,7 +199,7 @@
   }
   #fano .point:hover circle{fill:var(--accent-point);}
   #fano .point text{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:13px;
     font-weight:600;
     fill:var(--ink);
@@ -211,7 +210,7 @@
     gap:16px;
     flex-wrap:wrap;
     justify-content:center;
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:12px;
     color:var(--ink-soft);
   }
@@ -229,7 +228,7 @@
   }
   .matrix-block{display:flex;flex-direction:column;align-items:center;gap:6px;}
   .matrix-label{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:12px;
     color:var(--ink-faint);
   }
@@ -250,7 +249,7 @@
     color:var(--ink-faint);
   }
   .swap svg{stroke:var(--ink-faint);}
-  .swap span{font-family:'IBM Plex Mono', monospace;font-size:10.5px;letter-spacing:.03em;}
+  .swap span{font-family:'JetBrains Mono', monospace;font-size:10.5px;letter-spacing:.03em;}
   .duality-note{
     font-size:13px;
     color:var(--ink-soft);
@@ -270,12 +269,12 @@
     gap:12px;
     flex-wrap:wrap;
   }
-  .growth-head .hint{font-style:normal;font-family:'IBM Plex Mono', monospace;}
+  .growth-head .hint{font-style:normal;font-family:'JetBrains Mono', monospace;}
   .chart-scroll{overflow-x:auto;}
   #growth{width:100%;min-width:640px;height:auto;display:block;}
   #growth .grid-line{stroke:var(--line);stroke-dasharray:3 4;stroke-width:1;}
   #growth .grid-label{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:10px;
     fill:var(--ink-faint);
   }
@@ -283,20 +282,20 @@
   #growth .bar.first{fill:var(--accent-highlight);}
   #growth .zero-mark{fill:var(--ink-faint);opacity:.5;}
   #growth .n-label{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:10px;
     fill:var(--ink-faint);
     text-anchor:middle;
   }
   #growth .val-label{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:11px;
     font-weight:600;
     fill:var(--ink);
     text-anchor:middle;
   }
   #growth .callout{
-    font-family:'Public Sans', sans-serif;
+    font-family:'Karla', sans-serif;
     font-size:11px;
     fill:var(--accent-highlight);
     text-anchor:middle;
@@ -310,7 +309,7 @@
 
   footer{
     text-align:right;
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'JetBrains Mono', monospace;
     font-size:11.5px;
     color:var(--ink-faint);
   }

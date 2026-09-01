@@ -105,9 +105,27 @@ themselves, which live in `sequences/A{NNNNNN}/README.md`.
   A000001/viz.html`'s "What counts" section) was reused as the `Picture:` field for four unrelated
   device records (`MarkedAsymmetry`, `CayleyTable`, `SelfCancelDiagonal`, `StateMap`) — flagged
   directly ("pictures repeat in many places"). The crop was too coarse, not the devices too similar:
-  re-cropped to one targeted element per device (`.grp` sub-widgets, `#s1b`/`#s1c` by id), leaving
-  only one legitimate remaining pair (`StateMap`/`MergedResultStrip`, two true facts visible in the
-  same single frame). Traces to: MUST-crop-per-device.
+  re-cropped to one targeted element per device (`.grp` sub-widgets, `#s1b`/`#s1c` by id). Traces
+  to: MUST-crop-per-device.
+- **F17** (2026-09-01, flagged directly: "`MergedResultStrip` / `StateMap` — a duplicate of the
+  previous one, why? different cases need different visualizations") The remaining shared crop was
+  NOT a legitimate "one frame, two facts" case, as F16's first fix had claimed — it was a stale
+  record. `MergedResultStrip`'s actual visual (a row of identical results merging into one gapless
+  bar) had been DELETED from the page during a later redesign that replaced `diagStrip()`/
+  `diagPairs()` with the ring-and-arrows `stateMap()`; the dictionary entry kept pointing at a
+  picture that no longer existed anywhere, and pointing it at `StateMap`'s crop papered over the
+  gap instead of exposing it. The device's own widget was restored as a dedicated `#mergeDemo`
+  block with its own crop. Lesson: a `Picture:` field that has to be aimed at ANOTHER device's crop
+  is evidence the device's own visual is missing, not evidence that one frame carries two facts.
+  Traces to: MUST-crop-per-device (tightened to zero sharing), MUST-picture-is-live.
+- **F18** (2026-09-01, flagged directly: "`IncidenceMatrixPair` — a different style; `LogGrowthChart`
+  — change the style too") The two devices whose pictures come from `sequences/A100001/viz.html`
+  looked like a different project from the other ten: that page had been built first, with its own
+  palette (teal/amber) and type (Fraunces / Public Sans / IBM Plex Mono), while `A000001/viz.html`
+  evolved a different one (indigo/pink, Literata / Karla / JetBrains Mono). Browsed as one catalog,
+  the dictionary read as two unrelated design systems glued together. `A100001` was restyled onto
+  `A000001`'s tokens and type — same colour roles, same fonts — and re-captured. Traces to:
+  MUST-one-visual-system.
 
 ## Architecture
 
@@ -231,11 +249,24 @@ competitive-programming submission being checked against a judge.
   Status: done (F15).
 - A screenshot embedded in a `[device::*]` record's `Picture:` field MUST target the specific
   element that demonstrates that one device (an id, a `.grp`/sub-widget), not a larger ancestor
-  card shared with unrelated devices — **MUST-crop-per-device** — criterion: no single screenshot
-  file is referenced by more than two device records, and where two share a crop, the record for
-  each states IN PROSE that it is the same single frame showing two true facts at once (not merely
-  the same card). Status: done (F16) — the only remaining shared crop is
-  `StateMap`/`MergedResultStrip`, both prose-flagged as sharing one frame.
+  card shared with unrelated devices, and MUST NOT be shared with another record at all —
+  **MUST-crop-per-device** — criterion: every `screenshots/*.png` referenced from `_terms.md` is
+  referenced by exactly one device record (`grep -oP '(?<=screenshots/)[a-z0-9-]+\.png'
+  memory-bank/_terms.md | sort | uniq -c` shows no count above 1). Status: done (F16, tightened by
+  F17) — 12 records, 12 distinct crops.
+- A `[device::*]` record's `Picture:` MUST point at something the live page actually renders TODAY,
+  not at a visual a later redesign removed — **MUST-picture-is-live** — criterion: the element or
+  code the `Example:` field names still exists in the page it names; when a redesign deletes a
+  device's visual, either the visual is restored as its own widget or the record is retired, never
+  silently re-pointed at a neighbouring device's crop. Status: done (F17) —
+  `MergedResultStrip`'s widget was restored as `#mergeDemo` after exactly this failure.
+- Every page in the catalog MUST use one visual system — the same colour-role tokens and the same
+  three typefaces — so that crops from different sequences read as one catalog rather than several
+  projects — **MUST-one-visual-system** — criterion: a diff of the `:root` token block and the
+  Google Fonts `<link>` across `sequences/*/viz.html` shows the same palette values and the same
+  font families. Status: done (F18) — `A100001` restyled onto `A000001`'s tokens
+  (`#3E5FA6`/`#B23E77`/`#C4534A` light, `#7C9BE8`/`#E86FAE`/`#EE7C6E` dark) and type (Literata /
+  Karla / JetBrains Mono).
 
 ## Links
 - The layer below, which this spec may reference and which never references back:

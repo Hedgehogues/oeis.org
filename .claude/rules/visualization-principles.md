@@ -204,12 +204,38 @@ specific `.grp`/sub-widget), not a caption explaining which part of the shared i
   that device; capture that instead of the enclosing card.
 - MUST NOT: rely on prose ("see the left/right side of this picture") to do the separating job a
   tighter crop should do.
-- Precedent: one shared card screenshot originally served as the `Picture:` for four unrelated
+- MUST: treat "I have to aim this record at another device's picture" as evidence that THIS
+  device's own visual is missing from the page — check whether a later redesign deleted it, and
+  restore it as its own widget (or retire the record) instead of sharing.
+- Precedent 1: one shared card screenshot originally served as the `Picture:` for four unrelated
   records (`MarkedAsymmetry`, `CayleyTable`, `SelfCancelDiagonal`, `StateMap`) — re-cropped to four
-  distinct, non-overlapping images (`marked-asymmetry.png`, `cayley-table.png`,
-  `self-cancel-diagonal.png`, `state-map.png`) once flagged; only `StateMap` and
-  `MergedResultStrip` still legitimately share one crop, because they are two true facts visible in
-  the exact same single frame, not two devices spread across a bigger card.
+  distinct, non-overlapping images once flagged.
+- Precedent 2: the one crop left shared after that fix (`StateMap` / `MergedResultStrip`) was
+  defended in writing as "one frame, two true facts" — and that was wrong. `MergedResultStrip`'s
+  actual visual had been deleted from the page by the redesign that introduced `stateMap()`; the
+  record had been quietly re-pointed at a neighbour's crop instead of the missing visual being
+  noticed. Caught by a direct question ("a duplicate of the previous one, why?"), fixed by
+  restoring the widget as `#mergeDemo` with its own crop. Every device now has exactly one picture
+  of its own, and no picture serves two devices.
+
+## 15. One visual system across every page in the catalog
+
+Pages written months or hours apart drift into different palettes and typefaces. That is invisible
+while each page is read alone and glaring the moment their crops sit next to each other in the
+dictionary: the catalog stops reading as one body of work and starts reading as several unrelated
+projects. Colour ROLES and typefaces are catalog-level decisions, not per-page ones.
+
+- MUST: a new page adopts the existing token block (same colour roles, same three typefaces)
+  rather than inventing its own; a deliberate departure needs a stated reason in the sequence's
+  own README.
+- MUST: when an older page is restyled to match, re-capture its screenshots in the same pass — a
+  restyled page with old-palette PNGs is the same stale-snapshot bug as a translated page with
+  old-language PNGs (principle 13).
+- Precedent: `sequences/A100001/viz.html` was built first, in teal/amber with Fraunces / Public
+  Sans / IBM Plex Mono; `sequences/A000001/viz.html` later settled on indigo/pink with Literata /
+  Karla / JetBrains Mono. Two of the twelve device pictures therefore came from a visibly different
+  design system — flagged directly ("a different style — change it too"), fixed by restyling
+  `A100001` onto the same tokens and type and re-capturing all four of its crops.
 
 Trigger: any request to explain an OEIS sequence with a picture — a new device record, a
 per-sequence page, an edit to an existing visualization; an invocation of the `explain-sequence`
@@ -223,9 +249,13 @@ with no adjacent label — checked by hand). Principle 8 is `LIGHTWEIGHT-GATE` (
 badge with no `cy-self`/highlight class nearby). Principle 11 is a judgement call verified against
 the actual math (does a claimed relabeling really exist), same as `memory-bank/verify/*.mjs` does
 for group tables specifically. Principle 13 is `LIGHTWEIGHT-GATE` (a Cyrillic grep over tracked
-`.html`/`.mjs` files — not wired into CI, checked by hand). Principle 14 is a judgement call (is a
-shared crop a real single fact, or two devices sharing too coarse a boundary). The risk of a
-principle not being applied at the moment a page ships is accepted explicitly; on this catalog so
-far, the compensation was the user's own questions, asked roughly twenty times in one sitting
-before the page settled, plus one direct correction each for the language and the repeated-crop
-problem — which is exactly what should not be the mechanism going forward.
+`.html`/`.mjs` files — not wired into CI, checked by hand). Principle 14 is now `LIGHTWEIGHT-GATE`
+rather than a judgement call, because the shared-crop escape hatch is gone:
+`grep -oP '(?<=screenshots/)[a-z0-9-]+\.png' memory-bank/_terms.md | sort | uniq -c` must show no
+count above 1. Principle 15 is `LIGHTWEIGHT-GATE` (diff the `:root` token block and the fonts
+`<link>` across `sequences/*/viz.html` — checked by hand). The risk of a principle not being
+applied at the moment a page ships is accepted explicitly; on this catalog so far, the
+compensation was the user's own questions — roughly twenty in one sitting before the page settled,
+then one direct correction each for the language, the repeated crops, the stale
+`MergedResultStrip` record and the mismatched design system — which is exactly what should not be
+the mechanism going forward.
