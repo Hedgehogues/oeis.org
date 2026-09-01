@@ -52,9 +52,12 @@ problem's own folder there holds no picture files, and neither does a sequence's
 - `visualizations/A{NNNNNN}/drafts/` — kept structurally-different earlier attempts, with the
   reason each was superseded in the sequence's own README, never silently deleted
 - `visualizations/capture.mjs` — regenerates every screenshot from the pages beside it
+- `visualizations/qr-repo.svg` — the repo QR every page inlines in its footer, so a forwarded
+  snapshot leads back here; generated once at error-correction level M and committed
 - `verify/*.mjs` — independent, committed, re-runnable checks of any algebraic/numeric claim a page
-  embeds (this catalog's analogue of project-euler's `oracle.cpp`/`xcheck.cpp`); a task spec's
-  correctness requirement cites a real, executed run of these, never "done" from memory
+  embeds; a task spec's correctness requirement cites a real, executed run of these, never "done"
+  from memory. project-euler describes its cross-check in the spec's Status line; here the check is
+  committed as a file so anyone can re-run it
 
 ### Outside the memory bank
 - `sequences/A{NNNNNN}/README.md` — the sequence itself: what it counts, the framing chosen for its

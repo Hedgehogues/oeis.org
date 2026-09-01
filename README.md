@@ -5,54 +5,41 @@ Interactive, self-contained HTML explainers for entries in the
 question with a picture rather than a paragraph: what is this sequence actually counting, and why
 does it behave the way it does.
 
-The pictures themselves live in the memory bank, at
-[`memory-bank/visualizations/A{NNNNNN}/viz.html`](memory-bank/visualizations/) — a single
-self-contained page each, opened directly in a browser, no build step, no dependencies beyond a
-Google Fonts stylesheet link. A sequence's own directory under [`sequences/`](sequences/) holds no
-picture files at all: its write-up, and the two programs described below — one that computes the
-sequence, one that checks that computation.
+Each sequence lives in its own directory under [`sequences/`](sequences/) (`sequences/A100001`,
+`sequences/A000001`, ...) with a `solution.mjs` that computes the sequence from its definition and
+a `proof.mjs` that re-checks that output independently. The pictures live in the memory bank, at
+[`memory-bank/visualizations/A{NNNNNN}/viz.html`](memory-bank/visualizations/) — one self-contained
+page each, opened directly in a browser, no build step.
+
+## Build & run
+
+```
+node sequences/A{NNNNNN}/solution.mjs [maxN]    # compute the sequence
+node sequences/A{NNNNNN}/proof.mjs [maxN]       # re-check what it computed
+node memory-bank/visualizations/capture.mjs     # re-capture every screenshot from the live pages
+```
 
 ## Sequences
 
-| # | Sequence | Idea |
+| # | Sequence | Status |
 |---|---|---|
-| [A100001](sequences/A100001) | Self-dual `(n_3)` configurations | Fano plane, incidence matrix vs. its transpose |
-| [A000001](sequences/A000001) | Number of groups of order n | movements of an object → Cayley table → why the count jumps |
+| [A100001](sequences/A100001) | Self-dual `(n_3)` configurations | Matches OEIS for `n = 1..13`, witnessed |
+| [A000001](sequences/A000001) | Number of groups of order n | Matches OEIS for `n = 1..8`, verified |
 
-![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)
-![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)
+[![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
+[![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
 
-Each sequence's own `README.md` has the write-up — the framing, why it works, and links to its
-device(s) — and links to its RFC-style spec (requirements and acceptance criteria), which lives in
-[`memory-bank/specs/tasks/`](memory-bank/specs/tasks/). The format that spec must follow is itself
-specified: see [`memory-bank/specs/tasks.md`](memory-bank/specs/tasks.md). Shared write-ups that
-don't belong to any single sequence — the diagram devices themselves, each with its own picture —
-live in [`memory-bank/`](memory-bank/_terms.md). Where a page went through earlier
-structurally-different attempts before landing on its final framing, those are kept beside it in
-`memory-bank/visualizations/A{NNNNNN}/drafts/` rather than discarded, since the reasoning for
-abandoning each attempt is itself part of the record.
+Each sequence's own directory README has the write-up — the approach, why it works, and the
+pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
+criteria), which lives in [`memory-bank/specs/tasks/`](memory-bank/specs/tasks/). The format that
+spec must follow is itself specified: see [`memory-bank/specs/tasks.md`](memory-bank/specs/tasks.md).
+Shared write-ups that don't belong to any single sequence — the diagram devices themselves, each
+with its own picture — live in [`memory-bank/`](memory-bank/_terms.md).
 
-## The page is live; the pictures above are a snapshot of it
-
-`viz.html` is the source of truth, not the PNGs — open it and it's live: hover states, SVG built
-at load time from the same numbers the page is explaining, both light and dark themes. GitHub
-can't preview an `.html` file inline, though, so every
-`memory-bank/visualizations/A{NNNNNN}/screenshots/*.png`
-(embedded above, in each sequence's own README, and per-device in
-[`memory-bank/_terms.md`](memory-bank/_terms.md)) is a real, reproducible snapshot taken FROM the
-live page by [`memory-bank/visualizations/capture.mjs`](memory-bank/visualizations/capture.mjs)
-(Playwright, light theme, one crop per section) — never a hand-made or separately-drawn picture.
-Re-run it after editing a page's markup; a stale screenshot next to a changed page is a bug.
-
-Correctness of what a page CLAIMS lives one level up from the picture itself:
-[`memory-bank/verify/`](memory-bank/verify/) independently re-checks anything a page embeds as an
-algebraic or numeric fact (group tables — latin square, associativity, identity, self-inverse
-count) before that check's real output is cited as evidence in the sequence's own spec.
-
-## Every sequence ships two programs, and they disagree on purpose
+## Two programs per sequence, and they disagree on purpose
 
 A picture that explains a sequence should be accompanied by code that produces it — and by code
-that doesn't take the first one's word for it. So each `sequences/A{NNNNNN}/` holds a pair:
+that doesn't take the first one's word for it:
 
 | File | Job | May it consult published terms? |
 |---|---|---|
@@ -68,17 +55,26 @@ published count), and the totals match OEIS. Where the claim is an existence cla
 configuration is isomorphic to its own dual" — the proof produces the relabeling and verifies it
 entry by entry rather than reporting a yes.
 
-```
-$ node sequences/A000001/proof.mjs 8
-All checks passed for n = 1..8: sound, distinct, complete, and equal to OEIS A000001.
-
-$ node sequences/A100001/proof.mjs 12
-All checks passed for n = 1..12: sound, distinct, complete, witnessed, and equal to OEIS A100001.
-```
-
 Both searches are exhaustive, so both hit a wall quickly — A000001 at `n=9`, A100001 past `n=13` —
 and each file's header states the measured range instead of hiding it. For A000001 that wall is the
 sequence's own subject matter restated as a runtime.
+
+## The page is live; the pictures above are a snapshot of it
+
+`viz.html` is the source of truth, not the PNGs — open it and it's live: hover states, SVG built
+at load time from the same numbers the page is explaining, both light and dark themes. GitHub
+can't preview an `.html` file inline, though, so every
+`memory-bank/visualizations/A{NNNNNN}/screenshots/*.png` (embedded above, in each sequence's own
+README, and per-device in [`memory-bank/_terms.md`](memory-bank/_terms.md)) is a real, reproducible
+snapshot taken FROM the live page by
+[`memory-bank/visualizations/capture.mjs`](memory-bank/visualizations/capture.mjs) (Playwright,
+dark theme, one crop per device) — never a hand-made or separately-drawn picture. Re-run it after
+editing a page's markup; a stale screenshot next to a changed page is a bug.
+
+Correctness of what a page CLAIMS lives one level up from the picture itself:
+[`memory-bank/verify/`](memory-bank/verify/) independently re-checks anything a page embeds as an
+algebraic or numeric fact (group tables — latin square, associativity, identity, self-inverse
+count) before that check's real output is cited as evidence in the sequence's own spec.
 
 ## Repository layout, and what it's copied from
 
@@ -89,11 +85,12 @@ specs (`memory-bank/specs/tasks/`), the short auto-loaded rules file
 (`.claude/skills/explain-sequence/`) are all adapted from
 [Hedgehogues/project-euler](https://github.com/Hedgehogues/project-euler)'s own memory bank — same
 RFC discipline, same one-way "sequences point at the dictionary, never the reverse" rule, same
-insistence that every `Status: done` names a real, re-run check rather than a claim from memory.
-The `solution.mjs` / `proof.mjs` split follows that repository's `solution.cpp`-plus-oracle
-arrangement, with one change: there the oracle is usually a slow brute force over the same inputs,
-while the objects counted here are structures, so the check also has to verify the structure and,
-for an existence claim, produce the witness.
-What changed, and why, is stated in each adapted file's own header — most substantially,
-[`memory-bank/specs/visualizations.md`](memory-bank/specs/visualizations.md)'s Architecture section,
-since this catalog's pages are live and interactive rather than built to a static PNG.
+insistence that every `Status: done` names a real, re-run check rather than a claim from memory,
+same directory split (all visual artifacts in the memory bank, a task's own folder holding only its
+write-up and its code).
+
+Two things differ, both stated in the adapted files' own headers. Pages here are live and
+interactive rather than built to a static PNG, so there is no shared shell and no `build.sh` — see
+[`memory-bank/specs/visualizations.md`](memory-bank/specs/visualizations.md)'s Architecture section.
+And the independent cross-check is committed as a file rather than described in a Status line:
+project-euler records what was checked, this repo also ships `proof.mjs` so anyone can re-run it.

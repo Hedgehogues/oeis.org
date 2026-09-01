@@ -63,11 +63,12 @@ one counted twice (distinctness), nothing that should have been found is missing
 against an independent construction or an independently published count), and the final counts
 match the sequence's own published terms.
 
-This mirrors the `solution.cpp`-plus-oracle split in
-[Hedgehogues/project-euler](https://github.com/Hedgehogues/project-euler), with one difference:
-there the oracle is usually a slow brute force over the same inputs, while here the object being
-counted is a structure, so the check also has to verify the STRUCTURE — and, where a claim is an
-existence claim ("this configuration is self-dual"), produce the witness and verify it.
+[Hedgehogues/project-euler](https://github.com/Hedgehogues/project-euler) holds one `solution.cpp`
+per problem and records its independent cross-check in the task spec's `Status:` line, without
+committing that check. This repo goes one step further and commits it, for two reasons: the object
+being counted here is a structure, so the check has to verify the STRUCTURE rather than just
+compare a number; and where a claim is an existence claim ("this configuration is self-dual"), the
+check has to produce a witness and verify it, which is too much to restate in a Status line.
 
 ## Requirements
 > Statement — acceptance criterion — status.

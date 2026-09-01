@@ -1,143 +1,81 @@
 # A000001 — Number of groups of order n
 
-![Census of symmetries](../../memory-bank/visualizations/A000001/screenshots/full.png)
+`a(n)` counts the distinct symmetry types of an object with exactly `n` self-matching movements —
+1 for every prime, 2 for most products of two primes, 5 at `n=8`, and 51 at `n=32` with `a(31)=1`
+immediately before it.
 
-`a(n)` counts the number of non-isomorphic groups of order `n` — 1 for every prime, 1 or 2 for a
-product of two primes, an explosion for powers of two (`a(1024) = 49 487 365 422`), and a jump
-from `a(31)=1` to `a(32)=51` with nothing in between hinting why. The page opens on exactly that
-puzzle: thirty columns, heights all over the place, no visible rule.
+## Approach
 
-![The problem](../../memory-bank/visualizations/A000001/screenshots/problem.png)
+Fill an `n×n` multiplication table by backtracking, then merge the tables that differ only by
+renaming the elements:
 
-## The idea behind it
+- Element 0 is the identity without loss of generality — any group has one, and naming it 0 costs
+  nothing. That fixes row 0 and column 0.
+- The remaining cells are filled under two constraints checked at every step: a value may not
+  repeat within a row or within a column (Latin square), and every triple whose both sides are
+  already determined must associate.
+- Each completed table is tested against the representatives found so far and kept only if no
+  relabelling of `1..n-1` turns it into one of them.
 
-The final version reframes the whole sequence without group-theory vocabulary: `a(n)` is the
-number of distinct **symmetry types** of an object with exactly `n` self-matching movements
-(rotations and flips). Eleven catalogued devices carry the argument (full write-ups:
-[`memory-bank/_terms.md`](../../memory-bank/_terms.md)):
-
-**1 · What counts.** A rectangle, ellipse, "H" and pinwheel each carry a small off-axis mark
-([marked asymmetry](../../memory-bank/_terms.md#devicemarkedasymmetry)), so applying a movement to
-a symmetric shape becomes visible instead of looking unchanged.
-
-![Marked asymmetry](../../memory-bank/visualizations/A000001/screenshots/marked-asymmetry.png)
-
-Their 4 movements are laid out as a row×column grid
-([Cayley table](../../memory-bank/_terms.md#devicecayleytable)), one worked example shown before
-the full grid.
-
-![Cayley table](../../memory-bank/visualizations/A000001/screenshots/cayley-table.png)
-
-Which of them undo themselves in one repeat is highlighted directly in the table
-([self-cancel diagonal](../../memory-bank/_terms.md#deviceselfcanceldiagonal)) rather than asserted
-as a bare count.
-
-![Self-cancel diagonal](../../memory-bank/visualizations/A000001/screenshots/self-cancel-diagonal.png)
-
-The same test run on a whole extra object (a pinwheel, on the same ring of states as
-[state map](../../memory-bank/_terms.md#devicestatemap)) shows it fails where the rectangle's
-family succeeds: the pinwheel's movements walk one long ring, the rectangle's fold back in pairs.
-
-![State map](../../memory-bank/visualizations/A000001/screenshots/state-map.png)
-
-Repeat each movement twice and the same split shows up in the results themselves — the rectangle's
-four outcomes are all the identity, so they
-[merge into one bar](../../memory-bank/_terms.md#devicemergedresultstrip); the pinwheel's alternate,
-so they stay four separate tiles.
-
-![Merged result strip](../../memory-bank/visualizations/A000001/screenshots/merged-result-strip.png)
-
-**2 · Which movements exist.** Every possible repeat-length from 1 to `n` is tried directly on a
-ring of points ([orbit ring](../../memory-bank/_terms.md#deviceorbitring)): lengths that divide `n`
-close into equal loops, the one that doesn't leaves visibly stranded points.
-
-![Orbit ring](../../memory-bank/visualizations/A000001/screenshots/orbit-ring.png)
-
-**3 · How they combine.** The two eligible building blocks for `n=6` are shown as labeled chips,
-forked into their two possible combinations, with the combination that just duplicates an existing
-result shown dimmed rather than silently dropped
-([combination fork](../../memory-bank/_terms.md#devicecombinationfork)) — the final count is what's
-left after that merge, not the raw number of attempts.
-
-![Combination fork](../../memory-bank/visualizations/A000001/screenshots/combination-fork.png)
-
-**4 · Why the count jumps.** A number's divisors as a row of chips
-([divisor chips](../../memory-bank/_terms.md#devicedivisorchips)), the two trivial ones muted, so
-"how many extra building blocks" is a count you see, not one you're told; the same
-[combination fork](../../memory-bank/_terms.md#devicecombinationfork) from step 3 runs again on
-`n=8`'s three recipes, six raw outcomes merging down to five.
-
-![Divisor chips](../../memory-bank/visualizations/A000001/screenshots/divisor-chips.png)
-
-It opens with the object itself before ever showing the sequence, works through *why* the count
-for `n=6` is 2 (which cycle lengths are even possible, how they combine, why one combination
-repeats), and generalizes to *why* it jumps around for any `n` (more divisors → more building
-blocks → more combinations; primes have none to spare). A closing map ties the four sub-questions'
-answers together using
-[mini-recap](../../memory-bank/_terms.md#deviceminirecap) thumbnails of each earlier picture:
-
-![How the answers combine](../../memory-bank/visualizations/A000001/screenshots/assembly-map.png)
-
-The catalog at the end draws every symmetry type for `n=1..15` as an actual shape (rectangle,
-triangle, tetrahedron, ...) and switches to a
-[log growth chart](../../memory-bank/_terms.md#deviceloggrowthchart) of counted tiles for
-`n=16..30`:
-
-![Solution catalog](../../memory-bank/visualizations/A000001/screenshots/solution-catalog.png)
-
-It closes with an
-[unrealized placeholder](../../memory-bank/_terms.md#deviceunrealizedplaceholder) for the one
-order-8 type with no realizable object at all — paired with a panel naming exactly what the table
-demands versus what an actual rotation in space can deliver, not just an unexplained gap:
-
-![Unrealized placeholder](../../memory-bank/visualizations/A000001/screenshots/unrealized-placeholder.png)
-
-**[Open the visualization →](../../memory-bank/visualizations/A000001/viz.html)**
-
-## Computing it, and checking the computation
-
-Two files, deliberately not one:
-
-| | |
-|---|---|
-| [`solution.mjs`](solution.mjs) | Computes `a(n)` by the procedure the page draws — fix the identity, fill the multiplication table by backtracking under the Latin-square and associativity constraints, merge tables that differ only by relabelling. No table of known answers anywhere in it. |
-| [`proof.mjs`](proof.mjs) | Refuses to trust that output: revalidates every table as a group, re-tests distinctness with its own unpruned permutation search, matches each table against a group built by a named construction, and only then compares to OEIS. |
-
-```
-$ node sequences/A000001/solution.mjs 8
-a(1) = 1   (0 ms)  …  a(7) = 1   (33 ms)  ·  a(8) = 5   (7696 ms)
-1, 1, 1, 2, 1, 2, 1, 5
-
-$ node sequences/A000001/proof.mjs 8
-ok    a(8) = 5  · matched 5 known group(s): C8, C4×C2, C2×C2×C2, D8, Q8
-All checks passed for n = 1..8: sound, distinct, complete, and equal to OEIS A000001.
-```
-
-The search stops early: `n = 8` takes about 8 seconds, `n = 9` does not finish in four minutes.
-That wall is the sequence's own point restated as a runtime — looking at
-every possible multiplication table stops working almost immediately, which is exactly why the
-published values come from classification theory instead.
+Status: **reproduces OEIS exactly** for `n = 1..8` — `1, 1, 1, 2, 1, 2, 1, 5`. Verified
+independently by [`proof.mjs`](proof.mjs), run live 2026-09-01: every returned table revalidated as
+a group (Latin square, full associativity, identity, inverses), no two isomorphic under a
+from-scratch permutation search that shares nothing with the one used to produce them, and every
+table matched to a group built by a named construction — `C8`, `C4×C2`, `C2×C2×C2`, `D8`, `Q8` at
+order 8, each hitting exactly one table and each table hitting exactly one construction. The search
+is exhaustive, so it stops early: `n=8` takes about 8 s, `n=9` does not finish in four minutes —
+which is this sequence's own point restated as a runtime.
 
 Full requirements and acceptance criteria (including the independent group-table verification):
 [spec.md](../../memory-bank/specs/tasks/A000001.md).
 
+## The ideas behind it
+
+Eleven catalogued devices, each recognizable in other sequences on its own (full write-ups:
+[`memory-bank/_terms.md`](../../memory-bank/_terms.md)):
+
+| | |
+|---|---|
+| **Marked asymmetry** — a small off-axis mark, so applying a movement to a symmetric shape becomes visible instead of looking like nothing happened. [`[device::MarkedAsymmetry]`](../../memory-bank/_terms.md#devicemarkedasymmetry) [![Marked asymmetry](../../memory-bank/visualizations/A000001/screenshots/marked-asymmetry.png)](../../memory-bank/visualizations/A000001/viz.html) | **Cayley table** — every pair of movements combined, laid out as a row×column grid, with one worked example shown before the full grid. [`[device::CayleyTable]`](../../memory-bank/_terms.md#devicecayleytable) [![Cayley table](../../memory-bank/visualizations/A000001/screenshots/cayley-table.png)](../../memory-bank/visualizations/A000001/viz.html) |
+| **Self-cancel diagonal** — the cells where a movement undoes itself, highlighted inside the same table the count is read from, not asserted as a bare number. [`[device::SelfCancelDiagonal]`](../../memory-bank/_terms.md#deviceselfcanceldiagonal) [![Self-cancel diagonal](../../memory-bank/visualizations/A000001/screenshots/self-cancel-diagonal.png)](../../memory-bank/visualizations/A000001/viz.html) | **State map** — one movement's effect drawn on a ring of states: the pinwheel walks one long loop where the rectangle's fold back in pairs. [`[device::StateMap]`](../../memory-bank/_terms.md#devicestatemap) [![State map](../../memory-bank/visualizations/A000001/screenshots/state-map.png)](../../memory-bank/visualizations/A000001/viz.html) |
+| **Merged result strip** — results that are literally identical become one continuous bar instead of four tiles that happen to match. [`[device::MergedResultStrip]`](../../memory-bank/_terms.md#devicemergedresultstrip) [![Merged result strip](../../memory-bank/visualizations/A000001/screenshots/merged-result-strip.png)](../../memory-bank/visualizations/A000001/viz.html) | **Orbit ring** — every repeat-length from 1 to `n` tried directly on a ring of points: the ones that divide `n` close into equal loops, the rest leave points stranded. [`[device::OrbitRing]`](../../memory-bank/_terms.md#deviceorbitring) [![Orbit ring](../../memory-bank/visualizations/A000001/screenshots/orbit-ring.png)](../../memory-bank/visualizations/A000001/viz.html) |
+| **Combination fork** — the eligible building blocks forked into every combination, with the one that just duplicates an earlier result dimmed rather than silently dropped. [`[device::CombinationFork]`](../../memory-bank/_terms.md#devicecombinationfork) [![Combination fork](../../memory-bank/visualizations/A000001/screenshots/combination-fork.png)](../../memory-bank/visualizations/A000001/viz.html) | **Divisor chips** — a number's divisors as a row of chips with the two trivial ones muted, so "how many spare building blocks" is a count you see rather than one you're told. [`[device::DivisorChips]`](../../memory-bank/_terms.md#devicedivisorchips) [![Divisor chips](../../memory-bank/visualizations/A000001/screenshots/divisor-chips.png)](../../memory-bank/visualizations/A000001/viz.html) |
+| **Mini-recap** — each earlier frame shrunk in place, so the closing map is literally the same pictures rather than a redrawn summary of them. [`[device::MiniRecap]`](../../memory-bank/_terms.md#deviceminirecap) [![Mini-recap](../../memory-bank/visualizations/A000001/screenshots/assembly-map.png)](../../memory-bank/visualizations/A000001/viz.html) | **Unrealized placeholder** — a dashed, empty cell for the order-8 type that is algebraically valid but has no object, paired with what the table demands versus what a rotation can deliver. [`[device::UnrealizedPlaceholder]`](../../memory-bank/_terms.md#deviceunrealizedplaceholder) [![Unrealized placeholder](../../memory-bank/visualizations/A000001/screenshots/unrealized-placeholder.png)](../../memory-bank/visualizations/A000001/viz.html) |
+| **Log growth chart** — tiles sized by logarithm with the literal value printed on each, so `a(16)=14` and `a(31)=1` stay readable in one picture. [`[device::LogGrowthChart]`](../../memory-bank/_terms.md#deviceloggrowthchart) [![Log growth chart](../../memory-bank/visualizations/A000001/screenshots/solution-catalog.png)](../../memory-bank/visualizations/A000001/viz.html) | |
+
+## Build & run
+
+```
+node sequences/A000001/solution.mjs 8     # compute a(1..8) from the definition
+node sequences/A000001/proof.mjs 8        # re-check that output independently
+node memory-bank/verify/group-tables.mjs  # re-check the tables the page itself draws
+```
+
+## The page these pictures come from
+
+[![Census of symmetries](../../memory-bank/visualizations/A000001/screenshots/full.png)](../../memory-bank/visualizations/A000001/viz.html)
+
+The page runs Problem → (1: what a symmetry type even is) → (2: which movements can exist) →
+(3: how they combine for `n=6`) → (4: why the count jumps for larger `n`) → Solution, each step's
+answer feeding the next. It opens on the object itself, never on the sequence's data.
+
+**[Open it live →](../../memory-bank/visualizations/A000001/viz.html)** — hover states, both
+themes, every diagram built at load time from the numbers being explained.
+
 ### Drafts
 
-This page went through two structurally different earlier versions before landing on the
-movement/symmetry framing above — kept in `memory-bank/visualizations/A000001/drafts/` rather than
-discarded, since each answers a slightly different question and the reasoning for abandoning each
-is itself informative:
+Two structurally different earlier versions are kept in
+`memory-bank/visualizations/A000001/drafts/` rather than discarded, since each answers a slightly
+different question and the reason for abandoning it is itself informative:
 
 - [`v1-heatmap.html`](../../memory-bank/visualizations/A000001/drafts/v1-heatmap.html) — a straight
-  infographic: a heatmap of
-  `a(n)` for `n=1..64`, the 5 groups of order 8 as labeled icons, primes-vs-powers-of-2 growth
-  bars. Correct, but purely descriptive — it shows *what* the sequence does, not *why*.
+  infographic: a heatmap of `a(n)` for `n=1..64`, the 5 groups of order 8 as labeled icons,
+  primes-vs-powers-of-2 growth bars. Correct, but purely descriptive — it shows *what* the sequence
+  does, not *why*.
 - [`v2-symmetry-catalog.html`](../../memory-bank/visualizations/A000001/drafts/v2-symmetry-catalog.html)
-  — a first attempt at
-  proof intuition: Lagrange's theorem for the prime case, Sylow theory (gear diagrams) for
-  `n=p·q`, an honest "no short proof" panel for prime powers. Sound, but leans on named theorems
-  and notation the reader has to already trust — superseded by `viz.html`'s version, which derives
-  the same facts (divisors ⇒ possible cycle lengths ⇒ combinations) from a single picture-native
-  rule instead.
+  — a first attempt at proof intuition: Lagrange's theorem for the prime case, Sylow theory (gear
+  diagrams) for `n=p·q`, an honest "no short proof" panel for prime powers. Sound, but leans on
+  named theorems the reader has to already trust — superseded by the current page, which derives
+  the same facts from one picture-native rule instead.
 
 Source: [oeis.org/A000001](https://oeis.org/A000001)

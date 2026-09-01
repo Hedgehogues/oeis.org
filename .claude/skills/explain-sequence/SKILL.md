@@ -33,6 +33,7 @@ memory-bank/
     A{NNNNNN}/screenshots/     — snapshots taken from that page, one crop per device
     A{NNNNNN}/drafts/          — kept structurally-different earlier attempts, reasons in README
     capture.mjs                — regenerates every screenshot from the pages beside it
+    qr-repo.svg                — the repo QR every page inlines in its footer
 sequences/
   A{NNNNNN}/
     README.md                  — the write-up: what it counts, the framing, links to devices used
@@ -73,8 +74,9 @@ the dictionary).
       repeat-behavior → `StateMap`; a duality claim → `IncidenceMatrixPair`; a value spanning
       orders of magnitude → `LogGrowthChart`; and so on). No match → step 4.
    d. Write the page as a single self-contained HTML file (`MUST-self-contained`), both light and
-      dark theme tokens (`MUST-both-themes`), following every applicable principle in
-      `visualization-principles.md`.
+      dark theme tokens (`MUST-both-themes`), the repo QR footer inlined from
+      `memory-bank/visualizations/qr-repo.svg` (`MUST-repo-qr`), following every applicable
+      principle in `visualization-principles.md`.
    e. If the page embeds a checkable algebraic/numeric claim, write or extend a
       `memory-bank/verify/*.mjs` script that independently reproduces it, run it, and record the
       real output — never assert `Status: done` from memory (`MUST-status-is-evidence`).

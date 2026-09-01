@@ -142,9 +142,9 @@ project-euler's `examples/<slug>.html` is.
 
 Where a page embeds a checkable mathematical claim (a group table's associativity, a sequence's own
 early terms), the SAME computation is independently re-implemented and run in
-`memory-bank/verify/*.mjs`, committed and re-runnable — this catalog's analogue of project-euler's
-`oracle.cpp`/`xcheck.cpp` scripts, adapted to a claim being checked by a script rather than a
-competitive-programming submission being checked against a judge.
+`memory-bank/verify/*.mjs`, committed and re-runnable. project-euler checks a competitive-programming
+submission against a judge and records that in the spec's Status line; a drawn mathematical claim
+has no judge, so the check itself is committed.
 
 ### Bounded Context and Aggregate Root
 - `device` — the only context, matching [approaches](approaches.md). There is no separate context
@@ -267,6 +267,18 @@ competitive-programming submission being checked against a judge.
   font families. Status: done (F18) — `A100001` restyled onto `A000001`'s tokens
   (`#3E5FA6`/`#B23E77`/`#C4534A` light, `#7C9BE8`/`#E86FAE`/`#EE7C6E` dark) and type (Literata /
   Karla / JetBrains Mono).
+- Every page MUST end with a QR code to `https://github.com/Hedgehogues/oeis.org` and the address
+  in text, inlined from the committed `memory-bank/visualizations/qr-repo.svg`, so a forwarded
+  snapshot still leads back to the sources — **MUST-repo-qr** — criterion: the QR decodes to
+  exactly that URL when read out of the captured `full.png`, not out of the SVG. Status: done — the
+  code was generated at error-correction level M and decoded live 2026-09-01 from both
+  `A000001/screenshots/full.png` and `A100001/screenshots/full.png`, each returning
+  `https://github.com/Hedgehogues/oeis.org`.
+- The QR MUST be rendered dark-on-light with fixed colours rather than through the theme tokens —
+  **MUST-qr-not-themed** — criterion: the `.repo svg` rule sets literal colours, and the page's
+  dark-theme capture still decodes. Status: done — the first attempt followed the theme at 72px and
+  decoded from neither page; pinning the colours and enlarging to 104px fixed both. This is the one
+  deliberate exception to `MUST-one-visual-system`: a scanner is not a reader.
 
 ## Links
 - The layer below, which this spec may reference and which never references back:

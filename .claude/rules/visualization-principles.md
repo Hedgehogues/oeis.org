@@ -240,6 +240,28 @@ projects. Colour ROLES and typefaces are catalog-level decisions, not per-page o
   change it too"), fixed by restyling `A100001` onto the same tokens and type and re-capturing
   all four of its crops.
 
+## 16. Every page carries a QR code back to the repository
+
+A picture lives apart from its text — it gets forwarded, pasted into a chat, shown on a screen —
+so the way back to the sources, the specs and the other sequences has to be on the picture itself,
+not in a caption beside it. Every page therefore ends with a QR code to
+`https://github.com/Hedgehogues/oeis.org` plus the address in text, for anyone not scanning.
+
+- MUST: the QR is generated once from the repo URL at error-correction level M and committed as
+  `memory-bank/visualizations/qr-repo.svg`; a page inlines that exact SVG rather than drawing its
+  own.
+- MUST: the QR is rendered dark-on-light with fixed colors, NOT through the page's theme tokens. It
+  is a machine target, and the light-on-dark inversion a dark theme produces is unreadable to most
+  scanners — the one element in the catalog that deliberately ignores principle 15's single visual
+  system.
+- MUST: after adding or changing it, decode the QR from the captured PNG (not from the SVG) and
+  check the URL that comes out. A code that cannot be read off the snapshot is not a code — and the
+  snapshot is the form that actually travels.
+- Precedent: the first version followed the theme (`color:var(--ink)` on `var(--surface)`) at 72px.
+  Decoding the dark-theme capture returned nothing from either page. Fixed by pinning the colors
+  and enlarging to 104px, after which both pages' `full.png` decoded to the repo URL on the first
+  attempt.
+
 Trigger: any request to explain an OEIS sequence with a picture — a new device record, a
 per-sequence page, an edit to an existing visualization; an invocation of the `explain-sequence`
 skill; adding or editing any `[device::*]` record.
@@ -256,7 +278,9 @@ for group tables specifically. Principle 13 is `LIGHTWEIGHT-GATE` (a Cyrillic gr
 rather than a judgement call, because the shared-crop escape hatch is gone:
 `grep -oP '(?<=screenshots/)[a-z0-9-]+\.png' memory-bank/_terms.md | sort | uniq -c` must show no
 count above 1. Principle 15 is `LIGHTWEIGHT-GATE` (diff the `:root` token block and the fonts
-`<link>` across `memory-bank/visualizations/*/viz.html` — checked by hand). The risk of a
+`<link>` across `memory-bank/visualizations/*/viz.html` — checked by hand). Principle 16 is
+`LIGHTWEIGHT-GATE`, and the only one with a decisive machine check available: decode the QR out of
+each captured `full.png` and compare the string to the repo URL. The risk of a
 principle not being applied at the moment a page ships is accepted explicitly; on this catalog so
 far, the compensation was the user's own questions — roughly twenty in one sitting before the
 page settled, then one direct correction each for the language, the repeated crops, the stale
