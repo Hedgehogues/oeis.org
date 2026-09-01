@@ -15,7 +15,7 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const SEQ = path.join(REPO, 'sequences');
 
 // per sequence, the largest bound that still finishes in about a second
-const QUICK = { A000001: 7, A100001: 10, A000002: 10000, A000003: 500 };
+const QUICK = { A000001: 7, A100001: 10, A000002: 10000, A000003: 500, A000005: 2000 };
 
 const override = process.argv[2] ? Number(process.argv[2]) : null;
 let failed = 0;

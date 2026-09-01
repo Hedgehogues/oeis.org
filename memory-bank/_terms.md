@@ -491,3 +491,77 @@ Source: [Wikipedia — Fundamental domain](https://en.wikipedia.org/wiki/Fundame
 Example: built inline in `visualizations/A000003/viz.html` (`tau()`, `buildPlot()`, the
   `.fd-region`/`.fd-dot`/`.fd-label` CSS classes)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::DivisorPairFan]
+Class: entity
+Standard name: — (no established name found for the diagram; the operation it computes is
+  [Dirichlet convolution](https://en.wikipedia.org/wiki/Dirichlet_convolution), which is standard.
+  A different, genuinely named visual exists nearby — the
+  [Dirichlet hyperbola method](https://en.wikipedia.org/wiki/Dirichlet_hyperbola_method) plots
+  divisor pairs as lattice points under a hyperbola — but that one is a technique for ESTIMATING a
+  sum over many n, not for working a single term, so it is not the same device under another name)
+Essence: Fan a number out into every pair of factors whose product is that number, draw each pair
+  as two visually distinct halves, show the one term each pair contributes, and add the terms up —
+  so a formula written as a sum over divisors becomes a finite, countable set of drawn pairs.
+Recognized by: the argument's next step is a quantity defined as a sum running over the divisors of
+  n, and the reader would otherwise have to reconstruct which terms exist before being able to
+  check the total at all
+General case: works for any pair of functions being combined over the factorisations of n, not
+  only the constant-1 case where every term is 1; a prime fans into exactly two pairs, a highly
+  composite number into many, and the fan's own height is the divisor count
+Picture: ![Divisor pair fan](visualizations/A000005/screenshots/divisor-pair-fan.png) —
+  `visualizations/A000005/viz.html`, section 1a (n = 12 fanned into its six factor pairs, each
+  contributing one term, summed underneath)
+Reading order: the number itself first, then the column of pairs (its height is already the answer
+  when both functions are constant 1), then each pair's contributed term, then the total
+Limits:
+  - MUST: draw the two members of a pair in visually distinct roles (a colour for the divisor, a
+    different one for its cofactor), and state that convention once — an idea-level limit, since
+    the pair is ORDERED and a symmetric-looking pair silently claims the two halves are
+    interchangeable, which they are not once the two functions being combined differ.
+  - MUST: show the per-pair contribution, not only the pair — a drawing-level limit; a fan of bare
+    pairs with a total underneath asks the reader to trust an arithmetic step that the picture
+    could simply have shown.
+Source: [Wikipedia — Dirichlet convolution](https://en.wikipedia.org/wiki/Dirichlet_convolution) ·
+  [Encyclopedia of Mathematics — Dirichlet convolution](https://encyclopediaofmath.org/wiki/Dirichlet_convolution)
+Example: built inline in `visualizations/A000005/viz.html` (`convolve()`, the
+  `.fan`/`.fan-d`/`.fan-co`/`.fan-term` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::NonClosingTable]
+Class: entity
+Standard name: — (no established name found for the diagram; the property whose FAILURE it shows —
+  [closure](https://en.wikipedia.org/wiki/Closure_(mathematics)) — is standard)
+Essence: Lay out an operation's results for every pair drawn from a fixed set of objects, exactly
+  as a multiplication table would, and mark every cell whose result is NOT one of those objects,
+  naming what it landed on instead — so "this set is not closed under this operation" is a count of
+  marked cells rather than a claim in a caption.
+Recognized by: the argument's point is that combining members of a small, fixed set produces
+  something OUTSIDE it, and the escaping results are the interesting objects — the opposite
+  situation from the one [device::CayleyTable](#devicecayleytable) serves, which needs the results
+  to stay inside
+General case: applies to any set with a binary operation defined on a larger ambient domain, where
+  closure is expected to fail; a set that turns out to be closed renders with no marked cells at
+  all, which is itself the readable answer
+Picture: ![Non-closing table](visualizations/A000005/screenshots/non-closing-table.png) —
+  `visualizations/A000005/viz.html`, section 2a (four constant rows combined pairwise; four of the
+  sixteen cells escape, each naming the function it produced)
+Reading order: the headers first (what is being combined), then the unmarked cells (results that
+  stayed inside), then the marked ones and the names of what they escaped to
+Limits:
+  - MUST NOT: render this in [device::CayleyTable](#devicecayleytable)'s style — an idea-level
+    limit. That device's whole premise is a closed operation whose results are all headers; reusing
+    its look here would assert closure the table disproves, which
+    `.claude/rules/visualization-principles.md` #2 rules out.
+  - MUST: keep adjacent escaping cells visually separate, with a gap and their own inner ring — a
+    drawing-level limit, found the hard way: an outline drawn outside each cell bled across the
+    gaps and fused four escaping cells into one continuous block, which is this catalog's
+    convention for "these are identical" (see
+    [device::MergedResultStrip](#devicemergedresultstrip)) and was false — the four cells held
+    three different functions.
+  - MUST: name what each escaping cell landed on rather than only marking it as outside — a marked
+    cell with no name states a negative fact and withholds the positive one the reader wants.
+Source: [Wikipedia — Closure (mathematics)](https://en.wikipedia.org/wiki/Closure_(mathematics))
+Example: built inline in `visualizations/A000005/viz.html` (the section-2a IIFE, the
+  `.nct`/`.nc-cell.escape`/`.nc-cell.stay` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

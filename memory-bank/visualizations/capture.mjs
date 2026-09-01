@@ -98,6 +98,19 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000005/viz.html`,
+    outDir: `${VIZ}/A000005/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['divisor-pair-fan.png', { css: '#cardOperation' }],       // device::DivisorPairFan
+      ['non-closing-table.png', { css: '#cardTable' }],          // device::NonClosingTable
+      ['inverse-overlay.png', { css: '#cardInverse' }],          // device::FixedPointOverlay (reused)
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();

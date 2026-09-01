@@ -50,7 +50,9 @@ MUST/MUST NOT/SHALL/SHOULD/SHOULD NOT/MAY as in RFC 2119. Terms live in `_terms.
 [device::CombinationFork](../_terms.md#devicecombinationfork),
 [device::RunLengthEncoding](../_terms.md#devicerunlengthencoding),
 [device::FixedPointOverlay](../_terms.md#devicefixedpointoverlay),
-[device::FundamentalDomainPlot](../_terms.md#devicefundamentaldomainplot).
+[device::FundamentalDomainPlot](../_terms.md#devicefundamentaldomainplot),
+[device::DivisorPairFan](../_terms.md#devicedivisorpairfan),
+[device::NonClosingTable](../_terms.md#devicenonclosingtable).
 
 ## Scope
 **In scope:** the idea fields of `[device::*]` records — `Essence`, `Recognized by`,
@@ -103,7 +105,7 @@ existing record from its own README.
 ### Bounded Context and Aggregate Root
 - `device` — the only context. It has no separate aggregate-root record: the catalog-level
   invariants (schema, sourcing discipline) ARE the requirements below, not a block of their own.
-  `_terms.md` holds only the entities — the fifteen `[device::*]` records themselves.
+  `_terms.md` holds only the entities — the seventeen `[device::*]` records themselves.
 
 ## Requirements
 > Statement — acceptance criterion — status.
@@ -111,7 +113,7 @@ existing record from its own README.
 ### MUST
 - Every record MUST carry Essence / Recognized by / General case / Source, and MUST NOT carry a
   field about a specific sequence — **MUST-entry-schema** — criterion: grepping each mandatory
-  heading yields as many lines as there are device records (15); there is no `Used in:` field.
+  heading yields as many lines as there are device records (17); there is no `Used in:` field.
   Status: done.
 - "Essence" MUST be a single sentence without formulas — **MUST-essence-plain** — criterion: the
   field contains no inline math notation beyond the plain word "n". Status: done.
@@ -125,8 +127,8 @@ existing record from its own README.
   contrasted..."), not a description of the drawing itself. Status: done.
 - Every record MUST carry its own `Source:` field, honestly stating "no established name found"
   when that's true rather than inventing or stretching a citation — **MUST-source** — criterion:
-  `grep -c '^Source:'` in `_terms.md` equals the number of device records (15). Status: done (15 of
-  15; 11 honestly cite no established name for the diagram itself, some still sourcing the
+  `grep -c '^Source:'` in `_terms.md` equals the number of device records (17). Status: done (17 of
+  17; 13 honestly cite no established name for the diagram itself, some still sourcing the
   underlying math concept where one exists).
 - Where a `Source:` field cites a URL, it MUST be encyclopedic (Wikipedia or an equivalent
   reference work) and MUST resolve over the network — **MUST-canonical-source** /
@@ -134,7 +136,9 @@ existing record from its own README.
   2026-09-01 (`Cayley_table`, `Involution_(mathematics)`, `Group_theory#Group_actions`,
   `Cyclic_permutation`, `Divisor`, `Incidence_matrix`, `Configuration_(geometry)`,
   `Logarithmic_scale`, `Run-length_encoding`, `Kolakoski_sequence`, `Morphic_word` — all 200) and
-  again on 2026-09-02 (`Fundamental_domain`, `Modular_group` — both 200). Status: done.
+  again on 2026-09-02 (`Fundamental_domain`, `Modular_group`, `Dirichlet_convolution`,
+  `Closure_(mathematics)`, `Dirichlet_hyperbola_method`, and Encyclopedia of Mathematics'
+  `Dirichlet_convolution` — all 200). Status: done.
 - The catalog — `_terms.md`'s `[device::*]` records — MUST NOT hold ANYTHING about a specific
   sequence — no OEIS number, no specific numeric example, not even a "used in" backlink —
   **MUST-no-task-specifics** — criterion: `_terms.md` contains no `[A{NNNNNN}::*]` records and no
@@ -156,7 +160,7 @@ existing record from its own README.
 - A device's name SHOULD be the commonly accepted one where one exists, verified by search rather
   than assumed — **SHOULD-standard-name**. Status: done for the four devices with a real standard
   name (`CayleyTable`, `LogGrowthChart`, `RunLengthEncoding`, `FundamentalDomainPlot`); honestly
-  marked absent for the other eleven.
+  marked absent for the other thirteen.
 
 ## Links
 - Records this spec governs: the `[device::*]` blocks in `memory-bank/_terms.md`.

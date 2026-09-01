@@ -25,8 +25,9 @@
 - [_terms.md](_terms.md) — the dictionary and the ONLY place descriptions live: context `device` —
   MarkedAsymmetry, CayleyTable, SelfCancelDiagonal, MergedResultStrip, StateMap, OrbitRing,
   DivisorChips, IncidenceMatrixPair, LogGrowthChart, UnrealizedPlaceholder, MiniRecap,
-  CombinationFork, RunLengthEncoding, FixedPointOverlay, FundamentalDomainPlot (the catalog- and
-  shell-level invariants live in the two specs below, not as blocks of their own)
+  CombinationFork, RunLengthEncoding, FixedPointOverlay, FundamentalDomainPlot, DivisorPairFan,
+  NonClosingTable (the catalog- and shell-level invariants live in the two specs below, not as
+  blocks of their own)
 - [approaches](specs/approaches.md) — Status: draft — requirements on the IDEA in a device record:
   atomic, recognizable from the situation, canonical source where one exists, no mention of a
   specific sequence
@@ -40,7 +41,8 @@
   in order, devices must resolve, a `Status:` line must name real evidence, and every sequence
   directory carries the implementation/proof pair described below
 - [specs/tasks/A100001.md](specs/tasks/A100001.md) · [specs/tasks/A000001.md](specs/tasks/A000001.md) ·
-  [specs/tasks/A000002.md](specs/tasks/A000002.md) · [specs/tasks/A000003.md](specs/tasks/A000003.md)
+  [specs/tasks/A000002.md](specs/tasks/A000002.md) · [specs/tasks/A000003.md](specs/tasks/A000003.md) ·
+  [specs/tasks/A000005.md](specs/tasks/A000005.md)
   — the applied instances of `tasks.md`'s format; linked from each `sequences/A{NNNNNN}/README.md`
 
 ### Pictures — all of them inside the memory bank

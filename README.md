@@ -35,11 +35,13 @@ that exact fault and confirming it fails.
 | [A000001](sequences/A000001) | Number of groups of order n | Matches OEIS for `n = 1..8`, verified |
 | [A000002](sequences/A000002) | Kolakoski sequence | Matches OEIS for `n = 1..107`, self-consistent through `n = 1,000,000` |
 | [A000003](sequences/A000003) | Class number of discriminant -4n | Matches OEIS for `n = 1..99`, independently re-derived through `n = 500` |
+| [A000005](sequences/A000005) | Number of divisors of n | Matches OEIS for `n = 1..103`, algebra re-checked through `n = 2000` |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
 [![The self-describing sequence](memory-bank/visualizations/A000002/screenshots/full.png)](memory-bank/visualizations/A000002/viz.html)
 [![Where the classes land](memory-bank/visualizations/A000003/screenshots/full.png)](memory-bank/visualizations/A000003/viz.html)
+[![The four boring rows](memory-bank/visualizations/A000005/screenshots/full.png)](memory-bank/visualizations/A000005/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
@@ -69,10 +71,11 @@ entry by entry rather than reporting a yes.
 
 Both searches are exhaustive, so both hit a wall quickly — A000001 at `n=9`, A100001 past `n=13` —
 and each file's header states the measured range instead of hiding it. For A000001 that wall is the
-sequence's own subject matter restated as a runtime. A000002 and A000003 are not combinatorial
-searches at all — A000002's construction is linear (ten million terms in under a tenth of a
-second), A000003's is `O(√n)` per term — so their headers state the honest opposite: no wall found,
-the practical limit is memory or the size of the search net, not time.
+sequence's own subject matter restated as a runtime. A000002, A000003 and A000005 are not
+combinatorial searches at all — A000002's construction is linear (ten million terms in under a
+tenth of a second), A000003's and A000005's are `O(√n)` per term — so their headers state the
+honest opposite: no wall found, the practical limit is memory or the size of the search net, not
+time.
 
 ## The page is live; the pictures above are a snapshot of it
 
