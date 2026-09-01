@@ -42,7 +42,7 @@
   directory carries the implementation/proof pair described below
 - [specs/tasks/A100001.md](specs/tasks/A100001.md) · [specs/tasks/A000001.md](specs/tasks/A000001.md) ·
   [specs/tasks/A000002.md](specs/tasks/A000002.md) · [specs/tasks/A000003.md](specs/tasks/A000003.md) ·
-  [specs/tasks/A000005.md](specs/tasks/A000005.md)
+  [specs/tasks/A000005.md](specs/tasks/A000005.md) · [specs/tasks/A000004.md](specs/tasks/A000004.md)
   — the applied instances of `tasks.md`'s format; linked from each `sequences/A{NNNNNN}/README.md`
 
 ### Pictures — all of them inside the memory bank
