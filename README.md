@@ -5,10 +5,12 @@ Interactive, self-contained HTML explainers for entries in the
 question with a picture rather than a paragraph: what is this sequence actually counting, and why
 does it behave the way it does.
 
-Each sequence lives in its own directory under [`sequences/`](sequences/) (`sequences/A100001`,
-`sequences/A000001`, ...) with a single self-contained `viz.html` — open it directly in a browser,
-no build step, no dependencies beyond a Google Fonts stylesheet link — plus the two programs
-described below: one that computes the sequence, one that checks that computation.
+The pictures themselves live in the memory bank, at
+[`memory-bank/visualizations/A{NNNNNN}/viz.html`](memory-bank/visualizations/) — a single
+self-contained page each, opened directly in a browser, no build step, no dependencies beyond a
+Google Fonts stylesheet link. A sequence's own directory under [`sequences/`](sequences/) holds no
+picture files at all: its write-up, and the two programs described below — one that computes the
+sequence, one that checks that computation.
 
 ## Sequences
 
@@ -17,8 +19,8 @@ described below: one that computes the sequence, one that checks that computatio
 | [A100001](sequences/A100001) | Self-dual `(n_3)` configurations | Fano plane, incidence matrix vs. its transpose |
 | [A000001](sequences/A000001) | Number of groups of order n | movements of an object → Cayley table → why the count jumps |
 
-![Points = lines](sequences/A100001/screenshots/full.png)
-![Census of symmetries](sequences/A000001/screenshots/full.png)
+![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)
+![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)
 
 Each sequence's own `README.md` has the write-up — the framing, why it works, and links to its
 device(s) — and links to its RFC-style spec (requirements and acceptance criteria), which lives in
@@ -26,15 +28,16 @@ device(s) — and links to its RFC-style spec (requirements and acceptance crite
 specified: see [`memory-bank/specs/tasks.md`](memory-bank/specs/tasks.md). Shared write-ups that
 don't belong to any single sequence — the diagram devices themselves, each with its own picture —
 live in [`memory-bank/`](memory-bank/_terms.md). Where a page went through earlier
-structurally-different attempts before landing on its final framing, those are kept in a `drafts/`
-subdirectory rather than discarded, since the reasoning for abandoning each attempt is itself part
-of the record.
+structurally-different attempts before landing on its final framing, those are kept beside it in
+`memory-bank/visualizations/A{NNNNNN}/drafts/` rather than discarded, since the reasoning for
+abandoning each attempt is itself part of the record.
 
 ## The page is live; the pictures above are a snapshot of it
 
 `viz.html` is the source of truth, not the PNGs — open it and it's live: hover states, SVG built
 at load time from the same numbers the page is explaining, both light and dark themes. GitHub
-can't preview an `.html` file inline, though, so every `sequences/A{NNNNNN}/screenshots/*.png`
+can't preview an `.html` file inline, though, so every
+`memory-bank/visualizations/A{NNNNNN}/screenshots/*.png`
 (embedded above, in each sequence's own README, and per-device in
 [`memory-bank/_terms.md`](memory-bank/_terms.md)) is a real, reproducible snapshot taken FROM the
 live page by [`memory-bank/visualizations/capture.mjs`](memory-bank/visualizations/capture.mjs)

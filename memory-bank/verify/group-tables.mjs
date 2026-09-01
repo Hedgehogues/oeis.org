@@ -1,6 +1,6 @@
 // Independent check of every group-multiplication table embedded in this repo's A000001 pages
-// (sequences/A000001/viz.html and sequences/A000001/drafts/*.html): latin square, associativity,
-// identity at index 0, and the self-inverse (diagonal) count each page's caption claims.
+// (memory-bank/visualizations/A000001/viz.html and its drafts/*.html): latin square,
+// associativity, identity at index 0, and the self-inverse (diagonal) count each caption claims.
 //
 // Run: node memory-bank/verify/group-tables.mjs
 //
@@ -65,10 +65,10 @@ function checkGroup(name, n, f) {
 }
 
 const cases = [
-  // sequences/A000001/viz.html — the two groups compared throughout ("What counts" / 1c)
+  // visualizations/A000001/viz.html — the two groups compared throughout ("What counts" / 1c)
   ['V4 (rectangle, rhombus)', 4, XOR(), 4],
   ['C4 (pinwheel)', 4, C(4), 2],
-  // sequences/A000001/drafts/v1-heatmap.html — the 5 groups of order 8
+  // visualizations/A000001/drafts/v1-heatmap.html — the 5 groups of order 8
   ['C8', 8, C(8), 2],
   ['C4×C2', 8, C4xC2(), 4],
   ['C2³ (elementary abelian)', 8, XOR(), 8],

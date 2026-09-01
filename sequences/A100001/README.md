@@ -1,6 +1,6 @@
 # A100001 — Number of self-dual combinatorial configurations of type (n_3)
 
-![Points = lines](screenshots/full.png)
+![Points = lines](../../memory-bank/visualizations/A100001/screenshots/full.png)
 
 A configuration `(n_3)` is `n` points and `n` lines, each point on exactly 3 lines, each line
 holding exactly 3 points. Swapping the roles of points and lines gives the *dual* configuration;
@@ -15,7 +15,7 @@ configuration, drawn the classic way (triangle + medians + incircle, 7 points, 7
 a point highlights the 3 lines through it, making the "3 lines per point" rule tangible rather
 than stated.
 
-![Fano plane](screenshots/fano-plane.png)
+![Fano plane](../../memory-bank/visualizations/A100001/screenshots/fano-plane.png)
 
 One catalogued device (full write-up:
 [`memory-bank/_terms.md`](../../memory-bank/_terms.md#deviceincidencematrixpair)):
@@ -27,14 +27,14 @@ self-dual: what matters is that *some* relabeling of points and lines turns one 
 that the naive matrix is symmetric.
 [`[device::IncidenceMatrixPair]`](../../memory-bank/_terms.md#deviceincidencematrixpair)
 
-![Incidence matrix pair](screenshots/incidence-matrix-pair.png)
+![Incidence matrix pair](../../memory-bank/visualizations/A100001/screenshots/incidence-matrix-pair.png)
 
 A [log growth chart](../../memory-bank/_terms.md#deviceloggrowthchart) (`n=1..19`) closes it out,
 with the Fano plane's `n=7` marked as the first nonzero term.
 
-![Log growth chart](screenshots/log-growth-chart.png)
+![Log growth chart](../../memory-bank/visualizations/A100001/screenshots/log-growth-chart.png)
 
-**[Open the visualization →](viz.html)**
+**[Open the visualization →](../../memory-bank/visualizations/A100001/viz.html)**
 
 ## Computing it, and checking the computation
 

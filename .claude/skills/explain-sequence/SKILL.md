@@ -1,6 +1,6 @@
 ---
 name: explain-sequence
-description: Shows or extends a visual explanation of an OEIS sequence from this catalog. Diagram devices are [device::*] blocks in memory-bank/_terms.md (idea and picture in one record); each device's actual code lives inline in the sequences/A{NNNNNN}/viz.html page(s) that render it — there is no separate build step, since these pages are meant to be opened live, not screenshotted. Adapted from Hedgehogues/project-euler's visualize-approach skill; see memory-bank/index.md for exactly what changed and why.
+description: Shows or extends a visual explanation of an OEIS sequence from this catalog. Diagram devices are [device::*] blocks in memory-bank/_terms.md (idea and picture in one record); each device's actual code lives inline in the memory-bank/visualizations/A{NNNNNN}/viz.html page(s) that render it — there is no separate build step, since these pages are meant to be opened live, not screenshotted. Adapted from Hedgehogues/project-euler's visualize-approach skill; see memory-bank/index.md for exactly what changed and why.
 ---
 
 # Explaining an OEIS sequence
@@ -28,12 +28,19 @@ memory-bank/
   specs/tasks.md               — format governing specs/tasks/*.md
   specs/tasks/A{NNNNNN}.md     — one applied spec per sequence
   verify/*.mjs                 — independent re-checks of embedded algebraic/numeric claims
+  visualizations/
+    A{NNNNNN}/viz.html         — the live, self-contained picture
+    A{NNNNNN}/screenshots/     — snapshots taken from that page, one crop per device
+    A{NNNNNN}/drafts/          — kept structurally-different earlier attempts, reasons in README
+    capture.mjs                — regenerates every screenshot from the pages beside it
 sequences/
   A{NNNNNN}/
     README.md                  — the write-up: what it counts, the framing, links to devices used
-    viz.html                   — the live, self-contained picture
-    drafts/                    — kept structurally-different earlier attempts, reasons in README
+    solution.mjs               — computes a(n) from the definition, no table of known answers
+    proof.mjs                  — re-checks that output with independently written routines
 ```
+
+Every picture lives in the memory bank; a sequence's own directory holds no HTML and no PNG at all.
 
 One device — one block in `_terms.md`, its code inline in whichever `viz.html` page(s) its
 `Picture:` field names. No separate `examples/` directory (see
@@ -52,8 +59,8 @@ the dictionary).
 1. **Read `memory-bank/_terms.md` in full** — mandatory first step of every invocation.
 
 2. **Existing sequence, asked to explain or extend:** open `sequences/A{NNNNNN}/README.md` and
-   `viz.html`; the README's own Terms/device links tell you which `[device::*]` records are
-   already in play. Re-derive nothing that's already stated there.
+   `memory-bank/visualizations/A{NNNNNN}/viz.html`; the README's own Terms/device links tell you
+   which `[device::*]` records are already in play. Re-derive nothing that's already stated there.
 
 3. **New sequence, or a request for a picture with no existing page:**
    a. Fetch the sequence's real data (`oeis.org/search?q=id:A{NNNNNN}&fmt=text`) before writing
@@ -71,8 +78,13 @@ the dictionary).
    e. If the page embeds a checkable algebraic/numeric claim, write or extend a
       `memory-bank/verify/*.mjs` script that independently reproduces it, run it, and record the
       real output — never assert `Status: done` from memory (`MUST-status-is-evidence`).
-   f. Write `sequences/A{NNNNNN}/README.md` and `memory-bank/specs/tasks/A{NNNNNN}.md` (six
-      sections, per `specs/tasks.md`).
+   f. Write `sequences/A{NNNNNN}/solution.mjs` (computes the sequence from the definition the page
+      draws, no lookup table) and `sequences/A{NNNNNN}/proof.mjs` (re-checks it with routines
+      written from scratch — soundness, distinctness, completeness, agreement with the published
+      terms), run both, and state the measured range honestly in `solution.mjs`'s header.
+   g. Run `node memory-bank/visualizations/capture.mjs` so the committed screenshots match the new
+      page, then write `sequences/A{NNNNNN}/README.md` and `memory-bank/specs/tasks/A{NNNNNN}.md`
+      (six sections, per `specs/tasks.md`).
 
 4. **No device matches — a new one, the full cycle, not a one-off drawing:**
    a. Check for an established name for the underlying idea (not necessarily the specific diagram)
@@ -99,6 +111,7 @@ the dictionary).
 ## Verification, not memory
 
 Before any `Status: done` is written into a task spec, the claim behind it is actually run:
-`node memory-bank/verify/*.mjs` for algebraic/numeric claims, a live `curl`/fetch against
-`oeis.org` for sequence data. A status line naming a check that wasn't actually performed during
-this invocation is a violation of `specs/tasks.md`'s `MUST-status-is-evidence`.
+`node memory-bank/verify/*.mjs` for what a PAGE embeds, `node sequences/A{NNNNNN}/proof.mjs` for
+what the IMPLEMENTATION computes, a live `curl`/fetch against `oeis.org` for sequence data. A
+status line naming a check that wasn't actually performed during this invocation is a violation of
+`specs/tasks.md`'s `MUST-status-is-evidence`.

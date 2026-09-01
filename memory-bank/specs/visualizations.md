@@ -23,7 +23,7 @@ Someone with no preparation looks at a page and, without reading a paragraph, un
 being counted and why the count behaves the way it does: an opening frame shows the unsolved
 question, a chain of frames each answer one sub-question and hand its result to the next, and a
 closing frame shows the count fully explained. The requirements below come from rebuilding
-`sequences/A000001/viz.html` roughly twenty times against direct, live feedback in one sitting
+`memory-bank/visualizations/A000001/viz.html` roughly twenty times against direct, live feedback in one sitting
 (2026-09-01) — the short form is `.claude/rules/visualization-principles.md`; this file adds
 acceptance criteria and status.
 
@@ -81,8 +81,8 @@ themselves, which live in `sequences/A{NNNNNN}/README.md`.
   MUST-decomposed-chain, MUST-chain-reuses-prior-frames.
 - **F13** (2026-09-01, this catalog's own construction) Unlike project-euler, no page's SOURCE is
   generated from a shared shell + `build.sh`: every page here is hand-built, self-contained, and
-  meant to be opened directly and interacted with (hover states on `sequences/A100001/viz.html`'s
-  Fano-plane points; live-computed group tables in `sequences/A000001/viz.html`) — baking a page
+  meant to be opened directly and interacted with (hover states on `memory-bank/visualizations/A100001/viz.html`'s
+  Fano-plane points; live-computed group tables in `memory-bank/visualizations/A000001/viz.html`) — baking a page
   down to a static shell-assembled template would throw away exactly the property that makes it
   worth opening rather than screenshotting. This does NOT mean no screenshots exist (see F16
   below) — only that the live page, not a PNG, is the thing a build step would need to reproduce
@@ -119,7 +119,7 @@ themselves, which live in `sequences/A{NNNNNN}/README.md`.
   is evidence the device's own visual is missing, not evidence that one frame carries two facts.
   Traces to: MUST-crop-per-device (tightened to zero sharing), MUST-picture-is-live.
 - **F18** (2026-09-01, flagged directly: "`IncidenceMatrixPair` — a different style; `LogGrowthChart`
-  — change the style too") The two devices whose pictures come from `sequences/A100001/viz.html`
+  — change the style too") The two devices whose pictures come from `memory-bank/visualizations/A100001/viz.html`
   looked like a different project from the other ten: that page had been built first, with its own
   palette (teal/amber) and type (Fraunces / Public Sans / IBM Plex Mono), while `A000001/viz.html`
   evolved a different one (indigo/pink, Literata / Karla / JetBrains Mono). Browsed as one catalog,
@@ -130,7 +130,7 @@ themselves, which live in `sequences/A{NNNNNN}/README.md`.
 ## Architecture
 
 ### Overview (prose)
-A sequence's page (`sequences/A{NNNNNN}/viz.html`) is a single self-contained HTML file: no build
+A sequence's page (`memory-bank/visualizations/A{NNNNNN}/viz.html`) is a single self-contained HTML file: no build
 step, no external script beyond a Google Fonts stylesheet link, opened directly in a browser. This
 is the deliberate style difference from project-euler's shared shell + `build.sh` → static PNG
 pipeline (F13): the devices this catalog favors (hover interactivity, group tables computed live
@@ -164,13 +164,13 @@ competitive-programming submission being checked against a judge.
   that template implies — **MUST-grouping-matches-fact** — criterion: before any group of items is
   given identical styling, the claim the styling makes ("these are the same kind of thing") is
   checked true for every member; a member that doesn't hold gets pulled into its own comparison
-  instead. Status: done (F2; the pinwheel comparison in `sequences/A000001/viz.html` section 1a).
+  instead. Status: done (F2; the pinwheel comparison in `memory-bank/visualizations/A000001/viz.html` section 1a).
 - A [device::CayleyTable](../_terms.md#devicecayleytable)'s header row/column MUST carry a visually
   distinct background from body cells, and its first appearance on a page MUST be preceded by one
   worked example — **MUST-header-distinct**, **MUST-worked-example-first** — criterion: the CSS
   class used for header cells differs from the body-cell class; a one-cell worked example precedes
   the first full grid in reading order. Status: done (F3; `.cy-head` vs. plain `.cy-cell`, and the
-  `demo` block before `sequences/A000001/viz.html`'s first table).
+  `demo` block before `memory-bank/visualizations/A000001/viz.html`'s first table).
 - A row of results that are provably identical across every position MUST render as one merged,
   gapless shape rather than separate tiles — **MUST-merge-identical-results** — criterion: equality
   of every value in the row is checked before rendering; if true, inter-tile gaps and inner
@@ -179,12 +179,12 @@ competitive-programming submission being checked against a judge.
 - Every connecting arrow between two drawn states MUST carry a one-token label naming the operation
   it performs — **MUST-arrows-labeled** — criterion: no bare, unlabeled arrow connects two distinct
   drawn states anywhere on a page. Status: done (F5; the `⟲⟲` "repeat twice" label on every such
-  arrow in `sequences/A000001/viz.html`).
+  arrow in `memory-bank/visualizations/A000001/viz.html`).
 - Where a small mark carries the meaning being compared between icons, its own size and contrast
   (not merely the icon's outer size) MUST be checked for legibility at the rendered scale —
   **MUST-feature-scale-checked** — criterion: the mark's rendered diameter and its color contrast
   against the shape's own fill are both verified, independent of the icon's bounding-box size.
-  Status: done (F6; `sequences/A000001/viz.html`'s marker went from a plain small dot to a larger
+  Status: done (F6; `memory-bank/visualizations/A000001/viz.html`'s marker went from a plain small dot to a larger
   white dot with a dark contrasting outline).
 - Two adjacent items answering unrelated sub-questions MUST be enclosed in visually distinct
   bordered groups, not left separated only by a caption — **MUST-bounded-groups** — criterion: a
@@ -207,7 +207,7 @@ competitive-programming submission being checked against a judge.
   MUST NOT choose a labeling that forces them to look alike unless they are provably identical
   under that exact labeling — **MUST-duality-not-forced** — criterion: no relabeling step in the
   page's own code is present solely to make two drawn objects visually match. Status: done (F11;
-  `sequences/A100001/viz.html`'s matrix/transpose pair).
+  `memory-bank/visualizations/A100001/viz.html`'s matrix/transpose pair).
 
 ### MUST — page structure
 - A sequence's page MUST be structured as an explicit decomposition — an opening Problem frame, one
@@ -217,8 +217,8 @@ competitive-programming submission being checked against a judge.
   previous section's answer was before adding to it; the closing section contains at least one
   literal shrunk-recap element (see
   [device::MiniRecap](../_terms.md#deviceminirecap)). Status: done (F12;
-  `sequences/A000001/viz.html`'s Problem → 1 → 2 → 3 → 4 → Solution structure, plus its "How the answers
-  combine into the result" map).
+  `memory-bank/visualizations/A000001/viz.html`'s Problem → 1 → 2 → 3 → 4 → Solution structure,
+  plus its "How the answers combine into the result" map).
 - A page that renders a checkable algebraic/numeric claim (a multiplication table's associativity,
   a sequence's early terms) MUST have that claim independently re-verified by a committed,
   re-runnable script, not only checked by eye while authoring — **MUST-embedded-math-verified** —
@@ -231,17 +231,17 @@ competitive-programming submission being checked against a judge.
 - Every page MUST be a single, self-contained HTML file — no build step, no local script
   dependency beyond a Google Fonts `<link>` — **MUST-self-contained** — criterion: the file opens
   correctly via `file://` with network access limited to the fonts stylesheet. Status: done (both
-  `sequences/A100001/viz.html` and `sequences/A000001/viz.html`).
+  `memory-bank/visualizations/A100001/viz.html` and `memory-bank/visualizations/A000001/viz.html`).
 - Every page MUST render legibly in both light and dark viewer themes without a separate build —
   **MUST-both-themes** — criterion: the page defines its color tokens under `:root`,
   `@media (prefers-color-scheme: dark)`, and `:root[data-theme="dark"]`/`:root[data-theme="light"]`
   guards, per the same discipline used across the rest of this account's Artifact work. Status:
   done.
-- Structurally different earlier attempts at a page MUST be kept under `sequences/A{NNNNNN}/drafts/`
-  rather than discarded, with the sequence's own README stating why each was superseded —
+- Structurally different earlier attempts at a page MUST be kept under
+  `memory-bank/visualizations/A{NNNNNN}/drafts/` rather than discarded, with the sequence's own README stating why each was superseded —
   **MUST-drafts-kept** — criterion: `drafts/` exists for any sequence with more than one
   structurally distinct historical version, and the README's own prose (not a code comment) names
-  the reason. Status: done (`sequences/A000001/drafts/`, two kept versions, reasons in
+  the reason. Status: done (`memory-bank/visualizations/A000001/drafts/`, two kept versions, reasons in
   `sequences/A000001/README.md`).
 - Every tracked page, comment and label MUST be in English — **MUST-english-only** — criterion:
   `grep -rlP '[Ѐ-ӿ]' --include='*.html' --include='*.mjs' --include='*.md' .` (from the repo root)
@@ -263,7 +263,7 @@ competitive-programming submission being checked against a judge.
 - Every page in the catalog MUST use one visual system — the same colour-role tokens and the same
   three typefaces — so that crops from different sequences read as one catalog rather than several
   projects — **MUST-one-visual-system** — criterion: a diff of the `:root` token block and the
-  Google Fonts `<link>` across `sequences/*/viz.html` shows the same palette values and the same
+  Google Fonts `<link>` across `memory-bank/visualizations/*/viz.html` shows the same palette values and the same
   font families. Status: done (F18) — `A100001` restyled onto `A000001`'s tokens
   (`#3E5FA6`/`#B23E77`/`#C4534A` light, `#7C9BE8`/`#E86FAE`/`#EE7C6E` dark) and type (Literata /
   Karla / JetBrains Mono).

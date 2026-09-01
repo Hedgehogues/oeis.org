@@ -9,7 +9,7 @@ tags: [oeis, tasks, spec-format, draft]
 ## Layer
 
 This is a spec about specs — it governs the FORMAT of `specs/tasks/*.md`, not the truth of any one
-file's content (that's checked per-file, against the actual `sequences/A{NNNNNN}/viz.html` and,
+file's content (that's checked per-file, against the actual `memory-bank/visualizations/A{NNNNNN}/viz.html` and,
 where applicable, `memory-bank/verify/*.mjs`). It sits beside [approaches](approaches.md) and
 [visualizations](visualizations.md), not inside their `sequences → pictures → ideas` chain: those
 two govern the reusable dictionary (`_terms.md`); this one governs a different kind of document —
@@ -96,8 +96,9 @@ existence claim ("this configuration is self-dual"), produce the witness and ver
   checked against. Status: done (A000001 cites `memory-bank/verify/group-tables.mjs`'s live run;
   A100001 cites the exact terms fetched from `oeis.org/search?q=id:A100001&fmt=text`).
 - Every task spec MUST include a self-containment requirement naming the page's actual path
-  (`sequences/A{NNNNNN}/viz.html`) — **MUST-standard-requirements** — criterion: the requirement is
-  present and its file path matches the sequence's real directory. Status: done.
+  (`memory-bank/visualizations/A{NNNNNN}/viz.html`) — **MUST-standard-requirements** —
+  criterion: the requirement is present and its file path matches the sequence's real page.
+  Status: done.
 - Links MUST name the page path and the directory README path, both as they actually resolve on
   disk — **MUST-links-resolve** — criterion: both backtick-quoted paths in Links are real files.
   Status: done.

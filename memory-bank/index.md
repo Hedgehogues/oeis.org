@@ -39,17 +39,27 @@
 - [specs/tasks/A100001.md](specs/tasks/A100001.md) · [specs/tasks/A000001.md](specs/tasks/A000001.md)
   — the applied instances of `tasks.md`'s format; linked from each `sequences/A{NNNNNN}/README.md`
 
-### Pictures — where they live and how they're checked
-- `sequences/A{NNNNNN}/viz.html` — the picture itself: a single self-contained HTML page, opened
-  directly, no build step (deliberately different from project-euler's shared-shell + `build.sh` →
-  PNG pipeline — this catalog's devices are meant to be interacted with live, not screenshotted)
-- `sequences/A{NNNNNN}/drafts/` — kept structurally-different earlier attempts, with the reason
-  each was superseded in the sequence's own README, never silently deleted
-- `memory-bank/verify/*.mjs` — independent, committed, re-runnable checks of any algebraic/numeric
-  claim a page embeds (this catalog's analogue of project-euler's `oracle.cpp`/`xcheck.cpp`); a
-  task spec's correctness requirement cites a real, executed run of these, never "done" from memory
+### Pictures — all of them inside the memory bank
+Every visual artifact lives under `visualizations/`, the same arrangement project-euler uses: a
+problem's own folder there holds no picture files, and neither does a sequence's here.
 
-### Code — two files per sequence, and why they are two
+- `visualizations/A{NNNNNN}/viz.html` — the picture itself: a single self-contained HTML page,
+  opened directly, no build step (deliberately different from project-euler's shared-shell +
+  `build.sh` → PNG pipeline — this catalog's devices are meant to be interacted with live, not
+  screenshotted)
+- `visualizations/A{NNNNNN}/screenshots/*.png` — snapshots taken FROM that live page, committed
+  only because GitHub cannot preview an `.html` file inline; one crop per device
+- `visualizations/A{NNNNNN}/drafts/` — kept structurally-different earlier attempts, with the
+  reason each was superseded in the sequence's own README, never silently deleted
+- `visualizations/capture.mjs` — regenerates every screenshot from the pages beside it
+- `verify/*.mjs` — independent, committed, re-runnable checks of any algebraic/numeric claim a page
+  embeds (this catalog's analogue of project-euler's `oracle.cpp`/`xcheck.cpp`); a task spec's
+  correctness requirement cites a real, executed run of these, never "done" from memory
+
+### Outside the memory bank
+- `sequences/A{NNNNNN}/README.md` — the sequence itself: what it counts, the framing chosen for its
+  picture, links to the devices it uses and to its task spec (all sequences live under one
+  `sequences/` folder, not loose at the repo root)
 - `sequences/A{NNNNNN}/solution.mjs` — computes the sequence from the definition the page draws,
   with no table of published terms anywhere in it: a file that looked its answers up would prove
   nothing about the explanation it accompanies
@@ -59,11 +69,6 @@
   independently written routine can disagree, which is what makes agreement evidence. Where a claim
   is an existence claim ("this configuration is self-dual"), the proof produces the witness and
   verifies it rather than reporting a yes
-
-### Outside the memory bank
-- `sequences/A{NNNNNN}/README.md` — the sequence itself: what it counts, the framing chosen for its
-  picture, links to the devices it uses and to its task spec (all sequences live under one
-  `sequences/` folder, not loose at the repo root)
 - `.claude/rules/visualization-principles.md` — principles 1–12 (the short, auto-loaded form of the
   spec requirements)
 - `.claude/skills/explain-sequence/SKILL.md` — the skill: finds a device in `_terms.md`, or runs

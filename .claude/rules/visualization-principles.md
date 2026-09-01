@@ -1,9 +1,9 @@
 # Principles for visualizing OEIS sequences — catalog `memory-bank/`
 
-Source: the actual revision history of `sequences/A000001/viz.html`, a single page rebuilt roughly
-twenty times against direct feedback in one sitting (2026-09-01). Every principle below is not a
-platitude but a rule derived from a concrete round in which it was violated and fixed — the same
-discipline as [Hedgehogues/project-euler](https://github.com/Hedgehogues/project-euler)'s own
+Source: the actual revision history of `memory-bank/visualizations/A000001/viz.html`, a single
+page rebuilt roughly twenty times against direct feedback in one sitting (2026-09-01). Every
+principle below is a rule derived from a concrete round in which it was violated and fixed — the
+same discipline as [Hedgehogues/project-euler](https://github.com/Hedgehogues/project-euler)'s own
 `visualization-principles.md`, applied to a different medium (a live, self-contained HTML page a
 viewer opens directly, not a build script rendering a static PNG).
 
@@ -167,9 +167,10 @@ answer looks at it cold. The fix is a sequence of pictures — Problem → sub-q
   numbered chain of sub-questions), not one picture carrying the whole argument.
 - MUST: the closing picture visibly reuses the outputs of the earlier ones (a shrunk copy, a
   matching color/shape), so the chain reads as one argument, not a list of unrelated diagrams.
-- Precedent: `sequences/A000001/viz.html` was rebuilt from one dense catalog into an explicit
-  Problem → (1: what counts) → (2: which movements exist) → (3: how they combine) → (4: why it
-  jumps) → Solution chain, each step's answer badge feeding directly into the next step's picture.
+- Precedent: `memory-bank/visualizations/A000001/viz.html` was rebuilt from one dense catalog into
+  an explicit Problem → (1: what counts) → (2: which movements exist) → (3: how they combine) →
+  (4: why it jumps) → Solution chain, each step's answer badge feeding directly into the next
+  step's picture.
 
 ## 13. The whole repository is in English
 
@@ -185,10 +186,11 @@ in English, pictures in Russian, side by side on the same page.
   capture.mjs`) — a translated source with stale, Russian-language PNGs is the same bug as an
   edited page with stale screenshots of any kind (principle 12's "keep the chain in sync",
   language version).
-- Precedent: both `sequences/A100001/viz.html` and `sequences/A000001/viz.html` (plus its two kept
-  drafts) were fully translated in one pass — title, headings, every JS-generated label and
-  tooltip, `<html lang>` — after the repository's own English specs and dictionary made Russian
-  screenshots read as a foreign element. `grep -rlP '[Ѐ-ӿ]' --include='*.html' --include='*.mjs'`
+- Precedent: both `memory-bank/visualizations/A100001/viz.html` and
+  `memory-bank/visualizations/A000001/viz.html` (plus its two kept drafts) were fully translated
+  in one pass — title, headings, every JS-generated label and tooltip, `<html lang>` — after the
+  repository's own English specs and dictionary made Russian screenshots read as a foreign
+  element. `grep -rlP '[Ѐ-ӿ]' --include='*.html' --include='*.mjs'`
   across the tracked tree is empty.
 
 ## 14. A screenshot embedded in more than one place is a sign the crop is too coarse
@@ -231,11 +233,12 @@ projects. Colour ROLES and typefaces are catalog-level decisions, not per-page o
 - MUST: when an older page is restyled to match, re-capture its screenshots in the same pass — a
   restyled page with old-palette PNGs is the same stale-snapshot bug as a translated page with
   old-language PNGs (principle 13).
-- Precedent: `sequences/A100001/viz.html` was built first, in teal/amber with Fraunces / Public
-  Sans / IBM Plex Mono; `sequences/A000001/viz.html` later settled on indigo/pink with Literata /
-  Karla / JetBrains Mono. Two of the twelve device pictures therefore came from a visibly different
-  design system — flagged directly ("a different style — change it too"), fixed by restyling
-  `A100001` onto the same tokens and type and re-capturing all four of its crops.
+- Precedent: `memory-bank/visualizations/A100001/viz.html` was built first, in teal/amber with
+  Fraunces / Public Sans / IBM Plex Mono; `memory-bank/visualizations/A000001/viz.html` later
+  settled on indigo/pink with Literata / Karla / JetBrains Mono. Two of the twelve device pictures
+  therefore came from a visibly different design system — flagged directly ("a different style —
+  change it too"), fixed by restyling `A100001` onto the same tokens and type and re-capturing
+  all four of its crops.
 
 Trigger: any request to explain an OEIS sequence with a picture — a new device record, a
 per-sequence page, an edit to an existing visualization; an invocation of the `explain-sequence`
@@ -253,9 +256,9 @@ for group tables specifically. Principle 13 is `LIGHTWEIGHT-GATE` (a Cyrillic gr
 rather than a judgement call, because the shared-crop escape hatch is gone:
 `grep -oP '(?<=screenshots/)[a-z0-9-]+\.png' memory-bank/_terms.md | sort | uniq -c` must show no
 count above 1. Principle 15 is `LIGHTWEIGHT-GATE` (diff the `:root` token block and the fonts
-`<link>` across `sequences/*/viz.html` — checked by hand). The risk of a principle not being
-applied at the moment a page ships is accepted explicitly; on this catalog so far, the
-compensation was the user's own questions — roughly twenty in one sitting before the page settled,
-then one direct correction each for the language, the repeated crops, the stale
+`<link>` across `memory-bank/visualizations/*/viz.html` — checked by hand). The risk of a
+principle not being applied at the moment a page ships is accepted explicitly; on this catalog so
+far, the compensation was the user's own questions — roughly twenty in one sitting before the
+page settled, then one direct correction each for the language, the repeated crops, the stale
 `MergedResultStrip` record and the mismatched design system — which is exactly what should not be
 the mechanism going forward.

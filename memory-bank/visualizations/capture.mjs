@@ -27,7 +27,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+// The pages, their drafts and their screenshots all live here, beside this script — a sequence's
+// own directory holds no picture files at all, only its README and its code.
+const VIZ = path.dirname(fileURLToPath(import.meta.url));
 
 // selector forms:
 //   { css: '#some-id' }                -> page.locator(css), first match
@@ -40,8 +42,8 @@ function locatorFor(page, sel) {
 
 const jobs = [
   {
-    file: `${REPO}/sequences/A100001/viz.html`,
-    outDir: `${REPO}/sequences/A100001/screenshots`,
+    file: `${VIZ}/A100001/viz.html`,
+    outDir: `${VIZ}/A100001/screenshots`,
     width: 1000,
     full: 'full.png',
     crops: [
@@ -51,8 +53,8 @@ const jobs = [
     ],
   },
   {
-    file: `${REPO}/sequences/A000001/viz.html`,
-    outDir: `${REPO}/sequences/A000001/screenshots`,
+    file: `${VIZ}/A000001/viz.html`,
+    outDir: `${VIZ}/A000001/screenshots`,
     width: 1100,
     full: 'full.png',
     crops: [
