@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Каталог симметрий</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#F1EFF6; --surface:#FFFFFF; --surface-2:#F6F5FA;
+    --ink:#1C1A2E; --ink-soft:#5D5977; --ink-faint:#9691AE; --line:#E1DFEC;
+    --spin:#3E5FA6; --spin-2:#8AA0D6; --flip:#B23E77; --flip-2:#DE9AB9; --mute:#C9C5D8;
+    --shadow: 0 1px 2px rgba(24,20,40,.06), 0 10px 28px rgba(24,20,40,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+      --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+      --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+    --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+    --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{background:var(--bg);height:100%;}
+  body{margin:0;color:var(--ink);font-family:'Karla', system-ui, sans-serif;-webkit-font-smoothing:antialiased;}
+  .page{max-width:1040px;margin:0 auto;padding:30px 22px 26px;display:flex;flex-direction:column;gap:16px;min-height:100%;}
+
+  header{display:flex;flex-direction:column;gap:6px;}
+  .eyebrow{font-family:'JetBrains Mono', monospace;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--spin);font-weight:500;}
+  h1{font-family:'Literata', serif;font-weight:600;font-size:clamp(26px,4.2vw,38px);line-height:1.1;margin:0;}
+  .sub{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.45;max-width:64ch;}
+  .sub b{color:var(--ink);}
+  .sub.rule{font-size:13.5px;}
+  .pinkw{color:var(--flip);font-weight:600;}
+
+  .divs{display:flex;gap:4px;align-items:center;justify-content:center;min-height:20px;flex-wrap:wrap;}
+  .dv{
+    font-family:'JetBrains Mono', monospace;font-size:10.5px;font-weight:600;
+    min-width:20px;height:20px;padding:0 5px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);color:var(--ink-faint);background:transparent;
+  }
+  .dv.mid{background:var(--flip);border-color:var(--flip);color:#fff;}
+  .obj{position:relative;}
+  .tag{
+    position:absolute;right:3px;bottom:2px;
+    font-family:'JetBrains Mono', monospace;font-size:8.5px;font-weight:600;
+    color:var(--ink-faint);letter-spacing:.02em;
+  }
+  .tag.p{color:var(--flip);}
+
+  .board{
+    background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+    padding:22px 26px 18px;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .shelves{
+    display:grid;grid-template-columns:repeat(8,1fr);gap:10px;align-items:end;
+  }
+  .col{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .count{
+    font-family:'Literata', serif;font-weight:700;font-size:30px;line-height:1;
+    color:var(--ink);
+  }
+  .col.hot .count{color:var(--flip);}
+  .stack{display:flex;flex-direction:column-reverse;gap:6px;align-items:center;}
+  .obj{
+    width:64px;height:64px;border-radius:12px;
+    background:var(--surface-2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .obj svg{width:56px;height:56px;display:block;}
+  .obj.ghost{border-style:dashed;border-color:var(--mute);background:transparent;}
+  .obj.ghost span{font-size:10px;color:var(--ink-faint);text-align:center;line-height:1.25;}
+  .shelf{
+    width:100%;height:5px;border-radius:3px;background:var(--line);margin-top:2px;
+  }
+  .n{font-family:'JetBrains Mono', monospace;font-size:14px;font-weight:600;color:var(--ink-soft);}
+
+  .foot{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    border-top:1px solid var(--line);padding-top:12px;
+  }
+  .legend{display:flex;gap:18px;align-items:center;}
+  .legend span{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-soft);}
+  .legend svg{width:22px;height:22px;}
+  .seq{font-family:'JetBrains Mono', monospace;font-size:13px;color:var(--ink-soft);display:flex;gap:8px;align-items:center;}
+  .seq b{color:var(--ink);letter-spacing:.06em;}
+  .seq a{color:var(--ink-faint);text-decoration:none;border-bottom:1px solid var(--line);}
+
+  .sp{fill:var(--spin);}
+  .sp2{fill:var(--spin-2);}
+  .fl{fill:none;stroke:var(--flip);stroke-width:2.2;stroke-linejoin:round;}
+  .flf{fill:var(--flip-2);stroke:var(--flip);stroke-width:2;stroke-linejoin:round;}
+  .mir{stroke:var(--flip);stroke-width:1.4;stroke-dasharray:3 3;opacity:.9;}
+  .hub{fill:var(--surface);stroke:var(--spin);stroke-width:1.5;}
+  .blob{fill:var(--mute);}
+
+  @media (max-width:760px){
+    .shelves{grid-template-columns:repeat(4,1fr);}
+    .obj{width:56px;height:56px;} .obj svg{width:48px;height:48px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">OEIS · A000001</div>
+    <h1>Каталог симметрий</h1>
+    <p class="sub">Полка <b>n</b> — все разные предметы, которые можно повернуть или перевернуть ровно <b>n</b> способами так, что они выглядят как прежде. <b>Сколько предметов на полке</b> — это и есть число из ряда.</p>
+    <p class="sub rule"><b>Почему других нет.</b> Любое движение, повторённое, возвращает предмет за число шагов, которое делит <b>n</b> нацело. Над полкой — делители её номера; <span class="pinkw">розовые</span> (кроме 1 и n) — это разрешённые короткие возвраты, из них и строятся предметы с переворотами. Нет розовых — только вертушка.</p>
+  </header>
+
+  <section class="board">
+    <div class="shelves" id="shelves"></div>
+    <div class="foot">
+      <div class="legend">
+        <span><svg viewBox="0 0 56 56" id="lg-spin"></svg>только крутится</span>
+        <span><svg viewBox="0 0 56 56" id="lg-flip"></svg>ещё и переворачивается</span>
+      </div>
+      <div class="seq"><b>1 1 1 2 1 2 1 5</b> = <a href="https://oeis.org/A000001" target="_blank" rel="noopener">A000001</a></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  function el(tag, attrs){
+    var e=document.createElementNS(NS,tag);
+    for(var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function svg(){ var s=document.createElementNS(NS,'svg'); s.setAttribute('viewBox','0 0 56 56'); return s; }
+  function pt(cx,cy,r,a){ return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
+  function f(v){ return v.toFixed(1); }
+
+  /* ---- вертушка: только повороты ---- */
+  function pinwheel(n, s, opts){
+    opts=opts||{};
+    s=s||svg();
+    var cx=28+(opts.dx||0), cy=28+(opts.dy||0), R=22, r2=13, cls=opts.cls||'sp';
+    var d=(2*Math.PI/n)*0.55;
+    for(var k=0;k<n;k++){
+      var a=-Math.PI/2+k*2*Math.PI/n;
+      var T=pt(cx,cy,R,a), S=pt(cx,cy,r2,a+d);
+      var path='M'+f(cx)+','+f(cy)+' L'+f(T[0])+','+f(T[1])+' Q'+f(S[0]*0.5+T[0]*0.5+ (S[1]-T[1])*0.25)+','+f(S[1]*0.5+T[1]*0.5-(S[0]-T[0])*0.25)+' '+f(S[0])+','+f(S[1])+' Z';
+      s.appendChild(el('path',{d:path,'class':cls}));
+    }
+    s.appendChild(el('circle',{cx:cx,cy:cy,r:3.2,'class':'hub'}));
+    return s;
+  }
+  /* ---- клякса без симметрии ---- */
+  function blob(){
+    var s=svg();
+    s.appendChild(el('path',{d:'M18,14 C26,6 40,10 42,20 C44,29 50,34 41,42 C33,50 20,46 15,38 C10,30 11,21 18,14 Z','class':'blob'}));
+    return s;
+  }
+  /* ---- прямоугольник: два переворота ---- */
+  function rectangle(){
+    var s=svg();
+    s.appendChild(el('rect',{x:9,y:17,width:38,height:22,rx:2,'class':'flf'}));
+    s.appendChild(el('line',{x1:28,y1:11,x2:28,y2:45,'class':'mir'}));
+    s.appendChild(el('line',{x1:4,y1:28,x2:52,y2:28,'class':'mir'}));
+    return s;
+  }
+  /* ---- правильный многоугольник с осями: повороты + перевороты ---- */
+  function polygonMirrors(sides){
+    var s=svg();
+    var cx=28, cy=28, R=20, verts=[], mids=[];
+    for(var i=0;i<sides;i++) verts.push(pt(cx,cy,R,-Math.PI/2+i*2*Math.PI/sides));
+    for(var j=0;j<sides;j++){ var p=verts[j], q=verts[(j+1)%sides]; mids.push([(p[0]+q[0])/2,(p[1]+q[1])/2]); }
+    /* оси: через центр, продолжены за фигуру */
+    var axes=[];
+    if(sides%2===1){ verts.forEach(function(v){ axes.push(v); }); }
+    else { verts.slice(0,sides/2).forEach(function(v){axes.push(v);}); mids.slice(0,sides/2).forEach(function(m){axes.push(m);}); }
+    axes.forEach(function(a){
+      var vx=a[0]-cx, vy=a[1]-cy, L=Math.hypot(vx,vy), ux=vx/L, uy=vy/L, e=25;
+      s.appendChild(el('line',{x1:f(cx-ux*e),y1:f(cy-uy*e),x2:f(cx+ux*e),y2:f(cy+uy*e),'class':'mir'}));
+    });
+    s.appendChild(el('polygon',{points:verts.map(function(v){return f(v[0])+','+f(v[1]);}).join(' '),'class':'flf'}));
+    return s;
+  }
+  /* ---- кирпич: три переворота ---- */
+  function brick(){
+    var s=svg();
+    var o=7;
+    s.appendChild(el('polygon',{points:'12,20 40,20 40,40 12,40','class':'flf'}));
+    s.appendChild(el('polygon',{points:'12,20 '+(12+o)+','+(20-o)+' '+(40+o)+','+(20-o)+' 40,20','class':'flf'}));
+    s.appendChild(el('polygon',{points:'40,20 '+(40+o)+','+(20-o)+' '+(40+o)+','+(40-o)+' 40,40','class':'flf'}));
+    /* три оси через центр */
+    s.appendChild(el('line',{x1:6,y1:30,x2:52,y2:30,'class':'mir'}));
+    s.appendChild(el('line',{x1:26,y1:8,x2:26,y2:50,'class':'mir'}));
+    s.appendChild(el('line',{x1:15,y1:41,x2:41,y2:15,'class':'mir'}));
+    return s;
+  }
+  /* ---- толстая вертушка: повороты + один переворот (сквозь плоскость) ---- */
+  function thickPinwheel(){
+    var s=svg();
+    pinwheel(4, s, {dx:4, dy:4, cls:'sp2'});
+    pinwheel(4, s, {});
+    return s;
+  }
+  function ghost(){
+    var d=document.createElement('div');
+    d.className='obj ghost';
+    d.innerHTML='<span>вид есть,<br>предмета нет</span>';
+    return d;
+  }
+
+  /* ---- полки 1..8: по одному предмету на каждый вид ---- */
+  /* третий элемент — длины возврата движений предмета (все они делят n) */
+  var shelves=[
+    {n:1, items:[[blob,'ничего не сделать — только оставить как есть','1']]},
+    {n:2, items:[[function(){return pinwheel(2);},'поворот на пол-оборота: возврат за 2','2']]},
+    {n:3, items:[[function(){return pinwheel(3);},'поворот на треть: возврат за 3','3']]},
+    {n:4, items:[[function(){return pinwheel(4);},'поворот на четверть: возврат за 4','4'],
+                 [rectangle,'два независимых переворота: каждый возвращает за 2','2·2']]},
+    {n:5, items:[[function(){return pinwheel(5);},'поворот на пятую: возврат за 5','5']]},
+    {n:6, items:[[function(){return pinwheel(6);},'поворот на шестую: возврат за 6','6'],
+                 [function(){return polygonMirrors(3);},'треугольник: поворот за 3, переворот за 2','3·2']]},
+    {n:7, items:[[function(){return pinwheel(7);},'поворот на седьмую: возврат за 7','7']]},
+    {n:8, items:[[function(){return pinwheel(8);},'поворот на восьмую: возврат за 8','8'],
+                 [function(){return polygonMirrors(4);},'квадрат: поворот за 4, переворот за 2','4·2'],
+                 [brick,'коробка: три независимых переворота по 2','2·2·2'],
+                 [thickPinwheel,'вертушка из картона: поворот за 4, переворот насквозь за 2','4·2'],
+                 [null,'пятый вид симметрии — ни один предмет так не устроен','4·2']]}
+  ];
+
+  function divisors(n){ var r=[]; for(var d=1;d<=n;d++) if(n%d===0) r.push(d); return r; }
+
+  var host=document.getElementById('shelves');
+  shelves.forEach(function(sh){
+    var col=document.createElement('div');
+    col.className='col'+(sh.items.length>=5?' hot':'');
+
+    /* делители над полкой: крайние серые, средние розовые */
+    var dv=document.createElement('div'); dv.className='divs';
+    divisors(sh.n).forEach(function(d){
+      var chip=document.createElement('span');
+      chip.className='dv'+((d!==1&&d!==sh.n)?' mid':'');
+      chip.textContent=d;
+      dv.appendChild(chip);
+    });
+
+    var c=document.createElement('div'); c.className='count'; c.textContent=sh.items.length;
+    var st=document.createElement('div'); st.className='stack';
+    sh.items.forEach(function(it){
+      var box;
+      if(it[0]===null){ box=ghost(); }
+      else { box=document.createElement('div'); box.className='obj'; box.appendChild(it[0]()); }
+      box.title=it[1];
+      var tag=document.createElement('span');
+      tag.className='tag'+(it[2].indexOf('·')!==-1?' p':'');
+      tag.textContent=it[2];
+      box.appendChild(tag);
+      st.appendChild(box);
+    });
+    var shelf=document.createElement('div'); shelf.className='shelf';
+    var lab=document.createElement('div'); lab.className='n'; lab.textContent=sh.n;
+    col.appendChild(dv); col.appendChild(c); col.appendChild(st); col.appendChild(shelf); col.appendChild(lab);
+    host.appendChild(col);
+  });
+
+  /* легенда */
+  pinwheel(4, document.getElementById('lg-spin'));
+  document.getElementById('lg-flip').replaceWith(polygonMirrors(4));
+})();
+</script>
+</body>
+</html>

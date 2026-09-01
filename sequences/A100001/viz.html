@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Плоскость Фано</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF1EE;
+    --surface:#FFFFFF;
+    --surface-2:#F5F8F5;
+    --ink:#17231F;
+    --ink-soft:#54655E;
+    --ink-faint:#8B9A93;
+    --line:#DAE2DC;
+    --accent-point:#0E7C6B;
+    --accent-point-soft:rgba(14,124,107,.14);
+    --accent-line:#C57A2E;
+    --accent-line-soft:rgba(197,122,46,.16);
+    --accent-highlight:#B4483F;
+    --accent-highlight-soft:rgba(180,72,63,.12);
+    --shadow: 0 1px 2px rgba(20,30,26,.06), 0 10px 28px rgba(20,30,26,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0D1512;
+      --surface:#141F1B;
+      --surface-2:#182420;
+      --ink:#E7EEEA;
+      --ink-soft:#9FB2AA;
+      --ink-faint:#65786F;
+      --line:#243330;
+      --accent-point:#3FD8BD;
+      --accent-point-soft:rgba(63,216,189,.16);
+      --accent-line:#EFA85A;
+      --accent-line-soft:rgba(239,168,90,.18);
+      --accent-highlight:#E4776B;
+      --accent-highlight-soft:rgba(228,119,107,.16);
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0D1512;
+    --surface:#141F1B;
+    --surface-2:#182420;
+    --ink:#E7EEEA;
+    --ink-soft:#9FB2AA;
+    --ink-faint:#65786F;
+    --line:#243330;
+    --accent-point:#3FD8BD;
+    --accent-point-soft:rgba(63,216,189,.16);
+    --accent-line:#EFA85A;
+    --accent-line-soft:rgba(239,168,90,.18);
+    --accent-highlight:#E4776B;
+    --accent-highlight-soft:rgba(228,119,107,.16);
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:960px;
+    margin:0 auto;
+    padding:40px 24px 56px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    padding-bottom:6px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--accent-point);
+    font-weight:500;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(34px,6vw,54px);
+    line-height:1.03;
+    margin:0;
+    text-wrap:balance;
+    letter-spacing:-.01em;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--accent-line);
+  }
+  .dek{
+    margin:0;
+    max-width:52ch;
+    color:var(--ink-soft);
+    font-size:16px;
+    line-height:1.5;
+  }
+  .stats{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:6px;
+  }
+  .stat{
+    display:flex;
+    align-items:baseline;
+    gap:7px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:9px 14px;
+    box-shadow:var(--shadow);
+  }
+  .stat b{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:17px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .stat span{
+    font-size:12.5px;
+    color:var(--ink-faint);
+  }
+
+  /* ---------- cards ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:1.15fr 1fr;
+    gap:16px;
+    align-items:start;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px 22px 22px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .card h2{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin:0;
+    font-family:'Public Sans', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.01em;
+  }
+  .card h2 svg{flex:none;}
+  .hint{
+    font-size:12px;
+    color:var(--ink-faint);
+    font-style:italic;
+  }
+
+  /* ---------- fano diagram ---------- */
+  .fano-wrap{
+    display:flex;
+    justify-content:center;
+  }
+  #fano{width:100%;max-width:340px;height:auto;}
+  #fano .edge-side, #fano .edge-med{
+    stroke:var(--ink);
+    stroke-width:1.6;
+    opacity:.55;
+    transition:opacity .18s, stroke-width .18s;
+  }
+  #fano .edge-circle{
+    stroke:var(--accent-line);
+    stroke-width:2;
+    fill:none;
+    opacity:.85;
+    transition:opacity .18s, stroke-width .18s;
+  }
+  #fano .line-el.active{opacity:1; stroke-width:3.4;}
+  #fano .line-el.dim{opacity:.12;}
+  #fano .point circle{
+    fill:var(--surface);
+    stroke:var(--accent-point);
+    stroke-width:2.4;
+    transition:fill .15s;
+  }
+  #fano .point:hover circle{fill:var(--accent-point);}
+  #fano .point text{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    font-weight:600;
+    fill:var(--ink);
+    pointer-events:none;
+  }
+  .legend-row{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .legend-row span{display:flex;align-items:center;gap:6px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-point);display:inline-block;}
+  .dash{width:12px;height:2px;background:var(--accent-line);display:inline-block;}
+
+  /* ---------- duality ---------- */
+  .duality{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    padding:6px 0 2px;
+  }
+  .matrix-block{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .matrix-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+  .matrix{
+    display:grid;
+    grid-template-columns:repeat(7,12px);
+    grid-template-rows:repeat(7,12px);
+    gap:2px;
+  }
+  .matrix .cell{border-radius:2px;background:var(--surface-2);}
+  .matrix.m-points .cell.on{background:var(--accent-point);}
+  .matrix.m-lines .cell.on{background:var(--accent-line);}
+  .swap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    color:var(--ink-faint);
+  }
+  .swap svg{stroke:var(--ink-faint);}
+  .swap span{font-family:'IBM Plex Mono', monospace;font-size:10.5px;letter-spacing:.03em;}
+  .duality-note{
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    text-align:center;
+    max-width:40ch;
+    margin:0 auto;
+  }
+  .duality-note b{color:var(--ink);font-weight:600;}
+
+  /* ---------- growth chart ---------- */
+  .card-growth{grid-column:1 / -1;}
+  .growth-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .growth-head .hint{font-style:normal;font-family:'IBM Plex Mono', monospace;}
+  .chart-scroll{overflow-x:auto;}
+  #growth{width:100%;min-width:640px;height:auto;display:block;}
+  #growth .grid-line{stroke:var(--line);stroke-dasharray:3 4;stroke-width:1;}
+  #growth .grid-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    fill:var(--ink-faint);
+  }
+  #growth .bar{fill:var(--accent-point);}
+  #growth .bar.first{fill:var(--accent-highlight);}
+  #growth .zero-mark{fill:var(--ink-faint);opacity:.5;}
+  #growth .n-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    fill:var(--ink-faint);
+    text-anchor:middle;
+  }
+  #growth .val-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    fill:var(--ink);
+    text-anchor:middle;
+  }
+  #growth .callout{
+    font-family:'Public Sans', sans-serif;
+    font-size:11px;
+    fill:var(--accent-highlight);
+    text-anchor:middle;
+    font-weight:600;
+  }
+  .impossible-note{
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+  .impossible-note b{color:var(--ink-soft);}
+
+  footer{
+    text-align:right;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-faint);
+  }
+  footer a{color:inherit;}
+
+  @media (max-width:720px){
+    .grid{grid-template-columns:1fr;}
+    .duality{gap:8px;}
+    .matrix{grid-template-columns:repeat(7,9px);grid-template-rows:repeat(7,9px);}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="page">
+
+  <header class="hero">
+    <div class="eyebrow">OEIS · A100001</div>
+    <h1>Точки = <em>линии</em></h1>
+    <p class="dek">Фигура из точек и прямых, которая остаётся собой, даже если поменять точки и прямые ролями.</p>
+    <div class="stats">
+      <div class="stat"><b>n = 7</b><span>первый пример</span></div>
+      <div class="stat"><b>19</b><span>известных значений</span></div>
+      <div class="stat"><b>1 992 044</b><span>фигур при n = 19</span></div>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <article class="card">
+      <h2>
+        <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1L15 14H1Z" fill="none" stroke="var(--accent-point)" stroke-width="1.6"/><circle cx="8" cy="9" r="1.6" fill="var(--accent-line)"/></svg>
+        Конфигурация (7₃)
+      </h2>
+      <div class="fano-wrap">
+        <svg id="fano" viewBox="0 0 400 360">
+          <!-- edges (drawn first, under points) -->
+          <line class="line-el edge-side" data-points="1,4,2" x1="200" y1="40" x2="60" y2="320"/>
+          <line class="line-el edge-side" data-points="2,5,3" x1="60" y1="320" x2="340" y2="320"/>
+          <line class="line-el edge-side" data-points="3,6,1" x1="340" y1="320" x2="200" y2="40"/>
+          <line class="line-el edge-med" data-points="1,7,5" x1="200" y1="40" x2="200" y2="320"/>
+          <line class="line-el edge-med" data-points="2,7,6" x1="60" y1="320" x2="270" y2="180"/>
+          <line class="line-el edge-med" data-points="3,7,4" x1="340" y1="320" x2="130" y2="180"/>
+          <circle class="line-el edge-circle" data-points="4,5,6" cx="200" cy="232.5" r="87.5"/>
+
+          <!-- points -->
+          <g class="point" data-id="1"><circle cx="200" cy="40" r="10"/><text x="200" y="24" text-anchor="middle">1</text></g>
+          <g class="point" data-id="2"><circle cx="130" cy="180" r="10"/><text x="105" y="176" text-anchor="middle">4</text></g>
+          <g class="point" data-id="3"><circle cx="60" cy="320" r="10"/><text x="42" y="342" text-anchor="middle">2</text></g>
+          <g class="point" data-id="4"><circle cx="200" cy="320" r="10"/><text x="200" y="345" text-anchor="middle">5</text></g>
+          <g class="point" data-id="5"><circle cx="340" cy="320" r="10"/><text x="360" y="342" text-anchor="middle">3</text></g>
+          <g class="point" data-id="6"><circle cx="270" cy="180" r="10"/><text x="296" y="176" text-anchor="middle">6</text></g>
+          <g class="point" data-id="7"><circle cx="200" cy="232.5" r="10"/><text x="216" y="252" text-anchor="middle">7</text></g>
+        </svg>
+      </div>
+      <div class="legend-row">
+        <span><span class="dot"></span>7 точек</span>
+        <span><span class="dash"></span>7 линий</span>
+        <span>по 3 на каждую</span>
+      </div>
+      <p class="hint">Наведите на точку — увидите её 3 линии.</p>
+    </article>
+
+    <article class="card">
+      <h2>
+        <svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 5h5M2 8h5M2 11h5" stroke="var(--accent-point)" stroke-width="1.6"/><path d="M9 5h5M9 8h5M9 11h5" stroke="var(--accent-line)" stroke-width="1.6"/></svg>
+        Двойственность
+      </h2>
+      <div class="duality">
+        <div class="matrix-block">
+          <div class="matrix-label">точки → линии</div>
+          <div class="matrix m-points" id="matrixM"></div>
+        </div>
+        <div class="swap">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 7h14M13 3l4 4-4 4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 13H3M7 9l-4 4 4 4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>≅</span>
+        </div>
+        <div class="matrix-block">
+          <div class="matrix-label">линии → точки</div>
+          <div class="matrix m-lines" id="matrixMT"></div>
+        </div>
+      </div>
+      <p class="duality-note">Матрицы выглядят по-разному, но это <b>одна фигура</b>: существует переобозначение точек и линий, после которого одна превращается в другую.</p>
+    </article>
+
+    <article class="card card-growth">
+      <div class="growth-head">
+        <h2>
+          <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1" y="9" width="3" height="6" fill="var(--accent-point)"/><rect x="6.5" y="5" width="3" height="10" fill="var(--accent-point)"/><rect x="12" y="1" width="3" height="14" fill="var(--accent-highlight)"/></svg>
+          Сколько их существует
+        </h2>
+        <div class="hint">n = 1…19 · логарифмическая шкала</div>
+      </div>
+      <div class="chart-scroll">
+        <svg id="growth" viewBox="0 0 760 268">
+          <!-- reference gridlines -->
+          <line class="grid-line" x1="44" y1="196.75" x2="750" y2="196.75"/><text class="grid-label" x="38" y="200" text-anchor="end">10</text>
+          <line class="grid-line" x1="44" y1="161.5" x2="750" y2="161.5"/><text class="grid-label" x="38" y="165" text-anchor="end">100</text>
+          <line class="grid-line" x1="44" y1="126.25" x2="750" y2="126.25"/><text class="grid-label" x="38" y="130" text-anchor="end">1 000</text>
+          <line class="grid-line" x1="44" y1="91" x2="750" y2="91"/><text class="grid-label" x="38" y="95" text-anchor="end">10 000</text>
+          <line class="grid-line" x1="44" y1="55.75" x2="750" y2="55.75"/><text class="grid-label" x="38" y="59" text-anchor="end">100 000</text>
+          <line class="grid-line" x1="44" y1="20.5" x2="750" y2="20.5"/><text class="grid-label" x="38" y="24" text-anchor="end">1 000 000</text>
+
+          <!-- n=1..6 : impossible -->
+          <g>
+            <rect class="zero-mark" x="45.6" y="230.5" width="24" height="3" rx="1"/><text class="n-label" x="57.6" y="248">1</text>
+            <rect class="zero-mark" x="82.8" y="230.5" width="24" height="3" rx="1"/><text class="n-label" x="94.8" y="248">2</text>
+            <rect class="zero-mark" x="120" y="230.5" width="24" height="3" rx="1"/><text class="n-label" x="132" y="248">3</text>
+            <rect class="zero-mark" x="157.2" y="230.5" width="24" height="3" rx="1"/><text class="n-label" x="169.2" y="248">4</text>
+            <rect class="zero-mark" x="194.4" y="230.5" width="24" height="3" rx="1"/><text class="n-label" x="206.4" y="248">5</text>
+            <rect class="zero-mark" x="231.6" y="230.5" width="24" height="3" rx="1"/><text class="n-label" x="243.6" y="248">6</text>
+          </g>
+
+          <!-- n=7..19 bars (height computed via log10(v+1)) -->
+          <g>
+            <rect class="bar first" x="268.8" y="221" width="24" height="11" rx="2"/><text class="n-label" x="280.8" y="248">7</text>
+            <text class="callout" x="280.8" y="210">Фано</text>
+
+            <rect class="bar" x="306" y="221" width="24" height="11" rx="2"/><text class="n-label" x="318" y="248">8</text>
+            <rect class="bar" x="343.2" y="211" width="24" height="21" rx="2"/><text class="n-label" x="355.2" y="248">9</text>
+            <rect class="bar" x="380.4" y="195" width="24" height="37" rx="2"/><text class="n-label" x="392.4" y="248">10</text>
+            <rect class="bar" x="417.6" y="182" width="24" height="50" rx="2"/><text class="n-label" x="429.6" y="248">11</text>
+            <rect class="bar" x="454.8" y="162" width="24" height="70" rx="2"/><text class="n-label" x="466.8" y="248">12</text>
+            <rect class="bar" x="492" y="142" width="24" height="90" rx="2"/><text class="n-label" x="504" y="248">13</text>
+            <rect class="bar" x="529.2" y="121" width="24" height="111" rx="2"/><text class="n-label" x="541.2" y="248">14</text>
+            <rect class="bar" x="566.4" y="99" width="24" height="133" rx="2"/><text class="n-label" x="578.4" y="248">15</text>
+            <rect class="bar" x="603.6" y="78" width="24" height="154" rx="2"/><text class="n-label" x="615.6" y="248">16</text>
+            <rect class="bar" x="640.8" y="55" width="24" height="177" rx="2"/><text class="n-label" x="652.8" y="248">17</text>
+            <rect class="bar" x="678" y="33" width="24" height="199" rx="2"/><text class="n-label" x="690" y="248">18</text>
+            <rect class="bar" x="715.2" y="10" width="24" height="222" rx="2"/><text class="n-label" x="727.2" y="248">19</text>
+            <text class="val-label" x="727.2" y="4">1 992 044</text>
+          </g>
+
+          <!-- exact values for hover -->
+          <g style="pointer-events:all;">
+            <rect x="45.6" y="220" width="24" height="14" fill="transparent"><title>n=1: 0</title></rect>
+            <rect x="82.8" y="220" width="24" height="14" fill="transparent"><title>n=2: 0</title></rect>
+            <rect x="120" y="220" width="24" height="14" fill="transparent"><title>n=3: 0</title></rect>
+            <rect x="157.2" y="220" width="24" height="14" fill="transparent"><title>n=4: 0</title></rect>
+            <rect x="194.4" y="220" width="24" height="14" fill="transparent"><title>n=5: 0</title></rect>
+            <rect x="231.6" y="220" width="24" height="14" fill="transparent"><title>n=6: 0</title></rect>
+            <rect x="268.8" y="10" width="24" height="222" fill="transparent"><title>n=7: 1 (плоскость Фано)</title></rect>
+            <rect x="306" y="10" width="24" height="222" fill="transparent"><title>n=8: 1</title></rect>
+            <rect x="343.2" y="10" width="24" height="222" fill="transparent"><title>n=9: 3</title></rect>
+            <rect x="380.4" y="10" width="24" height="222" fill="transparent"><title>n=10: 10</title></rect>
+            <rect x="417.6" y="10" width="24" height="222" fill="transparent"><title>n=11: 25</title></rect>
+            <rect x="454.8" y="10" width="24" height="222" fill="transparent"><title>n=12: 95</title></rect>
+            <rect x="492" y="10" width="24" height="222" fill="transparent"><title>n=13: 366</title></rect>
+            <rect x="529.2" y="10" width="24" height="222" fill="transparent"><title>n=14: 1433</title></rect>
+            <rect x="566.4" y="10" width="24" height="222" fill="transparent"><title>n=15: 5802</title></rect>
+            <rect x="603.6" y="10" width="24" height="222" fill="transparent"><title>n=16: 24105</title></rect>
+            <rect x="640.8" y="10" width="24" height="222" fill="transparent"><title>n=17: 102479</title></rect>
+            <rect x="678" y="10" width="24" height="222" fill="transparent"><title>n=18: 445577</title></rect>
+            <rect x="715.2" y="10" width="24" height="222" fill="transparent"><title>n=19: 1992044</title></rect>
+          </g>
+        </svg>
+      </div>
+      <p class="impossible-note"><b>n &lt; 7</b> — самая маленькая такая фигура требует минимум 7 точек, меньше не бывает.</p>
+    </article>
+
+  </div>
+
+  <footer><a href="https://oeis.org/A100001" target="_blank" rel="noopener">oeis.org/A100001</a></footer>
+
+</div>
+
+<script>
+  (function(){
+    var svg = document.getElementById('fano');
+    var points = svg.querySelectorAll('.point');
+    var lines = svg.querySelectorAll('.line-el');
+    points.forEach(function(pt){
+      pt.addEventListener('mouseenter', function(){
+        var id = pt.getAttribute('data-id');
+        lines.forEach(function(l){
+          var pts = l.getAttribute('data-points').split(',');
+          var has = pts.indexOf(id) !== -1;
+          l.classList.toggle('active', has);
+          l.classList.toggle('dim', !has);
+        });
+      });
+      pt.addEventListener('mouseleave', function(){
+        lines.forEach(function(l){ l.classList.remove('active','dim'); });
+      });
+    });
+
+    // incidence matrices
+    var M = [
+      [1,0,1,1,0,0,0],
+      [1,1,0,0,1,0,0],
+      [0,1,1,0,0,1,0],
+      [1,0,0,0,0,1,1],
+      [0,1,0,1,0,0,1],
+      [0,0,1,0,1,0,1],
+      [0,0,0,1,1,1,0]
+    ];
+    function transpose(m){
+      var t = [];
+      for(var c=0;c<7;c++){ var row=[]; for(var r=0;r<7;r++){ row.push(m[r][c]); } t.push(row); }
+      return t;
+    }
+    function render(el, m){
+      var frag = document.createDocumentFragment();
+      m.forEach(function(row){
+        row.forEach(function(v){
+          var d = document.createElement('div');
+          d.className = 'cell' + (v ? ' on' : '');
+          frag.appendChild(d);
+        });
+      });
+      el.appendChild(frag);
+    }
+    render(document.getElementById('matrixM'), M);
+    render(document.getElementById('matrixMT'), transpose(M));
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Перепись симметрий</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#F1EFF6; --surface:#FFFFFF; --surface-2:#F6F5FA;
+    --ink:#1C1A2E; --ink-soft:#5D5977; --ink-faint:#9691AE; --line:#E1DFEC;
+    --spin:#3E5FA6; --spin-2:#8AA0D6; --flip:#B23E77; --flip-2:#DE9AB9; --mute:#C9C5D8;
+    --ok:#2F8A66; --bad:#C4534A;
+    --shadow: 0 1px 2px rgba(24,20,40,.06), 0 10px 28px rgba(24,20,40,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+      --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+      --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+      --ok:#5FD3A6; --bad:#EE7C6E;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+    --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+    --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+    --ok:#5FD3A6; --bad:#EE7C6E;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{background:var(--bg);}
+  body{margin:0;color:var(--ink);font-family:'Karla', system-ui, sans-serif;-webkit-font-smoothing:antialiased;}
+  .page{max-width:1080px;margin:0 auto;padding:30px 22px 40px;display:flex;flex-direction:column;gap:14px;}
+
+  .eyebrow{font-family:'JetBrains Mono', monospace;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--spin);font-weight:500;}
+  h1{font-family:'Literata', serif;font-weight:600;font-size:clamp(26px,4.2vw,38px);line-height:1.1;margin:4px 0 8px;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px 22px;display:flex;flex-direction:column;gap:14px;}
+  .card h2{margin:0;font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;}
+  .no{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:600;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--spin);color:#fff;flex:none;}
+  .no.q{background:var(--bad);} .no.a{background:var(--ok);}
+  .flow{display:flex;justify-content:center;color:var(--mute);font-size:20px;line-height:1;padding:2px 0;}
+
+  /* sub-steps */
+  .sub{display:flex;gap:14px;align-items:flex-start;padding:10px 0;}
+  .sub + .sub{border-top:1px dashed var(--line);}
+  .subno{
+    font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:700;flex:none;
+    width:30px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--ink-faint);margin-top:2px;
+  }
+  .subno.res{background:var(--ok);border-color:var(--ok);color:#fff;}
+  .subbody{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;}
+  .subrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .grp{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--spin);border-radius:10px;padding:10px 14px;}
+  .grp.bad{border-left-color:var(--bad);}
+  .grp.other{border-left-color:var(--mute);}
+  .subcap{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin:0;}
+  .subcap b{color:var(--ink);}
+
+  .obj{position:relative;width:56px;height:56px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;}
+  .obj.sm{width:40px;height:40px;border-radius:9px;}
+  .obj svg{width:48px;height:48px;display:block;}
+  .obj.sm svg{width:32px;height:32px;}
+  .obj.ghost{border-style:dashed;border-color:var(--mute);background:transparent;}
+  .obj.ghost span{font-size:9px;color:var(--ink-faint);text-align:center;line-height:1.2;}
+  .obj.dup{opacity:.4;border-style:dashed;}
+  .item{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .glabel{font-size:10.5px;color:var(--ink-faint);text-align:center;line-height:1.25;max-width:78px;}
+  .op{font-family:'Literata',serif;font-size:22px;font-weight:700;color:var(--ink-faint);}
+  .op.eq{color:var(--ok);} .op.ne{color:var(--bad);}
+  .arr{color:var(--mute);font-size:16px;}
+  .big{font-family:'Literata',serif;font-size:26px;font-weight:700;line-height:1;}
+
+  /* cayley tables */
+  .cayley{display:grid;gap:2px;}
+  .cy-cell{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border-radius:3px;}
+  .cy-cell.cy-diag{outline:1.5px dashed var(--ink-faint);outline-offset:1px;}
+  .cy-cell.cy-self{background:var(--ok);outline:1.5px solid var(--ok);}
+  .cy-cell svg{width:28px;height:28px;}
+  .cy-corner{width:34px;height:34px;background:var(--line);border-radius:3px;}
+  .cy-cell.cy-head{background:var(--line);}
+  .cy-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .cy-name{font-family:'JetBrains Mono', monospace;font-size:10px;color:var(--ink-faint);}
+  .fp{font-family:'JetBrains Mono', monospace;font-size:10px;color:var(--ink-faint);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:2px 7px;}
+
+  /* recipe blocks */
+  .block{font-family:'JetBrains Mono', monospace;font-size:12px;font-weight:600;min-width:26px;height:26px;padding:0 6px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--flip);color:#fff;}
+  .block.full{background:var(--spin);}
+  .plus{font-size:14px;color:var(--ink-faint);}
+  .recipe{display:flex;flex-direction:column;gap:6px;align-items:center;padding:8px 10px;background:var(--surface-2);border-radius:12px;border:1px solid var(--line);}
+  .recipe-hd{display:flex;gap:4px;align-items:center;}
+  .branch{display:flex;flex-direction:column;gap:3px;}
+  .branch .lbl{font-size:9.5px;color:var(--ink-faint);}
+
+  /* divisor chips (reused) */
+  .divs{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;}
+  .dv{font-family:'JetBrains Mono', monospace;font-size:10px;font-weight:600;min-width:18px;height:18px;padding:0 4px;border-radius:9px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);color:var(--ink-faint);}
+  .dv.mid{background:var(--flip);border-color:var(--flip);color:#fff;}
+  .dvset{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .dvset .nn{font-family:'JetBrains Mono', monospace;font-size:11px;color:var(--ink-faint);}
+  .nest{font-family:'JetBrains Mono', monospace;font-size:10.5px;color:var(--flip);}
+
+  /* assembly map */
+  .map{display:flex;flex-direction:column;max-width:780px;width:100%;margin:0 auto;}
+  .mtile{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:14px;}
+  .mtile.center{align-self:center;min-width:460px;}
+  .mtile.problem{align-self:center;border-color:var(--bad);}
+  .mtile.result{align-self:center;background:var(--ok);border-color:var(--ok);justify-content:center;}
+  .mtile.result .mtxt,.mtile.result .mtxt b{color:#fff;}
+  .mrow2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .mthumb{flex:none;display:flex;align-items:center;justify-content:center;gap:4px;}
+  .mtxt{font-size:12.5px;color:var(--ink-soft);line-height:1.4;}
+  .mtxt b{color:var(--ink);}
+  .mb{display:inline-block;font-family:'JetBrains Mono', monospace;font-size:10px;font-weight:700;background:var(--ok);color:#fff;border-radius:6px;padding:1px 6px;margin-right:6px;vertical-align:1px;}
+  .conn{width:100%;height:26px;display:block;}
+  .conn path{fill:none;stroke:var(--mute);stroke-width:2;}
+  .mjoin{text-align:center;font-size:11px;color:var(--ink-faint);margin:-4px 0 6px;}
+  .vconn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px 0;}
+  .vline{width:2px;height:16px;background:var(--mute);display:block;}
+  .vlbl{font-size:11px;color:var(--ink-faint);}
+  @media (max-width:640px){ .mtile.center{min-width:0;align-self:stretch;} .mrow2{grid-template-columns:1fr;} .conn{display:none;} }
+
+  /* solution shelves */
+  .final{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;align-items:end;}
+  .col{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .count{font-family:'Literata', serif;font-weight:700;font-size:26px;line-height:1;color:var(--ink);}
+  .col.hot .count{color:var(--flip);}
+  .stack{display:flex;flex-direction:column-reverse;gap:5px;align-items:center;}
+  .shelf{width:100%;height:4px;border-radius:2px;background:var(--line);}
+  .n{font-family:'JetBrains Mono', monospace;font-size:12px;font-weight:600;color:var(--ink-soft);}
+  .tag{position:absolute;right:2px;bottom:1px;font-family:'JetBrains Mono', monospace;font-size:8px;font-weight:600;color:var(--ink-faint);}
+  .tag.p{color:var(--flip);}
+
+  /* shape svg classes */
+  .sp{fill:var(--spin);} .sp2{fill:var(--spin-2);}
+  .flf{fill:var(--flip-2);stroke:var(--flip);stroke-width:2;stroke-linejoin:round;}
+  .mir{stroke:var(--flip);stroke-width:1.4;stroke-dasharray:3 3;opacity:.9;}
+  .hub{fill:var(--surface);stroke:var(--spin);stroke-width:1.5;}
+  .blob{fill:var(--mute);}
+  .marker{fill:#fff;stroke:rgba(20,16,40,.65);stroke-width:1.4;}
+  .rl{fill:none;stroke:var(--spin);stroke-width:2;stroke-linejoin:round;}
+  .rl2{fill:none;stroke:var(--flip);stroke-width:2;stroke-linejoin:round;}
+  .rl3{fill:none;stroke:var(--ok);stroke-width:2;stroke-linejoin:round;}
+  .rl-dot{fill:var(--spin);} .rl2-dot{fill:var(--flip);} .rl3-dot{fill:var(--ok);}
+  .rlbad{fill:none;stroke:var(--bad);stroke-width:2;stroke-dasharray:3 3;}
+  .rlbad-dot{fill:var(--bad);}
+
+  /* wide ranges */
+  .final.wide{grid-template-columns:repeat(30,1fr);gap:4px;}
+  .final.wide .count{font-size:11px;color:var(--ink-faint);}
+  .final.wide .col.hot .count{color:var(--flip);}
+  .final.wide .n{font-size:9px;}
+  .final.wide .stack{gap:2px;}
+  .final.f15{grid-template-columns:repeat(15,1fr);gap:6px;}
+  .final.compact{grid-template-columns:repeat(15,1fr);gap:6px;}
+  .final.compact .tile{width:16px;height:16px;border-radius:4px;background:var(--mute);}
+  .final.compact .obj{width:32px;height:32px;border-radius:8px;}
+  .final.compact .obj svg{width:26px;height:26px;}
+  .final.compact .count{font-size:20px;}
+  .final.compact .stack{gap:3px;}
+  .rowcap{font-size:11.5px;color:var(--ink-faint);text-align:center;margin:2px 0 -4px;}
+  .tet{fill:none;stroke:var(--spin);stroke-width:2;stroke-linejoin:round;}
+  .tet-dot{fill:var(--spin);}
+  .defsq{fill:var(--spin-2);stroke:var(--spin);stroke-width:2;}
+
+  @media (max-width:760px){
+    .final{grid-template-columns:repeat(4,1fr);}
+    .final.wide{grid-template-columns:repeat(10,1fr);}
+    .final.f15,.final.compact{grid-template-columns:repeat(5,1fr);}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="m-rl" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L6,3 L0,6 Z" style="fill:var(--spin)"/></marker>
+    <marker id="m-rl2" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L6,3 L0,6 Z" style="fill:var(--flip)"/></marker>
+    <marker id="m-rl3" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L6,3 L0,6 Z" style="fill:var(--ok)"/></marker>
+    <marker id="m-rlbad" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L6,3 L0,6 Z" style="fill:var(--bad)"/></marker>
+  </defs>
+</svg>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">OEIS · A000001</div>
+    <h1>Перепись симметрий</h1>
+  </header>
+
+  <!-- ПРОБЛЕМА -->
+  <section class="card">
+    <h2><span class="no q">?</span> Проблема</h2>
+    <div class="subrow" id="defRow" style="justify-content:center;gap:30px;"></div>
+    <p class="subcap" style="text-align:center;">симметрия = движение → тот же вид</p>
+    <div class="subrow" style="gap:28px;">
+      <div class="final wide" id="emptyShelves" style="flex:1;"></div>
+      <div style="font-family:'Literata',serif;font-size:48px;font-weight:700;color:var(--bad);">?</div>
+    </div>
+    <p class="subcap">n → число видов симметрии. Порядка нет.</p>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 1 -->
+  <section class="card">
+    <h2><span class="no">1</span> Что считаем</h2>
+
+    <div class="sub">
+      <div class="subno">1a</div>
+      <div class="subbody">
+        <div class="subrow" id="s1a" style="flex-direction:column;align-items:stretch;gap:10px;"></div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno">1b</div>
+      <div class="subbody">
+        <div class="subrow" id="s1b"></div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno res">1c</div>
+      <div class="subbody">
+        <div class="subrow" id="s1c"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 2 -->
+  <section class="card">
+    <h2><span class="no">2</span> Почему других движений нет <span style="font-weight:500;color:var(--ink-faint);font-size:12px;">(для предмета с 6 движениями)</span></h2>
+
+    <div class="sub">
+      <div class="subno">2a</div>
+      <div class="subbody">
+        <div class="subrow" id="s2a"></div>
+        <p class="subcap">точка = движение. X → «X, потом M». Замыкается в цикл.</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno">2b</div>
+      <div class="subbody">
+        <div class="subrow" id="s2b"></div>
+        <p class="subcap">Циклы одного движения всегда одной длины.</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno res">2c</div>
+      <div class="subbody">
+        <div class="subrow" id="s2c"></div>
+        <p class="subcap">длина цикла × число циклов = 6 → длина делит 6.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 3 -->
+  <section class="card">
+    <h2><span class="no">3</span> Как из допустимых циклов собирается весь набор движений <span style="font-weight:500;color:var(--ink-faint);font-size:12px;">(для 6)</span></h2>
+
+    <div class="sub">
+      <div class="subno">3a</div>
+      <div class="subbody">
+        <div class="subrow" id="s3a"></div>
+        <p class="subcap">цикл 6 = все движения сразу</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno">3b</div>
+      <div class="subbody">
+        <div class="subrow" id="s3b"></div>
+        <p class="subcap">3 и 2 вместе — два способа соединить.</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno res">3c</div>
+      <div class="subbody">
+        <div class="subrow" id="s3c"></div>
+        <p class="subcap">3 сборки, повтор склеен → 2 вида</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 4 -->
+  <section class="card">
+    <h2><span class="no">4</span> Почему число скачет</h2>
+
+    <div class="sub">
+      <div class="subno">4a</div>
+      <div class="subbody">
+        <div class="subrow" id="s4a"></div>
+        <p class="subcap">длины циклов = делители n</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno">4b</div>
+      <div class="subbody">
+        <div class="subrow" id="s4b"></div>
+        <p class="subcap">3 набора → 6 сборок, 1 повтор</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno res">4c</div>
+      <div class="subbody">
+        <div class="subrow" id="s4c"></div>
+        <p class="subcap">склейка → 5. простое → 1, степень 2 → максимум</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- СБОРКА ОТВЕТА -->
+  <section class="card">
+    <h2><span class="no" style="background:var(--ink-soft);">&Sigma;</span> Как ответы складываются в итог</h2>
+    <div class="map">
+      <div class="mtile problem">
+        <div class="mthumb" id="m-p-th"></div>
+        <div class="mtxt"><b>Проблема</b><br>n → ? видов</div>
+      </div>
+      <svg class="conn" viewBox="0 0 100 26" preserveAspectRatio="none">
+        <path d="M50,0 L25,26" vector-effect="non-scaling-stroke"/>
+        <path d="M50,0 L75,26" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="mrow2">
+        <div class="mtile"><div class="mthumb" id="m-1-th"></div><div class="mtxt"><span class="mb">1c</span><b>Вид = таблица движений</b><br>что именно считаем</div></div>
+        <div class="mtile"><div class="mthumb" id="m-2-th"></div><div class="mtxt"><span class="mb">2c</span><b>Длины циклов = делители n</b><br>какие движения вообще бывают</div></div>
+      </div>
+      <svg class="conn" viewBox="0 0 100 26" preserveAspectRatio="none">
+        <path d="M25,0 L50,26" vector-effect="non-scaling-stroke"/>
+        <path d="M75,0 L50,26" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="mjoin">знаем, что считать, и какие движения бывают</div>
+      <div class="mtile center"><div class="mthumb" id="m-3-th"></div><div class="mtxt"><span class="mb">3c</span><b>Перебрали сборки, склеили повторы</b><br>→ число видов для одного n</div></div>
+      <div class="vconn"><span class="vline"></span><span class="vlbl">повторяем для каждого n</span></div>
+      <div class="mtile center"><div class="mthumb" id="m-4-th"></div><div class="mtxt"><span class="mb">4c</span><b>Больше делителей → больше видов</b><br>→ почему скачет</div></div>
+      <div class="vconn"><span class="vline"></span><span class="vlbl">для всех n сразу</span></div>
+      <div class="mtile result"><div class="mtxt"><b>✓ Число видов для каждого n = A000001</b></div></div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- РЕШЕНИЕ -->
+  <section class="card">
+    <h2><span class="no a">✓</span> Решение</h2>
+    <div class="final f15" id="finalShelves"></div>
+    <div class="rowcap">n = 16–30: нарисована только вертушка, остальные виды — счётом</div>
+    <div class="final compact" id="finalShelves2"></div>
+    <div class="subrow" id="ghostWhy" style="justify-content:center;"></div>
+    <p class="subcap">делители → движения → сборки → A000001</p>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  function svg(){var s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','0 0 56 56');return s;}
+  function pt(cx,cy,r,a){return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+  function f(v){return v.toFixed(1);}
+  function divisors(n){var r=[];for(var d=1;d<=n;d++)if(n%d===0)r.push(d);return r;}
+
+  /* ---------- base shapes ---------- */
+  function pinwheel(n,s,o){
+    o=o||{}; s=s||svg();
+    var cx=28+(o.dx||0),cy=28+(o.dy||0),R=22,r2=13,cls=o.cls||'sp',d=(2*Math.PI/n)*0.55;
+    for(var k=0;k<n;k++){
+      var a=-Math.PI/2+k*2*Math.PI/n,T=pt(cx,cy,R,a),S=pt(cx,cy,r2,a+d);
+      var qx=S[0]*0.5+T[0]*0.5+(S[1]-T[1])*0.25, qy=S[1]*0.5+T[1]*0.5-(S[0]-T[0])*0.25;
+      s.appendChild(el('path',{d:'M'+f(cx)+','+f(cy)+' L'+f(T[0])+','+f(T[1])+' Q'+f(qx)+','+f(qy)+' '+f(S[0])+','+f(S[1])+' Z','class':cls}));
+    }
+    s.appendChild(el('circle',{cx:cx,cy:cy,r:3.2,'class':'hub'}));
+    return s;
+  }
+  function blob(){var s=svg();s.appendChild(el('path',{d:'M18,14 C26,6 40,10 42,20 C44,29 50,34 41,42 C33,50 20,46 15,38 C10,30 11,21 18,14 Z','class':'blob'}));return s;}
+  function polygonMirrors(sides){var s=svg(),cx=28,cy=28,R=20,verts=[],mids=[];
+    for(var i=0;i<sides;i++)verts.push(pt(cx,cy,R,-Math.PI/2+i*2*Math.PI/sides));
+    for(var j=0;j<sides;j++){var p=verts[j],q=verts[(j+1)%sides];mids.push([(p[0]+q[0])/2,(p[1]+q[1])/2]);}
+    var axes=[];
+    if(sides%2===1)verts.forEach(function(v){axes.push(v);});
+    else{verts.slice(0,sides/2).forEach(function(v){axes.push(v);});mids.slice(0,sides/2).forEach(function(m){axes.push(m);});}
+    axes.forEach(function(a){var vx=a[0]-cx,vy=a[1]-cy,L=Math.hypot(vx,vy),ux=vx/L,uy=vy/L,e=25;
+      s.appendChild(el('line',{x1:f(cx-ux*e),y1:f(cy-uy*e),x2:f(cx+ux*e),y2:f(cy+uy*e),'class':'mir'}));});
+    s.appendChild(el('polygon',{points:verts.map(function(v){return f(v[0])+','+f(v[1]);}).join(' '),'class':'flf'}));
+    return s;}
+  function brick(){var s=svg(),o=7;
+    s.appendChild(el('polygon',{points:'12,20 40,20 40,40 12,40','class':'flf'}));
+    s.appendChild(el('polygon',{points:'12,20 '+(12+o)+','+(20-o)+' '+(40+o)+','+(20-o)+' 40,20','class':'flf'}));
+    s.appendChild(el('polygon',{points:'40,20 '+(40+o)+','+(20-o)+' '+(40+o)+','+(40-o)+' 40,40','class':'flf'}));
+    s.appendChild(el('line',{x1:6,y1:30,x2:52,y2:30,'class':'mir'}));
+    s.appendChild(el('line',{x1:26,y1:8,x2:26,y2:50,'class':'mir'}));
+    s.appendChild(el('line',{x1:15,y1:41,x2:41,y2:15,'class':'mir'}));return s;}
+  function thickPinwheel(n){n=n||4;var s=svg();pinwheel(n,s,{dx:4,dy:4,cls:'sp2'});pinwheel(n,s,{});return s;}
+  /* тетраэдр: только повороты (12 движений) */
+  function tetra(){var s=svg(),cx=28,cy=31,R=22,v=[];
+    for(var i=0;i<3;i++)v.push(pt(cx,cy,R,-Math.PI/2+i*2*Math.PI/3));
+    s.appendChild(el('polygon',{points:v.map(function(p){return f(p[0])+','+f(p[1]);}).join(' '),'class':'tet'}));
+    v.forEach(function(p){s.appendChild(el('line',{x1:f(cx),y1:f(cy),x2:f(p[0]),y2:f(p[1]),'class':'tet'}));});
+    v.concat([[cx,cy]]).forEach(function(p){s.appendChild(el('circle',{cx:f(p[0]),cy:f(p[1]),r:3,'class':'tet-dot'}));});
+    return s;}
+  function ghostObj(){var d=document.createElement('div');d.className='obj ghost';d.innerHTML='<span>вид есть,<br>предмета нет</span>';return d;}
+
+  /* ---------- marked rect / rhombus (Klein four) ---------- */
+  var opT=['', 'matrix(-1,0,0,1,56,0)', 'matrix(1,0,0,-1,0,56)', 'rotate(180,28,28)'];
+  function rectMarked(i){var s=svg();var g=el('g',{transform:opT[i]});
+    g.appendChild(el('rect',{x:9,y:17,width:38,height:22,rx:2,'class':'flf'}));
+    g.appendChild(el('circle',{cx:41,cy:19,r:4.6,'class':'marker'}));
+    s.appendChild(g);return s;}
+  function rhombMarked(i){var s=svg();var g=el('g',{transform:opT[i]});
+    g.appendChild(el('polygon',{points:'28,7 46,28 28,49 10,28','class':'flf'}));
+    g.appendChild(el('circle',{cx:35,cy:19,r:4.6,'class':'marker'}));
+    s.appendChild(g);return s;}
+  function ellipseMarked(i){var s=svg();var g=el('g',{transform:opT[i]});
+    g.appendChild(el('ellipse',{cx:28,cy:28,rx:19,ry:11,'class':'flf'}));
+    g.appendChild(el('circle',{cx:42,cy:22,r:4.6,'class':'marker'}));
+    s.appendChild(g);return s;}
+  function hShapeMarked(i){var s=svg();var g=el('g',{transform:opT[i]});
+    g.appendChild(el('rect',{x:11,y:9,width:8,height:38,rx:2,'class':'flf'}));
+    g.appendChild(el('rect',{x:37,y:9,width:8,height:38,rx:2,'class':'flf'}));
+    g.appendChild(el('rect',{x:11,y:24,width:34,height:8,rx:2,'class':'flf'}));
+    g.appendChild(el('circle',{cx:44,cy:14,r:4.6,'class':'marker'}));
+    s.appendChild(g);return s;}
+  /* вертушка с меткой на одной лопасти — иначе поворот на 90° неотличим от исходного */
+  function pinRotated(i){var s=svg();var g=el('g',{transform:'rotate('+(90*i)+',28,28)'});s.appendChild(g);pinwheel(4,g);
+    g.appendChild(el('circle',{cx:28,cy:12,r:4.6,'class':'marker'}));return s;}
+  var mulV4=function(a,b){return a^b;};
+  var mulC4=function(a,b){return (a+b)%4;};
+  function diagFP(n,mul){var d=0;for(var a=0;a<n;a++)if(mul(a,a)===0)d++;return d;}
+
+  function cayley(mulFn, iconFn){
+    var wrap=document.createElement('div');
+    wrap.className='cayley';
+    wrap.style.gridTemplateColumns='repeat(5,34px)';
+    wrap.appendChild(Object.assign(document.createElement('div'),{className:'cy-corner'}));
+    for(var c=0;c<4;c++){var cc=document.createElement('div');cc.className='cy-cell cy-head';cc.appendChild(iconFn(c));wrap.appendChild(cc);}
+    for(var r=0;r<4;r++){
+      var hc=document.createElement('div');hc.className='cy-cell cy-head';hc.appendChild(iconFn(r));wrap.appendChild(hc);
+      for(c=0;c<4;c++){
+        var v=mulFn(r,c);
+        var cell=document.createElement('div');
+        cell.className='cy-cell'+(r===c?' cy-diag':'')+((r===c&&v===0)?' cy-self':'');
+        cell.appendChild(iconFn(v));
+        wrap.appendChild(cell);
+      }
+    }
+    return wrap;
+  }
+
+  /* ---------- циклы на n точках: точка = движение, стрелка = «потом M» ---------- */
+  function ringPartition(nPos, step, badLen){
+    var s=svg(), cx=28,cy=28,R=20;
+    var pts=[]; for(var i=0;i<nPos;i++) pts.push(pt(cx,cy,R,-Math.PI/2+i*2*Math.PI/nPos));
+    var pad=5.5, tip=1.5;
+    function seg(a,b,cls){
+      var ax=pts[a][0],ay=pts[a][1],bx=pts[b][0],by=pts[b][1];
+      var dx=bx-ax,dy=by-ay,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+      return el('line',{x1:f(ax+ux*pad),y1:f(ay+uy*pad),x2:f(bx-ux*(pad+tip)),y2:f(by-uy*(pad+tip)),'class':cls,'marker-end':'url(#m-'+cls+')'});
+    }
+    function arc(a,b,cls){ /* для циклов длины 2: две дуги в разные стороны */
+      var ax=pts[a][0],ay=pts[a][1],bx=pts[b][0],by=pts[b][1];
+      var dx=bx-ax,dy=by-ay,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,px=-uy*7,py=ux*7;
+      var x1=ax+ux*pad+px*0.5,y1=ay+uy*pad+py*0.5,x2=bx-ux*(pad+tip)+px*0.5,y2=by-uy*(pad+tip)+py*0.5;
+      return el('path',{d:'M'+f(x1)+','+f(y1)+' Q'+f((ax+bx)/2+px)+','+f((ay+by)/2+py)+' '+f(x2)+','+f(y2),'class':cls,'marker-end':'url(#m-'+cls+')'});
+    }
+    if(badLen){
+      /* попытка цикла длины badLen: остальные точки могут замкнуться только сами на себя */
+      for(var k=0;k<badLen;k++) s.appendChild(seg(k,(k+1)%badLen,'rl'));
+      var rest=[]; for(var r=badLen;r<nPos;r++) rest.push(r);
+      if(rest.length===2){ s.appendChild(arc(rest[0],rest[1],'rlbad')); s.appendChild(arc(rest[1],rest[0],'rlbad')); }
+      pts.forEach(function(p,i){s.appendChild(el('circle',{cx:f(p[0]),cy:f(p[1]),r:4,'class':(i<badLen?'rl-dot':'rlbad-dot')}));});
+      return s;
+    }
+    var seen=[], colors=['rl','rl2','rl3'], ci=0;
+    for(var start=0; start<nPos; start++){
+      if(seen[start]) continue;
+      var orbit=[], i=start;
+      do{ orbit.push(i); seen[i]=true; i=(i+step)%nPos; } while(i!==start);
+      var cls=(step===0)?'rl':colors[ci%colors.length]; ci++;
+      if(orbit.length===2){ s.appendChild(arc(orbit[0],orbit[1],cls)); s.appendChild(arc(orbit[1],orbit[0],cls)); }
+      else if(orbit.length>2){ for(var j=0;j<orbit.length;j++) s.appendChild(seg(orbit[j],orbit[(j+1)%orbit.length],cls)); }
+      orbit.forEach(function(k){ s.appendChild(el('circle',{cx:f(pts[k][0]),cy:f(pts[k][1]),r:4,'class':cls+'-dot'})); });
+    }
+    return s;
+  }
+
+  function item(node, label, small){
+    var d=document.createElement('div'); d.className='item';
+    var box=document.createElement('div'); box.className='obj'+(small?' sm':'');
+    box.appendChild(node);
+    var l=document.createElement('div'); l.className='glabel'; l.textContent=label;
+    d.appendChild(box); d.appendChild(l);
+    return d;
+  }
+  function arrow(){var s=document.createElement('span');s.className='arr';s.textContent='→';return s;}
+  function put(id,node){document.getElementById(id).appendChild(node);}
+
+  /* ============ определение симметрии: два примера ============ */
+  (function(){
+    var host=document.getElementById('defRow');
+    function sq(){var s=svg();s.appendChild(el('rect',{x:13,y:13,width:30,height:30,rx:2,'class':'defsq'}));return s;}
+    function blobR(){var s=svg();var g=el('g',{transform:'rotate(90,28,28)'});s.appendChild(g);
+      g.appendChild(el('path',{d:'M18,14 C26,6 40,10 42,20 C44,29 50,34 41,42 C33,50 20,46 15,38 C10,30 11,21 18,14 Z','class':'blob'}));return s;}
+    function pair(mk1,mk2,lab,ok){
+      var d=document.createElement('div'); d.className='item';
+      var row=document.createElement('div'); row.style.cssText='display:flex;align-items:center;gap:6px;';
+      var b1=document.createElement('div'); b1.className='obj sm'; b1.appendChild(mk1());
+      var ar=document.createElement('span'); ar.className='arr'; ar.textContent='⟳ ¼';
+      var b2=document.createElement('div'); b2.className='obj sm'; b2.appendChild(mk2());
+      row.appendChild(b1); row.appendChild(ar); row.appendChild(b2);
+      var l=document.createElement('div'); l.className='glabel'; l.style.maxWidth='150px';
+      l.innerHTML=lab+' <span style="font-weight:700;color:var(--'+(ok?'ok':'bad')+')">'+(ok?'✓':'✗')+'</span>';
+      d.appendChild(row); d.appendChild(l);
+      return d;
+    }
+    host.appendChild(pair(sq, sq, 'не отличить — это симметрия', true));
+    host.appendChild(pair(blob, blobR, 'видно, что крутили — не симметрия', false));
+  })();
+
+  /* ============ ПРОБЛЕМА: пустые столбцы 1..30 ============ */
+  /* a(n) для n = 1..30 из OEIS A000001 */
+  var counts=[1,1,1,2,1,2,1,5,2,2,1,5,1,2,1,14,1,5,1,5,2,2,1,15,2,2,5,4,1,4];
+  var es=document.getElementById('emptyShelves');
+  counts.forEach(function(c,i){
+    var col=document.createElement('div');col.className='col'+(c>=5?' hot':'');
+    var cn=document.createElement('div');cn.className='count';cn.textContent=c;
+    var st=document.createElement('div');st.className='stack';
+    for(var k=0;k<c;k++){var e=document.createElement('div');e.style.cssText='width:13px;height:13px;border-radius:3px;border:1.5px dashed var(--mute);';st.appendChild(e);}
+    var sh=document.createElement('div');sh.className='shelf';
+    var nn=document.createElement('div');nn.className='n';nn.textContent=i+1;
+    col.appendChild(cn);col.appendChild(st);col.appendChild(sh);col.appendChild(nn);es.appendChild(col);
+  });
+
+  /* ============ 1a: три отдельные рамки вместо одного потока ============ */
+  function arrowOp(sym){
+    var d=document.createElement('div'); d.style.cssText='display:flex;flex-direction:column;align-items:center;gap:1px;';
+    d.innerHTML='<span style="font-size:16px;color:var(--mute);">→</span><span style="font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;color:var(--flip);">SYM</span>'.replace('SYM',sym);
+    return d;
+  }
+  var s1aHost=document.getElementById('s1a');
+
+  /* группа 1 (синяя рамка): из «Проблемы» к 4 настоящим движениям */
+  var grpReal=document.createElement('div'); grpReal.className='grp';
+  (function(){
+    var it=document.createElement('div'); it.className='item';
+    var bars=document.createElement('div'); bars.style.cssText='display:flex;align-items:flex-end;gap:5px;height:44px;';
+    [1,1,1,2].forEach(function(c,i){
+      var col=document.createElement('div'); col.style.cssText='display:flex;flex-direction:column-reverse;gap:2px;align-items:center;';
+      for(var k=0;k<c;k++){
+        var e=document.createElement('div');
+        e.style.cssText='width:11px;height:11px;border-radius:3px;border:1.5px dashed '+(i===3?'var(--flip)':'var(--mute)')+';';
+        col.appendChild(e);
+      }
+      var wrap=document.createElement('div'); wrap.style.cssText='display:flex;flex-direction:column;align-items:center;';
+      wrap.appendChild(col); bars.appendChild(wrap);
+    });
+    it.appendChild(bars);
+    grpReal.appendChild(it);
+    grpReal.appendChild(arrow());
+  })();
+  var ops=['исходный','↔','↕','⟳'];
+  ops.forEach(function(o,i){
+    grpReal.appendChild(item(rectMarked(i), o));
+    if(i<3) grpReal.appendChild(arrowOp(ops[i+1]));
+  });
+  s1aHost.appendChild(grpReal);
+
+  /* группа 2 (красная рамка): попытки, которые не считаются */
+  var grpBad=document.createElement('div'); grpBad.className='grp bad';
+  function failRect(transform){
+    var s=svg(); var g=el('g',{transform:transform});
+    g.appendChild(el('rect',{x:9,y:17,width:38,height:22,rx:2,'class':'flf'}));
+    g.appendChild(el('circle',{cx:41,cy:19,r:4.6,'class':'marker'}));
+    s.appendChild(g); return s;
+  }
+  function failItem(node){
+    var it=item(node,'');
+    it.querySelector('.glabel').remove();
+    it.querySelector('.obj').style.borderColor='var(--bad)';
+    var x=document.createElement('div'); x.style.cssText='font-weight:700;color:var(--bad);font-size:13px;';
+    x.textContent='✗';
+    it.appendChild(x);
+    return it;
+  }
+  grpBad.appendChild(item(rectMarked(0), ''));
+  grpBad.appendChild(arrowOp('⟳¼'));
+  grpBad.appendChild(failItem(failRect('rotate(90,28,28)')));
+  grpBad.appendChild(arrowOp('⤢'));
+  grpBad.appendChild(failItem(failRect('matrix(0,1,1,0,0,0)')));
+  s1aHost.appendChild(grpBad);
+
+  /* группа 3 (нейтральная рамка): другие предметы, тот же счёт */
+  var grpOther=document.createElement('div'); grpOther.className='grp other';
+  function proofItem(bigFn, name, borderVar){
+    var d=document.createElement('div'); d.className='item';
+    var box=document.createElement('div'); box.className='obj'; box.appendChild(bigFn(0));
+    if(borderVar) box.style.borderColor='var('+borderVar+')';
+    var strip=document.createElement('div'); strip.style.cssText='display:flex;gap:3px;';
+    for(var i=0;i<4;i++){
+      var b=document.createElement('div'); b.style.cssText='width:20px;height:20px;border-radius:5px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;';
+      var mini=bigFn(i); mini.style.width='16px'; mini.style.height='16px';
+      b.appendChild(mini); strip.appendChild(b);
+    }
+    var l=document.createElement('div'); l.className='glabel'; l.style.maxWidth='72px'; l.textContent=name;
+    d.appendChild(box); d.appendChild(strip); d.appendChild(l);
+    return d;
+  }
+  grpOther.appendChild(proofItem(ellipseMarked, 'овал', '--flip'));
+  grpOther.appendChild(proofItem(hShapeMarked, 'буква Н', '--flip'));
+  s1aHost.appendChild(grpOther);
+
+  /* группа 4: карта состояний. вертушка — кольцо стрелок в одну сторону,
+     прямоугольник — пары «туда-обратно». сама форма стрелок и есть тезис */
+  function stateMap(iconFn, mode, name){
+    var outer=document.createElement('div'); outer.className='item';
+    var box=document.createElement('div'); box.style.cssText='position:relative;width:180px;height:180px;flex:none;';
+    var s=document.createElementNS(NS,'svg'); s.setAttribute('viewBox','0 0 180 180');
+    s.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;';
+    box.appendChild(s);
+    var pos=[[90,26],[154,90],[90,154],[26,90]];
+    function curved(a,b,cls,side){
+      var ax=pos[a][0],ay=pos[a][1],bx=pos[b][0],by=pos[b][1];
+      var dx=bx-ax,dy=by-ay,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+      var px=-uy*side, py=ux*side;
+      var pad=28;
+      var x1=ax+ux*pad+px*0.4,y1=ay+uy*pad+py*0.4,x2=bx-ux*(pad+2)+px*0.4,y2=by-uy*(pad+2)+py*0.4;
+      var mx=(ax+bx)/2+px,my=(ay+by)/2+py;
+      s.appendChild(el('path',{d:'M'+f(x1)+','+f(y1)+' Q'+f(mx)+','+f(my)+' '+f(x2)+','+f(y2),'class':cls,'marker-end':'url(#m-'+cls+')'}));
+    }
+    if(mode==='cycle'){
+      [[0,1],[1,2],[2,3],[3,0]].forEach(function(pr){
+        var ax=pos[pr[0]][0],ay=pos[pr[0]][1],bx=pos[pr[1]][0],by=pos[pr[1]][1];
+        var mx=(ax+bx)/2,my=(ay+by)/2;
+        var d=( (mx-90)*(-(by-ay)) + (my-90)*(bx-ax) )>0 ? 14 : -14;
+        curved(pr[0],pr[1],'rl',d);
+      });
+    } else {
+      [[0,1],[2,3]].forEach(function(pr){
+        curved(pr[0],pr[1],'rl2',10);
+        curved(pr[1],pr[0],'rl2',10);
+      });
+    }
+    pos.forEach(function(p,i){
+      var t=document.createElement('div');
+      t.style.cssText='position:absolute;left:'+(p[0]-21)+'px;top:'+(p[1]-21)+'px;width:42px;height:42px;border-radius:9px;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;';
+      var ic=iconFn(i); ic.style.width='34px'; ic.style.height='34px';
+      t.appendChild(ic);
+      box.appendChild(t);
+    });
+    var lab=document.createElement('div'); lab.className='glabel'; lab.textContent=name;
+    outer.appendChild(box); outer.appendChild(lab);
+    return outer;
+  }
+  var grpTwist=document.createElement('div'); grpTwist.className='grp'; grpTwist.style.borderLeftColor='var(--spin)';
+  grpTwist.appendChild(stateMap(pinRotated, 'cycle', 'вертушка · шаг ¼'));
+  var neq=document.createElement('span'); neq.className='op ne'; neq.textContent='≠'; grpTwist.appendChild(neq);
+  grpTwist.appendChild(stateMap(rectMarked, 'pairs', 'прямоугольник · ↔'));
+  s1aHost.appendChild(grpTwist);
+
+  /* ============ 1b ============ */
+  (function(){
+    var host=document.getElementById('s1b');
+
+    /* один пример чтения ячейки: строка + столбец → результат, до самой таблицы */
+    var demo=document.createElement('div'); demo.className='grp';
+    demo.appendChild(item(rectMarked(1), ''));
+    var plus=document.createElement('span'); plus.style.cssText='font-size:18px;color:var(--ink-faint);'; plus.textContent='+';
+    demo.appendChild(plus);
+    demo.appendChild(item(rectMarked(2), ''));
+    demo.appendChild(arrow());
+    var hi=document.createElement('div'); hi.className='obj'; hi.style.borderColor='var(--ok)'; hi.style.boxShadow='0 0 0 2px var(--ok)';
+    hi.appendChild(rectMarked(mulV4(1,2)));
+    demo.appendChild(hi);
+    host.appendChild(demo);
+
+    var w=document.createElement('div'); w.className='cy-wrap';
+    w.appendChild(cayley(mulV4, rectMarked));
+    var nm=document.createElement('div'); nm.className='cy-name'; nm.textContent='прямоугольник';
+    w.appendChild(nm);
+    host.appendChild(w);
+  })();
+
+  /* ============ 1c ============ */
+  (function(){
+    function tableBlock(mulFn,iconFn,name,fp){
+      var w=document.createElement('div'); w.className='cy-wrap';
+      w.appendChild(cayley(mulFn,iconFn));
+      var nm=document.createElement('div'); nm.className='cy-name'; nm.textContent=name;
+      var fpEl=document.createElement('div'); fpEl.className='fp'; fpEl.style.cssText='background:var(--ok);color:#fff;font-weight:700;'; fpEl.textContent=fp;
+      w.appendChild(nm); w.appendChild(fpEl);
+      return w;
+    }
+    var host=document.getElementById('s1c');
+    host.appendChild(tableBlock(mulV4, rectMarked, 'прямоугольник', diagFP(4,mulV4)));
+    var eq=document.createElement('span'); eq.className='op eq'; eq.textContent='='; host.appendChild(eq);
+    host.appendChild(tableBlock(mulV4, rhombMarked, 'ромб', diagFP(4,mulV4)));
+    var ne=document.createElement('span'); ne.className='op ne'; ne.textContent='≠'; host.appendChild(ne);
+    host.appendChild(tableBlock(mulC4, pinRotated, 'вертушка', diagFP(4,mulC4)));
+  })();
+
+  /* ============ 2a / 2b / 2c ============ */
+  put('s2a', item(ringPartition(6,1), 'один цикл длины 6'));
+
+  put('s2b', item(ringPartition(6,2), 'два цикла по 3'));
+  put('s2b', item(ringPartition(6,3), 'три цикла по 2'));
+
+  /* 2c: перебираем все длины цикла от 1 до 6 */
+  var b2c=document.getElementById('s2c');
+  [[1,0],[2,3],[3,2],[4,null],[5,null],[6,1]].forEach(function(pr){
+    var k=pr[0], step=pr[1], ok=(6%k===0);
+    var node = ok ? ringPartition(6,step) : ringPartition(6,0,k);
+    var it=item(node, 'длина '+k);
+    var tag=document.createElement('div'); tag.className='glabel';
+    if(ok){ tag.innerHTML='6 = '+k+' × '+(6/k)+' <span style="color:var(--ok);font-weight:700">✓</span>'; }
+    else { tag.innerHTML='6 = '+k+' × ? <span style="font-weight:700">✗</span>'; tag.style.color='var(--bad)'; }
+    it.appendChild(tag);
+    b2c.appendChild(it);
+  });
+
+  /* ============ 3a / 3b / 3c ============ */
+  (function(){
+    var host=document.getElementById('s3a');
+    host.appendChild(item((function(){var b=document.createElement('span');b.className='block full';b.textContent='6';return wrapDiv(b);})(),''));
+  })();
+  function wrapDiv(node){var d=document.createElement('div');d.style.cssText='display:flex;align-items:center;justify-content:center;height:100%;';d.appendChild(node);return d;}
+
+  (function(){
+    var host=document.getElementById('s3a');
+    host.innerHTML='';
+    var blk=document.createElement('span'); blk.className='block full'; blk.textContent='6';
+    var iBlk=document.createElement('div'); iBlk.className='item';
+    var box=document.createElement('div'); box.className='obj sm'; box.appendChild(blk);
+    var lb=document.createElement('div'); lb.className='glabel'; lb.textContent='цикл длины 6';
+    iBlk.appendChild(box); iBlk.appendChild(lb);
+    host.appendChild(iBlk);
+    host.appendChild(arrow());
+    host.appendChild(item(pinwheel(6), 'вертушка'));
+  })();
+
+  (function(){
+    var host=document.getElementById('s3b');
+    var iBlk=document.createElement('div'); iBlk.className='item';
+    var box=document.createElement('div'); box.className='obj sm';
+    var b3=document.createElement('span'); b3.className='block'; b3.textContent='3';
+    var plus=document.createElement('span'); plus.className='plus'; plus.textContent='+';
+    var b2=document.createElement('span'); b2.className='block'; b2.textContent='2';
+    var row=document.createElement('div'); row.style.cssText='display:flex;gap:2px;align-items:center;';
+    row.appendChild(b3); row.appendChild(plus); row.appendChild(b2);
+    box.appendChild(row);
+    var lb=document.createElement('div'); lb.className='glabel'; lb.textContent='циклы 3 и 2';
+    iBlk.appendChild(box); iBlk.appendChild(lb);
+    host.appendChild(iBlk);
+
+    var forkWrap=document.createElement('div'); forkWrap.style.cssText='display:flex;flex-direction:column;gap:6px;';
+    var top=document.createElement('div'); top.style.cssText='display:flex;align-items:center;gap:8px;';
+    top.appendChild((function(){var s=document.createElement('span');s.className='glabel';s.style.width='90px';s.textContent='порядок не важен';return s;})());
+    top.appendChild(arrow());
+    top.appendChild(item(pinwheel(6),'вертушка'));
+    var bot=document.createElement('div'); bot.style.cssText='display:flex;align-items:center;gap:8px;';
+    bot.appendChild((function(){var s=document.createElement('span');s.className='glabel';s.style.width='90px';s.textContent='обращает';return s;})());
+    bot.appendChild(arrow());
+    bot.appendChild(item(polygonMirrors(3),'треугольник'));
+    forkWrap.appendChild(top); forkWrap.appendChild(bot);
+    host.appendChild(arrow());
+    host.appendChild(forkWrap);
+  })();
+
+  (function(){
+    var host=document.getElementById('s3c');
+    host.appendChild(item(pinwheel(6),'вертушка'));
+    var eq1=document.createElement('span'); eq1.className='op'; eq1.textContent='='; host.appendChild(eq1);
+    var dupBox=document.createElement('div'); dupBox.className='obj dup'; dupBox.appendChild(pinwheel(6));
+    var dupItem=document.createElement('div'); dupItem.className='item'; dupItem.appendChild(dupBox);
+    var dl=document.createElement('div'); dl.className='glabel'; dl.textContent='повтор'; dupItem.appendChild(dl);
+    host.appendChild(dupItem);
+    host.appendChild((function(){var s=document.createElement('span');s.className='op';s.textContent='+';return s;})());
+    host.appendChild(item(polygonMirrors(3),'треугольник'));
+    var big=document.createElement('div'); big.style.cssText='display:flex;align-items:center;gap:8px;margin-left:8px;';
+    var eqf=document.createElement('span'); eqf.className='op'; eqf.textContent='='; big.appendChild(eqf);
+    var n2=document.createElement('span'); n2.className='big'; n2.textContent='2'; big.appendChild(n2);
+    host.appendChild(big);
+  })();
+
+  /* ============ 4a ============ */
+  (function(){
+    var host=document.getElementById('s4a');
+    [6,8,12].forEach(function(n){
+      var d=document.createElement('div'); d.className='dvset';
+      var dv=document.createElement('div'); dv.className='divs';
+      divisors(n).forEach(function(x){var c=document.createElement('span');c.className='dv'+((x!==1&&x!==n)?' mid':'');c.textContent=x;dv.appendChild(c);});
+      var nn=document.createElement('div'); nn.className='nn'; nn.textContent='n = '+n;
+      d.appendChild(dv); d.appendChild(nn);
+      host.appendChild(d);
+    });
+  })();
+
+  /* ============ 4b ============ */
+  (function(){
+    var host=document.getElementById('s4b');
+    function recipe(blocks, resultsFn){
+      var r=document.createElement('div'); r.className='recipe';
+      var hd=document.createElement('div'); hd.className='recipe-hd';
+      blocks.forEach(function(bl,i){
+        if(i>0){var p=document.createElement('span');p.className='plus';p.textContent='+';hd.appendChild(p);}
+        var b=document.createElement('span'); b.className='block'+(blocks.length===1?' full':''); b.textContent=bl; hd.appendChild(b);
+      });
+      r.appendChild(hd);
+      var res=document.createElement('div'); res.style.cssText='display:flex;gap:5px;';
+      resultsFn(res);
+      r.appendChild(res);
+      return r;
+    }
+    host.appendChild(recipe(['8'], function(res){ res.appendChild(item(pinwheel(8),'вертушка',true)); }));
+    host.appendChild(recipe(['4','2'], function(res){
+      var d=document.createElement('div'); d.className='obj sm dup'; d.appendChild(pinwheel(8));
+      var di=document.createElement('div'); di.className='item'; di.appendChild(d);
+      var dl=document.createElement('div'); dl.className='glabel'; dl.textContent='повтор'; di.appendChild(dl);
+      res.appendChild(di);
+      res.appendChild(item(polygonMirrors(4),'квадрат',true));
+    }));
+    host.appendChild(recipe(['2','2','2'], function(res){
+      res.appendChild(item(brick(),'коробка',true));
+      res.appendChild(item(thickPinwheel(),'насквозь',true));
+      var g=ghostObj(); g.classList.add('sm');
+      var gi=document.createElement('div'); gi.className='item'; gi.appendChild(g);
+      var gl=document.createElement('div'); gl.className='glabel'; gl.textContent='нет предмета'; gi.appendChild(gl);
+      res.appendChild(gi);
+    }));
+  })();
+
+  /* ============ 4c ============ */
+  (function(){
+    var host=document.getElementById('s4c');
+
+    var left=document.createElement('div'); left.className='dvset';
+    var dv1=document.createElement('div'); dv1.className='divs';
+    divisors(7).forEach(function(x){var c=document.createElement('span');c.className='dv';c.textContent=x;dv1.appendChild(c);});
+    var l1=document.createElement('div'); l1.className='nn'; l1.textContent='7 → 1 набор → 1';
+    left.appendChild(dv1); left.appendChild(l1);
+    host.appendChild(left);
+
+    host.appendChild((function(){var s=document.createElement('span');s.className='op';s.style.fontSize='16px';s.textContent='vs';return s;})());
+
+    var right=document.createElement('div'); right.className='dvset';
+    var dv2=document.createElement('div'); dv2.className='divs';
+    divisors(8).forEach(function(x){var c=document.createElement('span');c.className='dv'+((x!==1&&x!==8)?' mid':'');c.textContent=x;dv2.appendChild(c);});
+    var nest=document.createElement('div'); nest.className='nest'; nest.textContent='2 → 4 → 8, вложены';
+    var l2=document.createElement('div'); l2.className='nn'; l2.textContent='8 → 3 набора → 5';
+    right.appendChild(dv2); right.appendChild(nest); right.appendChild(l2);
+    host.appendChild(right);
+  })();
+
+  /* ============ РЕШЕНИЕ: полный каталог 1..8 ============ */
+  function pin(n){return function(){return pinwheel(n);};}
+  function poly(n){return function(){return polygonMirrors(n);};}
+  function rectM(){var s=svg();s.appendChild(el('rect',{x:9,y:17,width:38,height:22,rx:2,'class':'flf'}));s.appendChild(el('line',{x1:28,y1:11,x2:28,y2:45,'class':'mir'}));s.appendChild(el('line',{x1:4,y1:28,x2:52,y2:28,'class':'mir'}));return s;}
+  /* n = 1..15: по одному предмету на каждый вид; null — вид есть, предмета нет */
+  var shelves=[
+    {n:1,items:[[blob,'1']]},
+    {n:2,items:[[pin(2),'2']]},
+    {n:3,items:[[pin(3),'3']]},
+    {n:4,items:[[pin(4),'4'],[rectM,'2·2']]},
+    {n:5,items:[[pin(5),'5']]},
+    {n:6,items:[[pin(6),'6'],[poly(3),'3·2']]},
+    {n:7,items:[[pin(7),'7']]},
+    {n:8,items:[[pin(8),'8'],[poly(4),'4·2'],[brick,'2·2·2'],[thickPinwheel,'4·2'],[null,'4·2']]},
+    {n:9,items:[[pin(9),'9'],[null,'3·3']]},
+    {n:10,items:[[pin(10),'10'],[poly(5),'5·2']]},
+    {n:11,items:[[pin(11),'11']]},
+    {n:12,items:[[pin(12),'12'],[function(){return thickPinwheel(6);},'6·2'],[poly(6),'6·2'],[tetra,'3·2'],[null,'4·3']]},
+    {n:13,items:[[pin(13),'13']]},
+    {n:14,items:[[pin(14),'14'],[poly(7),'7·2']]},
+    {n:15,items:[[pin(15),'15']]}
+  ];
+
+  /* n = 16..30: вертушка + остальные виды счётом */
+  var fh2=document.getElementById('finalShelves2');
+  for(var nn2=16; nn2<=30; nn2++){
+    var cnt=counts[nn2-1];
+    var col2=document.createElement('div'); col2.className='col'+(cnt>=5?' hot':'');
+    var c2=document.createElement('div'); c2.className='count'; c2.textContent=cnt;
+    var st2=document.createElement('div'); st2.className='stack';
+    var pinBox=document.createElement('div'); pinBox.className='obj'; pinBox.appendChild(pinwheel(nn2)); st2.appendChild(pinBox);
+    for(var k2=1;k2<cnt;k2++){var t=document.createElement('div');t.className='tile';st2.appendChild(t);}
+    var sh2=document.createElement('div'); sh2.className='shelf';
+    var lb2=document.createElement('div'); lb2.className='n'; lb2.textContent=nn2;
+    col2.appendChild(c2); col2.appendChild(st2); col2.appendChild(sh2); col2.appendChild(lb2);
+    fh2.appendChild(col2);
+  }
+
+  /* ============ почему у некоторых видов нет предмета ============ */
+  (function(){
+    var host=document.getElementById('ghostWhy');
+    var W=170,H=150, axCls=['rl','rl2','rl3'];
+    function panel(sameTarget){
+      var box=document.createElement('div'); box.style.cssText='position:relative;width:'+W+'px;height:'+H+'px;flex:none;';
+      var s=document.createElementNS(NS,'svg'); s.setAttribute('viewBox','0 0 '+W+' '+H);
+      s.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;';
+      box.appendChild(s);
+      var tops=[[35,22],[85,22],[135,22]];
+      var bots=sameTarget ? [[85,120],[85,120],[85,120]] : [[35,120],[85,120],[135,120]];
+      tops.forEach(function(p,i){
+        var b=bots[i];
+        var dx=b[0]-p[0], dy=b[1]-p[1], L=Math.hypot(dx,dy)||1, ux=dx/L, uy=dy/L;
+        var x1=p[0]+ux*13, y1=p[1]+uy*13, x2=b[0]-ux*15, y2=b[1]-uy*15;
+        var bend = sameTarget ? (i-1)*18 : 0;
+        var mx=(x1+x2)/2 + (dy/L)*bend*0.4, my=(y1+y2)/2 - (dx/L)*bend*0.4;
+        s.appendChild(el('path',{d:'M'+f(x1)+','+f(y1)+' Q'+f(mx)+','+f(my)+' '+f(x2)+','+f(y2),'class':axCls[i],fill:'none','marker-end':'url(#m-'+axCls[i]+')'}));
+      });
+      tops.forEach(function(p,i){
+        s.appendChild(el('circle',{cx:p[0],cy:p[1],r:10,'class':axCls[i]+'-dot'}));
+      });
+      if(sameTarget){
+        s.appendChild(el('circle',{cx:85,cy:120,r:12,fill:'none',stroke:'var(--bad)','stroke-width':2,'stroke-dasharray':'3 3'}));
+      } else {
+        bots.forEach(function(b,i){ s.appendChild(el('circle',{cx:b[0],cy:b[1],r:10,'class':axCls[i]+'-dot',opacity:'.55'})); });
+      }
+      var mid=document.createElement('div'); mid.style.cssText='position:absolute;left:50%;top:66px;transform:translateX(-50%);font-size:13px;color:var(--ink-faint);';
+      mid.textContent='⟲⟲';
+      box.appendChild(mid);
+      return box;
+    }
+    var wrap=document.createElement('div'); wrap.style.cssText='display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;';
+    var left=document.createElement('div'); left.className='item';
+    left.appendChild(panel(true));
+    var ll=document.createElement('div'); ll.className='glabel'; ll.textContent='таблица требует';
+    left.appendChild(ll);
+    wrap.appendChild(left);
+
+    var neq=document.createElement('span'); neq.className='op ne'; neq.textContent='≠'; wrap.appendChild(neq);
+
+    var right=document.createElement('div'); right.className='item';
+    right.appendChild(panel(false));
+    var rl=document.createElement('div'); rl.className='glabel'; rl.textContent='пространство даёт';
+    right.appendChild(rl);
+    wrap.appendChild(right);
+
+    wrap.appendChild(arrow());
+
+    var g=ghostObj();
+    wrap.appendChild(g);
+    host.appendChild(wrap);
+  })();
+
+  var fh=document.getElementById('finalShelves');
+  shelves.forEach(function(sh){
+    var col=document.createElement('div');col.className='col'+(sh.items.length>=5?' hot':'');
+    var dv=document.createElement('div');dv.className='divs';
+    divisors(sh.n).forEach(function(d){var ch=document.createElement('span');ch.className='dv'+((d!==1&&d!==sh.n)?' mid':'');ch.textContent=d;dv.appendChild(ch);});
+    var cn=document.createElement('div');cn.className='count';cn.textContent=sh.items.length;
+    var st=document.createElement('div');st.className='stack';
+    sh.items.forEach(function(it){
+      var box;
+      if(it[0]===null){box=ghostObj();}
+      else{box=document.createElement('div');box.className='obj';box.appendChild(it[0]());}
+      var t=document.createElement('span');t.className='tag'+(it[1].indexOf('·')!==-1?' p':'');t.textContent=it[1];box.appendChild(t);
+      st.appendChild(box);
+    });
+    var shelf=document.createElement('div');shelf.className='shelf';
+    var nn=document.createElement('div');nn.className='n';nn.textContent=sh.n;
+    col.appendChild(dv);col.appendChild(cn);col.appendChild(st);col.appendChild(shelf);col.appendChild(nn);fh.appendChild(col);
+  });
+
+  /* ============ КАРТА СБОРКИ: миниатюры ответов ============ */
+  (function(){
+    function txt(s){var e=document.createElement('span');e.className='arr';e.textContent=s;return e;}
+    function smObj(node,dup){var b=document.createElement('div');b.className='obj sm'+(dup?' dup':'');b.appendChild(node);return b;}
+
+    /* проблема: мини-столбцы */
+    var p=document.getElementById('m-p-th');
+    var wrap=document.createElement('div'); wrap.style.cssText='display:flex;align-items:flex-end;gap:3px;height:46px;';
+    [1,1,1,2,1,2,1,5].forEach(function(c){
+      var col=document.createElement('div'); col.style.cssText='display:flex;flex-direction:column-reverse;gap:2px;';
+      for(var k=0;k<c;k++){var e=document.createElement('div');e.style.cssText='width:7px;height:7px;border-radius:2px;border:1px dashed var(--mute);';col.appendChild(e);}
+      wrap.appendChild(col);
+    });
+    p.appendChild(wrap);
+
+    /* 1c: маленькая таблица */
+    var c1=cayley(mulV4, rectMarked);
+    c1.style.gridTemplateColumns='repeat(5,13px)';
+    Array.prototype.forEach.call(c1.children,function(ch){
+      ch.style.width='13px';ch.style.height='13px';
+      var s=ch.querySelector('svg'); if(s){s.style.width='11px';s.style.height='11px';}
+    });
+    document.getElementById('m-1-th').appendChild(c1);
+
+    /* 2c: делители 6 */
+    var d=document.createElement('div'); d.className='divs';
+    divisors(6).forEach(function(x){var c=document.createElement('span');c.className='dv'+((x!==1&&x!==6)?' mid':'');c.textContent=x;d.appendChild(c);});
+    document.getElementById('m-2-th').appendChild(d);
+
+    /* 3c: вертушка = повтор + треугольник → 2 */
+    var t3=document.getElementById('m-3-th');
+    t3.appendChild(smObj(pinwheel(6)));
+    t3.appendChild(txt('=')); t3.appendChild(smObj(pinwheel(6),true));
+    t3.appendChild(txt('+')); t3.appendChild(smObj(polygonMirrors(3)));
+    t3.appendChild(txt('→'));
+    var n2=document.createElement('span'); n2.className='big'; n2.style.fontSize='20px'; n2.textContent='2'; t3.appendChild(n2);
+
+    /* 4c: 7 → 1 против 8 → 5 */
+    var t4=document.getElementById('m-4-th');
+    t4.style.flexDirection='column'; t4.style.alignItems='flex-start';
+    [[7,1],[8,5]].forEach(function(pr){
+      var row=document.createElement('div'); row.style.cssText='display:flex;align-items:center;gap:6px;';
+      var dv=document.createElement('div'); dv.className='divs';
+      divisors(pr[0]).forEach(function(x){var c=document.createElement('span');c.className='dv'+((x!==1&&x!==pr[0])?' mid':'');c.textContent=x;dv.appendChild(c);});
+      row.appendChild(dv); row.appendChild(txt('→'));
+      var b=document.createElement('span'); b.className='big'; b.style.fontSize='18px'; b.textContent=pr[1];
+      if(pr[1]>=5) b.style.color='var(--flip)';
+      row.appendChild(b);
+      t4.appendChild(row);
+    });
+  })();
+})();
+</script>
+</body>
+</html>
