@@ -37,7 +37,7 @@ Full requirements and acceptance criteria:
 
 ## The ideas behind it
 
-Four devices, two new to the catalog and two reused unchanged (full write-ups:
+Five devices, two new to the catalog and three reused unchanged (full write-ups:
 [`memory-bank/_terms.md`](../../memory-bank/_terms.md)):
 
 | Device | Essence |
@@ -46,6 +46,7 @@ Four devices, two new to the catalog and two reused unchanged (full write-ups:
 | [`[device::NonClosingTable]`](../../memory-bank/_terms.md#devicenonclosingtable) | Tabulate an operation over a fixed set and mark every cell that lands outside it, naming what it landed on. |
 | [`[device::FixedPointOverlay]`](../../memory-bank/_terms.md#devicefixedpointoverlay) | Align a transform's output against its target, one column per position, marking every match. |
 | [`[device::MiniRecap]`](../../memory-bank/_terms.md#deviceminirecap) | Bring the opening frame's own rows back, redrawn small, at the close. |
+| [`[device::DivisorChips]`](../../memory-bank/_terms.md#devicedivisorchips) | Divisors of `n` as a row of chips, the trivial `1` and `n` muted, the rest highlighted — here, the labels over the Solution's fraction buckets. |
 
 [![Divisor pair fan](../../memory-bank/visualizations/A000005/screenshots/divisor-pair-fan.png)](../../memory-bank/visualizations/A000005/viz.html)
 [![Non-closing table](../../memory-bank/visualizations/A000005/screenshots/non-closing-table.png)](../../memory-bank/visualizations/A000005/viz.html)
