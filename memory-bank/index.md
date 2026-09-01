@@ -34,7 +34,8 @@
   explicit Problem→...→Solution decomposition, self-contained live HTML (no build/PNG pipeline —
   see its Architecture section for why), embedded math independently re-verified
 - [tasks](specs/tasks.md) — Status: draft — requirements on a TASK SPEC's own format: six sections
-  in order, devices must resolve, a `Status:` line must name real evidence
+  in order, devices must resolve, a `Status:` line must name real evidence, and every sequence
+  directory carries the implementation/proof pair described below
 - [specs/tasks/A100001.md](specs/tasks/A100001.md) · [specs/tasks/A000001.md](specs/tasks/A000001.md)
   — the applied instances of `tasks.md`'s format; linked from each `sequences/A{NNNNNN}/README.md`
 
@@ -47,6 +48,17 @@
 - `memory-bank/verify/*.mjs` — independent, committed, re-runnable checks of any algebraic/numeric
   claim a page embeds (this catalog's analogue of project-euler's `oracle.cpp`/`xcheck.cpp`); a
   task spec's correctness requirement cites a real, executed run of these, never "done" from memory
+
+### Code — two files per sequence, and why they are two
+- `sequences/A{NNNNNN}/solution.mjs` — computes the sequence from the definition the page draws,
+  with no table of published terms anywhere in it: a file that looked its answers up would prove
+  nothing about the explanation it accompanies
+- `sequences/A{NNNNNN}/proof.mjs` — checks that output using routines written from scratch rather
+  than imported from the search that produced it, and is the one file allowed to consult the
+  published terms. Running the same code twice agrees with itself for free; a second, slower,
+  independently written routine can disagree, which is what makes agreement evidence. Where a claim
+  is an existence claim ("this configuration is self-dual"), the proof produces the witness and
+  verifies it rather than reporting a yes
 
 ### Outside the memory bank
 - `sequences/A{NNNNNN}/README.md` — the sequence itself: what it counts, the framing chosen for its

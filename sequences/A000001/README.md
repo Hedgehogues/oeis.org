@@ -94,6 +94,30 @@ demands versus what an actual rotation in space can deliver, not just an unexpla
 
 **[Open the visualization →](viz.html)**
 
+## Computing it, and checking the computation
+
+Two files, deliberately not one:
+
+| | |
+|---|---|
+| [`solution.mjs`](solution.mjs) | Computes `a(n)` by the procedure the page draws — fix the identity, fill the multiplication table by backtracking under the Latin-square and associativity constraints, merge tables that differ only by relabelling. No table of known answers anywhere in it. |
+| [`proof.mjs`](proof.mjs) | Refuses to trust that output: revalidates every table as a group, re-tests distinctness with its own unpruned permutation search, matches each table against a group built by a named construction, and only then compares to OEIS. |
+
+```
+$ node sequences/A000001/solution.mjs 8
+a(1) = 1   (0 ms)  …  a(7) = 1   (33 ms)  ·  a(8) = 5   (7696 ms)
+1, 1, 1, 2, 1, 2, 1, 5
+
+$ node sequences/A000001/proof.mjs 8
+ok    a(8) = 5  · matched 5 known group(s): C8, C4×C2, C2×C2×C2, D8, Q8
+All checks passed for n = 1..8: sound, distinct, complete, and equal to OEIS A000001.
+```
+
+The search stops early: `n = 8` takes about 8 seconds, `n = 9` does not finish in four minutes.
+That wall is the sequence's own point restated as a runtime — looking at
+every possible multiplication table stops working almost immediately, which is exactly why the
+published values come from classification theory instead.
+
 Full requirements and acceptance criteria (including the independent group-table verification):
 [spec.md](../../memory-bank/specs/tasks/A000001.md).
 

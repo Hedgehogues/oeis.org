@@ -7,7 +7,8 @@ does it behave the way it does.
 
 Each sequence lives in its own directory under [`sequences/`](sequences/) (`sequences/A100001`,
 `sequences/A000001`, ...) with a single self-contained `viz.html` — open it directly in a browser,
-no build step, no dependencies beyond a Google Fonts stylesheet link.
+no build step, no dependencies beyond a Google Fonts stylesheet link — plus the two programs
+described below: one that computes the sequence, one that checks that computation.
 
 ## Sequences
 
@@ -45,6 +46,37 @@ Correctness of what a page CLAIMS lives one level up from the picture itself:
 algebraic or numeric fact (group tables — latin square, associativity, identity, self-inverse
 count) before that check's real output is cited as evidence in the sequence's own spec.
 
+## Every sequence ships two programs, and they disagree on purpose
+
+A picture that explains a sequence should be accompanied by code that produces it — and by code
+that doesn't take the first one's word for it. So each `sequences/A{NNNNNN}/` holds a pair:
+
+| File | Job | May it consult published terms? |
+|---|---|---|
+| `solution.mjs` | computes `a(n)` by exactly the procedure the page draws | **no** — a lookup table would make it circular |
+| `proof.mjs` | re-derives, re-checks and witnesses what the first one returned | **yes** — that is its entire purpose |
+
+`proof.mjs` never reuses the search that produced the answer. Running one routine twice agrees with
+itself for free; a second, deliberately slower routine written straight from the definition can
+disagree, and that possibility is what makes agreement mean something. Each pair checks four things
+at minimum — every returned object really satisfies the definition, no two are the same object
+counted twice, nothing is missing (against an independent construction or an independently
+published count), and the totals match OEIS. Where the claim is an existence claim — "this
+configuration is isomorphic to its own dual" — the proof produces the relabeling and verifies it
+entry by entry rather than reporting a yes.
+
+```
+$ node sequences/A000001/proof.mjs 8
+All checks passed for n = 1..8: sound, distinct, complete, and equal to OEIS A000001.
+
+$ node sequences/A100001/proof.mjs 12
+All checks passed for n = 1..12: sound, distinct, complete, witnessed, and equal to OEIS A100001.
+```
+
+Both searches are exhaustive, so both hit a wall quickly — A000001 at `n=9`, A100001 past `n=13` —
+and each file's header states the measured range instead of hiding it. For A000001 that wall is the
+sequence's own subject matter restated as a runtime.
+
 ## Repository layout, and what it's copied from
 
 The devices catalog (`memory-bank/_terms.md`), its two meta-specs
@@ -55,6 +87,10 @@ specs (`memory-bank/specs/tasks/`), the short auto-loaded rules file
 [Hedgehogues/project-euler](https://github.com/Hedgehogues/project-euler)'s own memory bank — same
 RFC discipline, same one-way "sequences point at the dictionary, never the reverse" rule, same
 insistence that every `Status: done` names a real, re-run check rather than a claim from memory.
+The `solution.mjs` / `proof.mjs` split follows that repository's `solution.cpp`-plus-oracle
+arrangement, with one change: there the oracle is usually a slow brute force over the same inputs,
+while the objects counted here are structures, so the check also has to verify the structure and,
+for an existence claim, produce the witness.
 What changed, and why, is stated in each adapted file's own header — most substantially,
 [`memory-bank/specs/visualizations.md`](memory-bank/specs/visualizations.md)'s Architecture section,
 since this catalog's pages are live and interactive rather than built to a static PNG.

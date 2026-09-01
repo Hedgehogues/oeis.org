@@ -36,6 +36,32 @@ with the Fano plane's `n=7` marked as the first nonzero term.
 
 **[Open the visualization →](viz.html)**
 
+## Computing it, and checking the computation
+
+Two files, deliberately not one:
+
+| | |
+|---|---|
+| [`solution.mjs`](solution.mjs) | Builds every `(n_3)` configuration up to isomorphism, swaps the roles of points and lines in each one, and counts those isomorphic to that swap. No table of known answers anywhere in it. |
+| [`proof.mjs`](proof.mjs) | Refuses to trust that output: its own permutation search with no shared pruning, the Fano plane rebuilt from algebra instead of from a search, the published count of *all* `(n_3)` configurations as the completeness reference, and — for every self-duality claim — explicit point and line permutations verified cell by cell on the raw incidence matrix. |
+
+```
+$ node sequences/A100001/solution.mjs 12
+a(12) = 95   (of 229 configuration(s) of type (12_3), 15095 ms)
+0, 0, 0, 0, 0, 0, 1, 1, 3, 10, 25, 95
+
+$ node sequences/A100001/proof.mjs 12
+ok    a(12) = 95 self-dual of 229 configuration(s)  · 95 duality witness(es) verified on the incidence matrices
+All checks passed for n = 1..12: sound, distinct, complete, witnessed, and equal to OEIS A100001.
+```
+
+The witness check is the point of the picture, made mechanical: the two grids on the page do *not*
+match as drawn, and the proof shows why that is fine by producing the relabeling that makes them
+match and verifying it entry by entry.
+
+Measured: `n = 12` in 15 s, `n = 13` in about 4 minutes (2036 configurations, 366 self-dual).
+`n = 14` was not run. The published terms go to `n = 19`, which no search of this shape reaches.
+
 Full requirements and acceptance criteria:
 [spec.md](../../memory-bank/specs/tasks/A100001.md).
 
