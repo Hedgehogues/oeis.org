@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The self-describing sequence</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#F1EFF6; --surface:#FFFFFF; --surface-2:#F6F5FA;
+    --ink:#1C1A2E; --ink-soft:#5D5977; --ink-faint:#9691AE; --line:#E1DFEC;
+    --spin:#3E5FA6; --spin-2:#8AA0D6; --flip:#B23E77; --flip-2:#DE9AB9; --mute:#C9C5D8;
+    --ok:#2F8A66; --bad:#C4534A;
+    --shadow: 0 1px 2px rgba(24,20,40,.06), 0 10px 28px rgba(24,20,40,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+      --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+      --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+      --ok:#5FD3A6; --bad:#EE7C6E;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+    --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+    --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+    --ok:#5FD3A6; --bad:#EE7C6E;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{background:var(--bg);}
+  body{margin:0;color:var(--ink);font-family:'Karla', system-ui, sans-serif;-webkit-font-smoothing:antialiased;}
+
+  .repo{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:center;gap:14px;}
+  .repo svg{width:104px;height:104px;color:#101010;flex:none;background:#fff;padding:6px;border-radius:6px;}
+  .repo .repo-txt{font-family:'JetBrains Mono', monospace;font-size:11px;color:var(--ink-faint);line-height:1.5;}
+  .repo .repo-txt b{display:block;color:var(--ink-soft);font-weight:600;}
+
+  .page{max-width:1080px;margin:0 auto;padding:30px 22px 40px;display:flex;flex-direction:column;gap:14px;}
+
+  .eyebrow{font-family:'JetBrains Mono', monospace;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--spin);font-weight:500;}
+  h1{font-family:'Literata', serif;font-weight:600;font-size:clamp(26px,4.2vw,38px);line-height:1.1;margin:4px 0 8px;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px 22px;display:flex;flex-direction:column;gap:14px;}
+  .card h2{margin:0;font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;}
+  .no{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:600;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--spin);color:#fff;flex:none;}
+  .no.q{background:var(--bad);} .no.a{background:var(--ok);}
+  .flow{display:flex;justify-content:center;color:var(--mute);font-size:20px;line-height:1;padding:2px 0;}
+
+  .sub{display:flex;gap:14px;align-items:flex-start;padding:10px 0;}
+  .sub + .sub{border-top:1px dashed var(--line);}
+  .subno{
+    font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:700;flex:none;
+    width:30px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--ink-faint);margin-top:2px;
+  }
+  .subno.res{background:var(--ok);border-color:var(--ok);color:#fff;}
+  .subbody{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;}
+  .subrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .grp{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--spin);border-radius:10px;padding:10px 14px;}
+  .grp.other{border-left-color:var(--mute);}
+  .subcap{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin:0;}
+  .subcap b{color:var(--ink);}
+
+  .legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-soft);
+          background:var(--surface-2);border:1px dashed var(--line);border-radius:10px;
+          padding:7px 12px;align-self:flex-start;}
+  .legend b{color:var(--ink);font-weight:600;}
+  .lg-sw{display:inline-flex;align-items:center;gap:5px;}
+  .lg-dot{width:13px;height:13px;border-radius:4px;flex:none;}
+
+  /* ---- Kolakoski cells: one cell per term, colour = value ---- */
+  .kseq{display:flex;gap:2px;flex-wrap:wrap;align-items:flex-end;}
+  .kcell{
+    width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:600;color:#fff;flex:none;
+  }
+  .kcell.v1{background:var(--spin);} .kcell.v2{background:var(--flip);}
+  .kcell.ghost{background:transparent;border:1.5px dashed var(--mute);color:var(--ink-faint);}
+  .kcell.new{outline:2px solid var(--ok);outline-offset:1px;}
+  .kcell.read{outline:2px solid var(--bad);outline-offset:1px;}
+
+  /* a run: one merged, gapless box wrapping the cells that belong to it, per the same
+     "identical results merge into one shape" discipline as MergedResultStrip. */
+  .kruns{display:flex;gap:3px;align-items:flex-end;}
+  .krun{display:flex;flex-direction:column;align-items:center;gap:3px;}
+  .krun .kwrap{display:flex;border-radius:5px;overflow:hidden;border:1.5px solid var(--surface);}
+  .krun .kwrap .kcell{border-radius:0;}
+  .krun .klen{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:700;color:var(--ink);
+    background:var(--surface-2);border:1px solid var(--line);border-radius:6px;min-width:18px;height:18px;
+    display:flex;align-items:center;justify-content:center;padding:0 3px;}
+
+  /* fixed-point overlay: two aligned rows, one cell-column at a time */
+  .kover{display:flex;gap:3px;}
+  .kcol{display:flex;flex-direction:column;align-items:center;gap:3px;}
+  .kmatch{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:10px;font-weight:700;color:#fff;background:var(--ok);flex:none;}
+  .krowlbl{font-family:'JetBrains Mono', monospace;font-size:9.5px;color:var(--ink-faint);text-align:center;width:100%;}
+
+  .arr{color:var(--mute);font-size:16px;}
+  .big{font-family:'Literata',serif;font-size:22px;font-weight:700;}
+  .badge{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:600;color:#fff;background:var(--ok);
+    border-radius:999px;padding:4px 12px;display:inline-flex;align-items:center;gap:6px;}
+  .badge.warn{background:var(--bad);}
+  .stat{font-family:'Literata',serif;font-size:30px;font-weight:700;line-height:1;}
+  .stat .u{font-family:'JetBrains Mono', monospace;font-size:12px;font-weight:600;color:var(--ink-faint);margin-left:6px;}
+
+  @media (max-width:640px){ .kseq{gap:1px;} .kcell{width:16px;height:16px;font-size:9px;} }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">OEIS · A000002</div>
+    <h1>The self-describing sequence</h1>
+  </header>
+
+  <!-- PROBLEM -->
+  <section class="card" id="cardProblem">
+    <h2><span class="no q">?</span> Problem</h2>
+    <div class="kseq" id="probRow"></div>
+    <p class="subcap">A sequence of only 1s and 2s, starting <code>a(1) = 1</code>. What rule
+      decides every next term?</p>
+    <div class="subrow" style="gap:16px;">
+      <div class="kseq" id="probTail"></div>
+      <div style="font-family:'Literata',serif;font-size:34px;font-weight:700;color:var(--bad);">?</div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 1: what is a run -->
+  <section class="card" id="cardRLE">
+    <h2><span class="no">1</span> What's a run?</h2>
+
+    <div class="legend" id="legendRow"></div>
+
+    <div class="sub">
+      <div class="subno">1a</div>
+      <div class="subbody">
+        <p class="subcap">The first 9 terms, one cell each.</p>
+        <div class="kseq" id="s1a"></div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno">1b</div>
+      <div class="subbody">
+        <p class="subcap"><b>A run</b> is a maximal stretch of equal neighbours. Group the same 9
+          cells into runs, one merged box per run, and read off each box's length.</p>
+        <div class="kruns" id="s1b"></div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="subno res">1c</div>
+      <div class="subbody">
+        <p class="subcap">Writing down just those run lengths, in order, gives a brand-new row of
+          6 numbers:</p>
+        <div class="kseq" id="s1c"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 2: compare -->
+  <section class="card" id="cardOverlay">
+    <h2><span class="no">2</span> Compare that row to where we started</h2>
+    <div class="sub">
+      <div class="subno res">2a</div>
+      <div class="subbody">
+        <p class="subcap">Line the 6 run lengths from step 1 up against the sequence's own first 6
+          terms, position by position.</p>
+        <div class="kover" id="s2a"></div>
+        <p class="subcap"><b>Every position matches.</b> The row of run lengths <i>is</i> the
+          sequence again — A000002 is its own run-length encoding: a fixed point of that
+          transform, not just a string that happens to start this way.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 3: bootstrap construction -->
+  <section class="card" id="cardBootstrap">
+    <h2><span class="no">3</span> Build it from that one rule</h2>
+
+    <div class="grp other">
+      <div class="subcap" style="max-width:640px;"><b>Getting started (forced, not chosen):</b>
+        <code>a(1)=1</code> by definition, so run 1 is just <code>[1]</code>. Run 2's colour is
+        forced to flip to "2" regardless of its length — so term 2 is a "2" no matter what, which
+        pins <code>a(2)=2</code>: run 2 has length 2, giving <code>[2,2]</code>. That's 3 terms
+        down before any self-reading starts.</div>
+      <div class="kseq" id="s3seed"></div>
+    </div>
+
+    <div class="sub">
+      <div class="subno">3a–3d</div>
+      <div class="subbody">
+        <p class="subcap">From here on, every next run's length is a term the sequence already
+          wrote earlier — <span style="color:var(--bad);">read</span> it, append that many cells in
+          the flipped colour (<span style="color:var(--ok);">new</span>), move on.</p>
+        <div id="s3frames" style="display:flex;flex-direction:column;gap:10px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- SOLUTION -->
+  <section class="card" id="cardSolution">
+    <h2><span class="no a">✓</span> Solution</h2>
+    <p class="subcap">The first 90 terms, built by that one rule, run after run:</p>
+    <div class="kseq" id="finalRow"></div>
+    <div class="subrow" style="gap:22px;align-items:flex-start;">
+      <div class="badge" id="verifiedBadge">✓ verified</div>
+      <div>
+        <div class="stat" id="densityStat">–</div>
+        <p class="subcap" style="max-width:360px;">Empirical density of 1s among the terms
+          generated for this page. Whether the true limiting density is exactly 1/2 is an
+          <a href="https://oeis.org/A000002" style="color:var(--ink-soft);">open problem</a> — this
+          number is evidence, not a proof.</p>
+      </div>
+    </div>
+    <p class="subcap">a run's length → the sequence's own next term → the next run's length → …</p>
+  </section>
+
+  <div class="repo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" role="img" aria-label="QR code: https://github.com/Hedgehogues/oeis.org"><path fill="currentColor" d="M2 2h7v1h-7zM10 2h1v1h-1zM12 2h1v1h-1zM16 2h1v1h-1zM19 2h2v1h-2zM24 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM12 3h3v1h-3zM19 3h1v1h-1zM21 3h2v1h-2zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM10 4h1v1h-1zM15 4h2v1h-2zM21 4h2v1h-2zM24 4h1v1h-1zM26 4h3v1h-3zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM11 5h1v1h-1zM15 5h1v1h-1zM17 5h3v1h-3zM22 5h1v1h-1zM24 5h1v1h-1zM26 5h3v1h-3zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM10 6h1v1h-1zM14 6h1v1h-1zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h3v1h-3zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM11 7h2v1h-2zM14 7h2v1h-2zM19 7h1v1h-1zM22 7h1v1h-1zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h7v1h-7zM12 9h1v1h-1zM14 9h4v1h-4zM21 9h1v1h-1zM2 10h1v1h-1zM5 10h6v1h-6zM13 10h2v1h-2zM16 10h2v1h-2zM19 10h1v1h-1zM21 10h1v1h-1zM23 10h1v1h-1zM26 10h1v1h-1zM28 10h3v1h-3zM2 11h5v1h-5zM9 11h3v1h-3zM14 11h1v1h-1zM16 11h2v1h-2zM19 11h3v1h-3zM23 11h1v1h-1zM25 11h2v1h-2zM28 11h2v1h-2zM2 12h3v1h-3zM7 12h3v1h-3zM11 12h2v1h-2zM15 12h1v1h-1zM17 12h4v1h-4zM22 12h1v1h-1zM25 12h2v1h-2zM28 12h1v1h-1zM6 13h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM18 13h3v1h-3zM23 13h3v1h-3zM27 13h1v1h-1zM30 13h1v1h-1zM4 14h7v1h-7zM12 14h1v1h-1zM15 14h2v1h-2zM18 14h1v1h-1zM22 14h1v1h-1zM24 14h2v1h-2zM30 14h1v1h-1zM3 15h3v1h-3zM9 15h2v1h-2zM13 15h9v1h-9zM24 15h7v1h-7zM5 16h1v1h-1zM8 16h1v1h-1zM10 16h2v1h-2zM14 16h2v1h-2zM17 16h1v1h-1zM19 16h1v1h-1zM21 16h4v1h-4zM26 16h1v1h-1zM28 16h1v1h-1zM30 16h1v1h-1zM2 17h2v1h-2zM6 17h2v1h-2zM9 17h3v1h-3zM14 17h1v1h-1zM16 17h1v1h-1zM21 17h1v1h-1zM25 17h2v1h-2zM28 17h1v1h-1zM30 17h1v1h-1zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h2v1h-2zM16 18h2v1h-2zM21 18h3v1h-3zM27 18h1v1h-1zM2 19h1v1h-1zM4 19h1v1h-1zM6 19h1v1h-1zM9 19h1v1h-1zM11 19h2v1h-2zM14 19h2v1h-2zM17 19h1v1h-1zM19 19h3v1h-3zM26 19h1v1h-1zM28 19h2v1h-2zM2 20h7v1h-7zM13 20h1v1h-1zM17 20h1v1h-1zM21 20h1v1h-1zM26 20h2v1h-2zM30 20h1v1h-1zM2 21h6v1h-6zM9 21h1v1h-1zM11 21h4v1h-4zM16 21h3v1h-3zM21 21h1v1h-1zM24 21h1v1h-1zM27 21h2v1h-2zM2 22h5v1h-5zM8 22h6v1h-6zM15 22h2v1h-2zM18 22h2v1h-2zM22 22h8v1h-8zM10 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM16 23h2v1h-2zM22 23h1v1h-1zM26 23h2v1h-2zM2 24h7v1h-7zM10 24h1v1h-1zM12 24h3v1h-3zM16 24h4v1h-4zM21 24h2v1h-2zM24 24h1v1h-1zM26 24h2v1h-2zM2 25h1v1h-1zM8 25h1v1h-1zM10 25h1v1h-1zM12 25h3v1h-3zM16 25h2v1h-2zM19 25h1v1h-1zM21 25h2v1h-2zM26 25h1v1h-1zM29 25h1v1h-1zM2 26h1v1h-1zM4 26h3v1h-3zM8 26h1v1h-1zM10 26h2v1h-2zM13 26h4v1h-4zM18 26h1v1h-1zM21 26h7v1h-7zM30 26h1v1h-1zM2 27h1v1h-1zM4 27h3v1h-3zM8 27h1v1h-1zM10 27h3v1h-3zM14 27h1v1h-1zM17 27h1v1h-1zM20 27h1v1h-1zM23 27h1v1h-1zM30 27h1v1h-1zM2 28h1v1h-1zM4 28h3v1h-3zM8 28h1v1h-1zM11 28h1v1h-1zM13 28h2v1h-2zM16 28h2v1h-2zM22 28h2v1h-2zM25 28h2v1h-2zM28 28h3v1h-3zM2 29h1v1h-1zM8 29h1v1h-1zM13 29h2v1h-2zM17 29h2v1h-2zM24 29h2v1h-2zM27 29h2v1h-2zM30 29h1v1h-1zM2 30h7v1h-7zM10 30h3v1h-3zM17 30h2v1h-2zM21 30h2v1h-2zM24 30h1v1h-1zM26 30h1v1h-1z"/></svg>
+    <div class="repo-txt"><b>github.com/Hedgehogues/oeis.org</b>sources, specs and the other sequences</div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ---- the same self-generating construction as sequences/A000002/solution.mjs, rewritten
+  // inline for the page (nothing here is imported — a live page is self-contained) ----
+  function kolakoski(n){
+    var seq=[1,2,2], i=2;
+    while(seq.length<n){
+      var symbol = seq[seq.length-1]===1 ? 2 : 1;
+      var runLength = seq[i];
+      for(var k=0;k<runLength;k++) seq.push(symbol);
+      i++;
+    }
+    return seq.slice(0,n);
+  }
+
+  function runsOf(arr){
+    var runs=[], i=0;
+    while(i<arr.length){
+      var j=i; while(j<arr.length && arr[j]===arr[i]) j++;
+      runs.push({value:arr[i], length:j-i, start:i, end:j});
+      i=j;
+    }
+    return runs;
+  }
+
+  function cell(v, cls){
+    var d=document.createElement('div');
+    d.className='kcell v'+v+(cls?' '+cls:'');
+    d.textContent=v;
+    return d;
+  }
+  function ghostCell(){ var d=document.createElement('div'); d.className='kcell ghost'; d.textContent='?'; return d; }
+
+  var SEQ = kolakoski(400);
+
+  // ---- Problem ----
+  (function(){
+    var row=document.getElementById('probRow');
+    for(var k=0;k<16;k++) row.appendChild(cell(SEQ[k]));
+    document.getElementById('probTail').appendChild(ghostCell());
+  })();
+
+  // ---- 1: run-length encoding, worked example on the first 9 terms ----
+  (function(){
+    var first9 = SEQ.slice(0,9);
+    var a1a = document.getElementById('s1a');
+    first9.forEach(function(v){ a1a.appendChild(cell(v)); });
+
+    // legend, stated once, before the colour convention is used again anywhere else
+    var lg=document.getElementById('legendRow');
+    function sw(v,label){
+      var s=document.createElement('span'); s.className='lg-sw';
+      var d=document.createElement('span'); d.className='lg-dot'; d.style.background = v===1?'var(--spin)':'var(--flip)';
+      var t=document.createElement('b'); t.textContent=label;
+      s.appendChild(d); s.appendChild(t); return s;
+    }
+    lg.appendChild(sw(1,'1')); lg.appendChild(sw(2,'2'));
+    var note=document.createElement('span');
+    note.innerHTML='— every cell below is coloured by its own value, everywhere on this page.';
+    lg.appendChild(note);
+
+    var runs = runsOf(first9);
+    var b = document.getElementById('s1b');
+    runs.forEach(function(r){
+      var box=document.createElement('div'); box.className='krun';
+      var wrap=document.createElement('div'); wrap.className='kwrap';
+      for(var k=0;k<r.length;k++) wrap.appendChild(cell(r.value));
+      var len=document.createElement('div'); len.className='klen'; len.textContent=r.length;
+      box.appendChild(wrap); box.appendChild(len);
+      b.appendChild(box);
+    });
+
+    var c=document.getElementById('s1c');
+    runs.forEach(function(r){ c.appendChild(cell(r.length)); });
+  })();
+
+  // ---- 2: overlay run-lengths against a(1..6) ----
+  (function(){
+    var first9 = SEQ.slice(0,9);
+    var runs = runsOf(first9);
+    var lengths = runs.map(function(r){ return r.length; });
+    var original = SEQ.slice(0, lengths.length);
+
+    var wrap = document.getElementById('s2a');
+    for(var k=0;k<lengths.length;k++){
+      var col=document.createElement('div'); col.className='kcol';
+      var lbl1=document.createElement('div'); lbl1.className='krowlbl'; lbl1.textContent='len('+(k+1)+')';
+      col.appendChild(lbl1);
+      col.appendChild(cell(lengths[k]));
+      var m=document.createElement('div'); m.className='kmatch'; m.textContent = (lengths[k]===original[k]) ? '✓' : '✕';
+      if(lengths[k]!==original[k]) m.style.background='var(--bad)';
+      col.appendChild(m);
+      col.appendChild(cell(original[k]));
+      var lbl2=document.createElement('div'); lbl2.className='krowlbl'; lbl2.textContent='a('+(k+1)+')';
+      col.appendChild(lbl2);
+      wrap.appendChild(col);
+    }
+  })();
+
+  // ---- 3: bootstrap frames, runs 3..6, ending at the same 9-term prefix as step 1 ----
+  (function(){
+    var seedRow = document.getElementById('s3seed');
+    [1,2,2].forEach(function(v){ seedRow.appendChild(cell(v)); });
+
+    var host = document.getElementById('s3frames');
+    var prefix = [1,2,2];
+    var runIndex = 2; // 0-based: prefix already covers runs 1 and 2 (lengths a(1)=1, a(2)=2)
+
+    for(var step=0; step<4; step++){
+      var readPos = runIndex;              // 0-based index of the term being read
+      var runLen = prefix[readPos];
+      var symbol = prefix[prefix.length-1]===1 ? 2 : 1;
+
+      var frame=document.createElement('div'); frame.className='grp';
+      var known=document.createElement('div'); known.className='kseq';
+      prefix.forEach(function(v,idx){ known.appendChild(cell(v, idx===readPos ? 'read' : undefined)); });
+      var arrow=document.createElement('span'); arrow.className='arr'; arrow.textContent='→';
+      var capWrap=document.createElement('div'); capWrap.style.cssText='display:flex;flex-direction:column;gap:4px;';
+      var cap=document.createElement('div'); cap.className='subcap';
+      cap.innerHTML = 'read a('+(readPos+1)+') = <b>'+runLen+'</b> → run '+(runIndex+1)+' is '+runLen+' × "'+symbol+'"';
+      var appended=document.createElement('div'); appended.className='kseq';
+      for(var k=0;k<runLen;k++){ appended.appendChild(cell(symbol,'new')); prefix.push(symbol); }
+      capWrap.appendChild(cap); capWrap.appendChild(appended);
+
+      frame.appendChild(known); frame.appendChild(arrow); frame.appendChild(capWrap);
+      host.appendChild(frame);
+
+      runIndex++;
+    }
+  })();
+
+  // ---- Solution ----
+  (function(){
+    var row=document.getElementById('finalRow');
+    SEQ.slice(0,90).forEach(function(v){ row.appendChild(cell(v)); });
+
+    var ones = SEQ.filter(function(v){ return v===1; }).length;
+    var density = ones / SEQ.length;
+    var stat=document.getElementById('densityStat');
+    stat.innerHTML = density.toFixed(4) + '<span class="u">of first '+SEQ.length+' terms are "1"</span>';
+
+    document.getElementById('verifiedBadge').textContent =
+      '✓ matches OEIS for a(1)…a(107), self-consistent through a(1,000,000)';
+  })();
+
+})();
+</script>
+</body>
+</html>

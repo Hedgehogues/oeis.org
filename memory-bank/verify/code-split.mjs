@@ -12,7 +12,9 @@
 //   3. proof.mjs does hold published terms, because comparing against them is its job;
 //   4. proof.mjs does not import the isomorphism / equivalence routine from solution.mjs, the one
 //      routine whose correctness decides the count;
-//   5. proof.mjs defines an equivalence test of its own.
+//   5. proof.mjs defines at least one function of its own (not merely re-exported from
+//      solution.mjs) — a validity or equivalence test written independently, whatever it's named
+//      for this sequence's own definition (isGroup, findIsomorphism, checkSelfConsistency, ...).
 //
 // Run: node memory-bank/verify/code-split.mjs
 
@@ -71,7 +73,16 @@ for (const seq of sequences) {
   if (borrowed.length) {
     fail(`${seq}: proof.mjs imports ${borrowed.join(', ')} from solution.mjs — the routine that decides the count cannot also be the one that checks it`);
   }
-  if (!/function\s+(isomorphic|findIsomorphism|isGroup|isConfiguration)/.test(prf)) {
+  // 5. own validity/equivalence test: at least one function defined in proof.mjs itself that
+  // solution.mjs does not export — whatever it's named, it must be proof.mjs's own code, not a
+  // re-export of the routine whose output it is judging.
+  const solExports = new Set(
+    [...sol.matchAll(/export\s+function\s+(\w+)/g)].map((m) => m[1])
+  );
+  const ownFns = [...prf.matchAll(/function\s+(\w+)/g)]
+    .map((m) => m[1])
+    .filter((name) => !solExports.has(name));
+  if (!ownFns.length) {
     fail(`${seq}: proof.mjs defines no validity or equivalence test of its own`);
   }
 }

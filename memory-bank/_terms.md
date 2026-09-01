@@ -376,3 +376,71 @@ Source: no canonical citation for the diagram; the underlying idea is a special 
   packaged anywhere as a named diagram technique.
 Example: built inline (`recipe()` in section 4b; the equivalent hand-built fork in section 3)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::RunLengthEncoding]
+Class: entity
+Standard name: Run-length encoding
+Essence: Group a sequence of symbols into its maximal runs of identical neighbours, draw each run
+  as one merged, gapless box holding its own repeated cells, and print that box's length — turning
+  "how many of these in a row" from something counted by eye into something drawn.
+Recognized by: the argument's next step needs to operate on run LENGTHS rather than on the raw
+  symbol stream — how many times a value repeats before something else appears, not which values
+  appear
+General case: applies to any sequence over a finite alphabet; a sequence with no two equal
+  neighbours anywhere degenerates to one run of length 1 per position, the visual signature of
+  "nothing to encode"
+Picture: ![Run-length encoding](visualizations/A000002/screenshots/run-length-encoding.png) —
+  `visualizations/A000002/viz.html`, section 1 (1a: individual cells; 1b: the same cells regrouped
+  into merged run boxes with printed lengths; 1c: the lengths read out as a fresh row)
+Reading order: the individual cells first (1a), then the same cells regrouped into merged run
+  boxes (1b) — the box WIDTH is the finding, read before the printed number confirms it — then the
+  printed lengths alone (1c)
+Limits:
+  - MUST: render each run as one merged, gapless box (the same discipline
+    [device::MergedResultStrip](#devicemergedresultstrip) states for identical results) rather than
+    leaving individual same-valued cells touching but separately bordered — separate borders around
+    identical neighbours read as an unexplained inconsistency, not a run.
+  - MUST: print the numeric run length on or directly beside its own box — a reader should never
+    have to count cells by eye to get a number the picture already computed.
+Source: [Wikipedia — Run-length encoding](https://en.wikipedia.org/wiki/Run-length_encoding)
+Example: built inline in `visualizations/A000002/viz.html` (`runsOf()`, the
+  `.krun`/`.kwrap`/`.klen` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::FixedPointOverlay]
+Class: entity
+Standard name: — (no established name found for the diagram itself; the underlying idea — a
+  sequence equal to a specific transform of itself — is what
+  [Wikipedia's Kolakoski sequence article](https://en.wikipedia.org/wiki/Kolakoski_sequence) calls
+  a fixed point of run-length encoding, the same sense in which
+  [Wikipedia's article on morphic words](https://en.wikipedia.org/wiki/Morphic_word) calls a word
+  "a fixed point of the endomorphism f")
+Essence: Draw a sequence's own transform (e.g. its run-length encoding) as a second row directly
+  beneath the original, one aligned column per position, and mark every column as matching or not
+  — so a claim that a sequence reproduces itself under some operation is a directly checkable
+  correspondence, not an assertion the reader has to take on faith.
+Recognized by: the argument's punchline is "applying operation T to this sequence gives the
+  sequence back" — a fixed-point claim over a shared alphabet — and stating the equality in words
+  would ask the reader to re-derive T themselves just to check it
+General case: applies to any sequence claimed to be a fixed point of ANY transform T over a shared
+  alphabet, not only run-length encoding — T could equally be a substitution rule, a shift, or any
+  other symbol-to-symbol operation the argument defines
+Picture: ![Fixed point overlay](visualizations/A000002/screenshots/fixed-point-overlay.png) —
+  `visualizations/A000002/viz.html`, section 2a (the 6 run lengths from section 1 aligned against
+  `a(1)..a(6)`, with a match mark in every column)
+Reading order: the top row (the transform's output) first, then the match mark, then the bottom
+  row (the original) — the match marks ARE the argument, read before the prose sentence that
+  restates them
+Limits:
+  - MUST: mark every column individually (a per-position check), not one summary badge for the
+    whole row — a single "matches ✓" claim about N positions is exactly the un-sourced count
+    principle 8 exists to rule out.
+  - MUST NOT: silently drop a mismatched column — if any position disagreed, that column renders
+    with the same visual weight as a match, styled distinctly (✕, the "bad" colour), never omitted.
+Source: [Wikipedia — Kolakoski sequence](https://en.wikipedia.org/wiki/Kolakoski_sequence) (states
+  the sequence "is the sequence of run lengths in its own run-length encoding") ·
+  [Wikipedia — Morphic word](https://en.wikipedia.org/wiki/Morphic_word) for the general
+  "fixed point of a transform" framing
+Example: built inline in `visualizations/A000002/viz.html` (the section-2a IIFE building
+  `.kcol`/`.kmatch` columns)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

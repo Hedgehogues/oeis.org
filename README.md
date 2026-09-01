@@ -33,9 +33,11 @@ that exact fault and confirming it fails.
 |---|---|---|
 | [A100001](sequences/A100001) | Self-dual `(n_3)` configurations | Matches OEIS for `n = 1..13`, witnessed |
 | [A000001](sequences/A000001) | Number of groups of order n | Matches OEIS for `n = 1..8`, verified |
+| [A000002](sequences/A000002) | Kolakoski sequence | Matches OEIS for `n = 1..107`, self-consistent through `n = 1,000,000` |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
+[![The self-describing sequence](memory-bank/visualizations/A000002/screenshots/full.png)](memory-bank/visualizations/A000002/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
@@ -65,7 +67,9 @@ entry by entry rather than reporting a yes.
 
 Both searches are exhaustive, so both hit a wall quickly — A000001 at `n=9`, A100001 past `n=13` —
 and each file's header states the measured range instead of hiding it. For A000001 that wall is the
-sequence's own subject matter restated as a runtime.
+sequence's own subject matter restated as a runtime. A000002 is not a combinatorial search at all —
+its construction is linear, ten million terms in under a tenth of a second — so its header states
+the honest opposite: no wall found, the practical limit is memory, not time.
 
 ## The page is live; the pictures above are a snapshot of it
 

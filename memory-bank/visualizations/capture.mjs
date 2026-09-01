@@ -72,6 +72,19 @@ const jobs = [
       ['solution-catalog.png', { css: '.card', nth: 6 }],       // full Solution section
     ],
   },
+  {
+    file: `${VIZ}/A000002/viz.html`,
+    outDir: `${VIZ}/A000002/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['run-length-encoding.png', { css: '#cardRLE' }],          // device::RunLengthEncoding
+      ['fixed-point-overlay.png', { css: '#cardOverlay' }],      // device::FixedPointOverlay
+      ['bootstrap-minirecap.png', { css: '#s3frames' }],         // device::MiniRecap (reused)
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();

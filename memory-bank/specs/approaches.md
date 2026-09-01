@@ -47,7 +47,9 @@ MUST/MUST NOT/SHALL/SHOULD/SHOULD NOT/MAY as in RFC 2119. Terms live in `_terms.
 [device::LogGrowthChart](../_terms.md#deviceloggrowthchart),
 [device::UnrealizedPlaceholder](../_terms.md#deviceunrealizedplaceholder),
 [device::MiniRecap](../_terms.md#deviceminirecap),
-[device::CombinationFork](../_terms.md#devicecombinationfork).
+[device::CombinationFork](../_terms.md#devicecombinationfork),
+[device::RunLengthEncoding](../_terms.md#devicerunlengthencoding),
+[device::FixedPointOverlay](../_terms.md#devicefixedpointoverlay).
 
 ## Scope
 **In scope:** the idea fields of `[device::*]` records — `Essence`, `Recognized by`,
@@ -100,7 +102,7 @@ existing record from its own README.
 ### Bounded Context and Aggregate Root
 - `device` — the only context. It has no separate aggregate-root record: the catalog-level
   invariants (schema, sourcing discipline) ARE the requirements below, not a block of their own.
-  `_terms.md` holds only the entities — the twelve `[device::*]` records themselves.
+  `_terms.md` holds only the entities — the fourteen `[device::*]` records themselves.
 
 ## Requirements
 > Statement — acceptance criterion — status.
@@ -108,7 +110,7 @@ existing record from its own README.
 ### MUST
 - Every record MUST carry Essence / Recognized by / General case / Source, and MUST NOT carry a
   field about a specific sequence — **MUST-entry-schema** — criterion: grepping each mandatory
-  heading yields as many lines as there are device records (12); there is no `Used in:` field.
+  heading yields as many lines as there are device records (14); there is no `Used in:` field.
   Status: done.
 - "Essence" MUST be a single sentence without formulas — **MUST-essence-plain** — criterion: the
   field contains no inline math notation beyond the plain word "n". Status: done.
@@ -122,15 +124,16 @@ existing record from its own README.
   contrasted..."), not a description of the drawing itself. Status: done.
 - Every record MUST carry its own `Source:` field, honestly stating "no established name found"
   when that's true rather than inventing or stretching a citation — **MUST-source** — criterion:
-  `grep -c '^Source:'` in `_terms.md` equals the number of device records (12). Status: done (12 of
-  12; 10 honestly cite no established name for the diagram itself, some still sourcing the
+  `grep -c '^Source:'` in `_terms.md` equals the number of device records (14). Status: done (14 of
+  14; 11 honestly cite no established name for the diagram itself, some still sourcing the
   underlying math concept where one exists).
 - Where a `Source:` field cites a URL, it MUST be encyclopedic (Wikipedia or an equivalent
   reference work) and MUST resolve over the network — **MUST-canonical-source** /
   **MUST-source-resolves** — criterion: every cited URL returns HTTP 200; verified live on
   2026-09-01 (`Cayley_table`, `Involution_(mathematics)`, `Group_theory#Group_actions`,
   `Cyclic_permutation`, `Divisor`, `Incidence_matrix`, `Configuration_(geometry)`,
-  `Logarithmic_scale` — all 200). Status: done.
+  `Logarithmic_scale`, `Run-length_encoding`, `Kolakoski_sequence`, `Morphic_word` — all 200).
+  Status: done.
 - The catalog — `_terms.md`'s `[device::*]` records — MUST NOT hold ANYTHING about a specific
   sequence — no OEIS number, no specific numeric example, not even a "used in" backlink —
   **MUST-no-task-specifics** — criterion: `_terms.md` contains no `[A{NNNNNN}::*]` records and no
@@ -139,16 +142,20 @@ existing record from its own README.
 - Reusing a known device on a new sequence MUST NOT change this layer —
   **MUST-reuse-changes-nothing** — criterion: adding a sequence whose page uses only already-
   catalogued devices requires no edit to `_terms.md`; the link appears only in
-  `sequences/A{NNNNNN}/README.md`. Status: done (untested against a third sequence yet, since only
-  two exist — this is the acceptance bar for the next one added).
+  `sequences/A{NNNNNN}/README.md`. Status: partially tested — A000002 reused
+  [device::MiniRecap](../_terms.md#deviceminirecap) for its bootstrap-construction section and that
+  reuse touched zero lines of `_terms.md`, but the same page also introduced two genuinely new
+  devices, so a sequence using ONLY already-catalogued devices — the full acceptance bar — is still
+  untested.
 - This spec MUST NOT reference any layer above it — **MUST-no-upward-reference** — criterion: it
   contains no link to `visualizations.md` and no requirement whose subject is a picture, a
   rendering step or a sequence. Status: done.
 
 ### SHOULD
 - A device's name SHOULD be the commonly accepted one where one exists, verified by search rather
-  than assumed — **SHOULD-standard-name**. Status: done for the two devices with a real standard
-  name (`CayleyTable`, `LogGrowthChart`); honestly marked absent for the other eight.
+  than assumed — **SHOULD-standard-name**. Status: done for the three devices with a real standard
+  name (`CayleyTable`, `LogGrowthChart`, `RunLengthEncoding`); honestly marked absent for the other
+  eleven.
 
 ## Links
 - Records this spec governs: the `[device::*]` blocks in `memory-bank/_terms.md`.
