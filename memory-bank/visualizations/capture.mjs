@@ -187,6 +187,19 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000020/viz.html`,
+    outDir: `${VIZ}/A000020/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['orbit-ring.png', { css: '#cardRing' }],          // device::OrbitRing (reused)
+      ['sieve.png', { css: '#cardSieve' }],               // device::TotientSieveStrip (reused)
+      ['count.png', { css: '#cardCount' }],
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();
