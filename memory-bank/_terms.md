@@ -710,3 +710,40 @@ Source: [Wikipedia — Burnside's lemma](https://en.wikipedia.org/wiki/Burnside%
 Example: built inline in `visualizations/A000029/viz.html` (the section-2 IIFE building
   `.bf-chip`/`.bf-row` elements from `cyclesOfPerm()`)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::IncrementalTally]
+Class: entity
+Standard name: — (no established name for the diagram; the underlying computation is the standard
+  dynamic-programming recurrence for a restricted counting problem — see
+  [Wikipedia — Change-making problem](https://en.wikipedia.org/wiki/Change-making_problem) and
+  [Wikipedia — Dynamic programming](https://en.wikipedia.org/wiki/Dynamic_programming))
+Essence: Build a count up one generator at a time (one coin denomination, one allowed part size),
+  rendering each stage as its own row of a growing table — so "why does the count jump here"
+  answers itself as "this generator was just switched on," rather than the reader trusting a single
+  final row.
+Recognized by: the argument's count is defined by a RESTRICTED generating set (only these coin
+  values, only these part sizes) that grows one member at a time, and the count for a fixed target
+  never decreases as the generating set grows — the interesting question is exactly how much each
+  new generator adds, not just the final total
+General case: applies to any counting problem computed by the standard unbounded- or bounded-
+  knapsack recurrence (coin change, restricted partitions, subset-sum variants) — one row per stage
+  of the generating set, one column per target value
+Picture: ![Incremental tally](visualizations/A000008/screenshots/staged-table.png) and
+  ![why a cell grows](visualizations/A000008/screenshots/why-grows.png) —
+  `visualizations/A000008/viz.html`, sections 1a (the full staged table) and 2a (one cell's two
+  source cells highlighted and summed)
+Reading order: the table's rows top to bottom first (each stage strictly grows on the one before),
+  then, on the specific cell being explained, its two highlighted source cells (a same-stage cell
+  and a prior-stage cell) before the printed sum
+Limits:
+  - MUST: highlight a grown cell's actual TWO source cells (the prior stage's own value at that
+    target, and the current stage's value at target-minus-generator) rather than only printing the
+    new total — a total with no visible source is exactly the un-sourced count principle 8 rules
+    out.
+  - MUST: keep every stage's full row visible (not only the row being explained) — a table showing
+    only the final row hides the very growth the device exists to make legible.
+Source: [Wikipedia — Change-making problem](https://en.wikipedia.org/wiki/Change-making_problem) ·
+  [Wikipedia — Dynamic programming](https://en.wikipedia.org/wiki/Dynamic_programming)
+Example: built inline in `visualizations/A000008/viz.html` (`waysStaged()`, the `.stage`/`.cell`
+  CSS classes, the section-2a IIFE highlighting `.src1`/`.src2`)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

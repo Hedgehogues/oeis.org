@@ -149,6 +149,18 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],                  // device::MergedResultStrip (reused)
     ],
   },
+  {
+    file: `${VIZ}/A000008/viz.html`,
+    outDir: `${VIZ}/A000008/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['staged-table.png', { css: '#cardStaged' }],   // device::IncrementalTally
+      ['why-grows.png', { css: '#cardWhy' }],          // device::IncrementalTally
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();
