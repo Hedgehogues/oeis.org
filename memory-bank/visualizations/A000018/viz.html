@@ -110,12 +110,12 @@
   <!-- PROBLEM -->
   <section class="card" id="cardProblem">
     <h2><span class="no q">?</span> Problem</h2>
-    <p class="subcap">Some integers can be written as <code>x² + 16y²</code> for whole numbers
-      <code>x, y ≥ 0</code> — <code>16 = 0²+16·1²</code>, <code>17 = 1²+16·1²</code>,
-      <code>20 = 2²+16·1²</code>. How many such integers are there up to a bound?</p>
+    <p class="subcap">Some integers are <code>x² + 16y²</code> for whole numbers
+      <code>x, y ≥ 0</code> — like <code>16</code>, <code>17</code>, <code>20</code>. How many are
+      there up to a bound?</p>
     <div class="chips" id="probChips"></div>
-    <p class="subcap">The counts up to <code>2ⁿ</code>, for <code>n = 0..9</code> — growing, but by
-      how much, and why can't you just count the <code>(x,y)</code> pairs that produce them?</p>
+    <p class="subcap">The counts up to <code>2ⁿ</code>, <code>n = 0..9</code>, are growing — but why
+      can't you just count the <code>(x,y)</code> pairs?</p>
   </section>
 
   <div class="flow">&darr;</div>
@@ -130,9 +130,9 @@
         <p class="subcap">Every <code>(x,y)</code> from 0 to 4. Two different cells land on the
           same number, <b>16</b> — linked below.</p>
         <div class="rg-wrap" id="s1a"></div>
-        <p class="subcap"><b>Counting cells would overcount.</b> The question asks how many
-          <i>distinct numbers</i> appear, not how many <code>(x,y)</code> pairs exist — so the real
-          work is finding and merging collisions like this one, not just filling the grid.</p>
+        <p class="subcap"><b>Counting cells would overcount.</b> The question is how many
+          <i>distinct numbers</i> appear, not how many pairs exist — finding collisions like this
+          one is the real work.</p>
       </div>
     </div>
   </section>
@@ -146,12 +146,11 @@
       <div class="subno res">2a</div>
       <div class="subbody">
         <p class="subcap"><code>x² + 16y²</code> is exactly <code>x² + (4y)²</code> — so every
-          number counted here is automatically expressible as a sum of two squares, with one of
-          them a multiple of 4. For <b>17</b>: <code>1² + 16·1² = 1² + 4² = 17</code>.</p>
-        <p class="subcap">That's a real, checkable <b>necessary</b> condition — not a full
-          characterization. Plenty of sums of two squares (like <code>2 = 1²+1²</code>) are not of
-          this stricter form at all, since Fermat's two-square theorem allows any even square as
-          the second term, not only a multiple of 16.</p>
+          number here is automatically a sum of two squares. For <b>17</b>:
+          <code>1² + 4² = 17</code>.</p>
+        <p class="subcap">That's <b>necessary</b>, not sufficient — sums like <code>2 = 1²+1²</code>
+          aren't this stricter form, since Fermat's theorem allows any even square, not only a
+          multiple of 16.</p>
       </div>
     </div>
   </section>
