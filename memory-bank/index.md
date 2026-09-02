@@ -85,6 +85,10 @@ problem's own folder there holds no picture files, and neither does a sequence's
     from a crop `capture.mjs` really produces, and no two records share one
   - `verify/pages.mjs` — the marker convention is stated, the QR is present and pinned outside the
     theme, both themes are defined, nothing is loaded but the fonts
+  - `verify/captions.mjs` — legends stay one-line, step narration stays within its per-step word
+    budget, rather than a page quietly growing wordier than its neighbours
+  - `verify/svg-bounds.mjs` — no `<text>` inside a page's own SVG charts is clipped by its
+    viewBox, checked against REAL rendered geometry, not source coordinates
   - `verify/code-split.mjs` — the implementation consults no published terms and the proof does not
     borrow the routine it judges
   - `verify/qr.mjs` — the QR decodes out of the captured PNG, the form that actually travels
