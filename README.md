@@ -43,6 +43,7 @@ that exact fault and confirming it fails.
 | [A000030](sequences/A000030) | Initial digit of n | Matches OEIS for `n = 0..109`; never-settles and Benford-contrast claims independently re-derived |
 | [A000018](sequences/A000018) | Positive integers ≤ 2ⁿ of form x²+16y² | Matches OEIS for `n = 0..20`, independently re-derived per value |
 | [A000021](sequences/A000021) | Positive integers ≤ 2ⁿ of form x²+12y² | Matches OEIS for `n = 0..18`; thin entry, borrows A000018's page |
+| [A000024](sequences/A000024) | Positive integers ≤ 2ⁿ of form x²+10y² | Matches OEIS for `n = 0..18`; thin entry, borrows A000018's page |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
