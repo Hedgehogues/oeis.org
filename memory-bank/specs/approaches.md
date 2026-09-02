@@ -155,10 +155,12 @@ existing record from its own README.
   catalogued devices requires no edit to `_terms.md`; the link appears only in
   `sequences/A{NNNNNN}/README.md`. Status: done — A000004, A000007, A000012 and A000027 each link to
   devices A000005's page already introduced (`DivisorPairFan`, `NonClosingTable`,
-  `FixedPointOverlay`, `MiniRecap`, `DivisorChips`) with no page of their own, and A000021 and
-  A000024 likewise link to `RepresentationGrid` and `LogGrowthChart` from A000018's page; `_terms.md`
-  was confirmed unchanged across all six (diffed, not assumed) — the full acceptance bar this line
-  used to call untested.
+  `FixedPointOverlay`, `MiniRecap`, `DivisorChips`) with no page of their own; A000021 and A000024
+  likewise link to `RepresentationGrid` and `LogGrowthChart` from A000018's page; and A000011 and
+  A000013 link to `BurnsideFixedPointTable` from A000029's page, over two DIFFERENT symmetry groups
+  from the one A000029 draws — confirming the reuse holds even when the borrowing sequence's own
+  group differs from the host's, not only when the constant differs (A000018's case). `_terms.md`
+  was confirmed unchanged across all eight (diffed, not assumed).
 - This spec MUST NOT reference any layer above it — **MUST-no-upward-reference** — criterion: it
   contains no link to `visualizations.md` and no requirement whose subject is a picture, a
   rendering step or a sequence. Status: done.

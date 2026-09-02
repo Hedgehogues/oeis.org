@@ -47,6 +47,7 @@ that exact fault and confirming it fails.
 | [A000029](sequences/A000029) | Bracelets: necklaces with turning over | Matches OEIS for `n = 0..19`, Burnside-checked |
 | [A000011](sequences/A000011) | Necklaces where complements are equivalent | Matches OEIS for `n = 0..19`; thin entry, borrows A000029's page |
 | [A000013](sequences/A000013) | Necklaces, colors swapped, no turning over | Matches OEIS for `n = 0..19`; thin entry, borrows A000029's page |
+| [A000016](sequences/A000016) | Outputs of a complementing shift register | Matches OEIS for `n = 0..19`; no picture, no catalogued device fits |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
