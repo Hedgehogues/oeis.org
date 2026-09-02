@@ -248,6 +248,18 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000028/viz.html`,
+    outDir: `${VIZ}/A000028/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['included.png', { css: '#cardIncluded' }],
+      ['excluded.png', { css: '#cardExcluded' }],
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();

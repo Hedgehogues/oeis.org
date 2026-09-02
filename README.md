@@ -56,6 +56,7 @@ that exact fault and confirming it fails.
 | [A000006](sequences/A000006) | Integer part of √(n-th prime) | Matches OEIS for `n = 1..71`; Legendre's conjecture checked for `k = 1..52` |
 | [A000015](sequences/A000015) | Smallest prime power ≥ n | Matches OEIS for `n = 1..72`, run/gap structure independently re-derived |
 | [A000026](sequences/A000026) | Mosaic numbers | Matches OEIS for `n = 1..72`; fixed-point claim checked in the direction OEIS actually states |
+| [A000028](sequences/A000028) | Numbers with an odd exponent 1-bit sum | Matches OEIS for `n = 1..67`; soundness and completeness both independently checked |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -73,6 +74,7 @@ that exact fault and confirming it fails.
 [![A prime between every pair of squares](memory-bank/visualizations/A000006/screenshots/full.png)](memory-bank/visualizations/A000006/viz.html)
 [![Runs between prime powers](memory-bank/visualizations/A000015/screenshots/full.png)](memory-bank/visualizations/A000015/viz.html)
 [![An if, not an iff](memory-bank/visualizations/A000026/screenshots/full.png)](memory-bank/visualizations/A000026/viz.html)
+[![Counting 1-bits in the exponents](memory-bank/visualizations/A000028/screenshots/full.png)](memory-bank/visualizations/A000028/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
