@@ -137,6 +137,18 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],                 // device::LogGrowthChart (reused)
     ],
   },
+  {
+    file: `${VIZ}/A000029/viz.html`,
+    outDir: `${VIZ}/A000029/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['group.png', { css: '#cardGroup' }],
+      ['burnside-table.png', { css: '#cardBurnside' }],            // device::BurnsideFixedPointTable
+      ['solution.png', { css: '#cardSolution' }],                  // device::MergedResultStrip (reused)
+    ],
+  },
 ];
 
 const browser = await chromium.launch();

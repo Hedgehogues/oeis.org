@@ -676,3 +676,37 @@ Source: no canonical citation for the diagram itself;
 Example: built inline in `visualizations/A000018/viz.html` (`buildGrid()`, the
   `.rg-cell`/`.rg-link` CSS/SVG classes)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::BurnsideFixedPointTable]
+Class: entity
+Standard name: Burnside's lemma (also called the Cauchy–Frobenius lemma, or the orbit-counting
+  theorem)
+Essence: List every element of a finite group acting on a set as its own small chip, print how
+  many points EACH element fixes beside it, and show the arithmetic mean of those printed numbers
+  — the mean itself equals the number of orbits, so "how many distinct objects" becomes a plain
+  average over a printed table instead of a claim about a search.
+Recognized by: the argument needs to count orbits of a group action and the group is small enough
+  to write out every one of its elements individually, each with a countable fixed-point set
+General case: applies to any finite group acting on a finite set — a single generator's cyclic
+  group, a dihedral group, or a dihedral group extended by an extra generator (e.g. color
+  complementation) all lay out the same way, one chip per element, regardless of which specific
+  group is being averaged over
+Picture: ![Burnside fixed-point table](visualizations/A000029/screenshots/burnside-table.png) —
+  `visualizations/A000029/viz.html`, section 2a (the dihedral group's 12 elements for n=6, each
+  chip's own fixed-string count, averaging to the page's own bracelet count)
+Reading order: the group's elements first (grouped by kind — rotations, then reflections), then
+  each chip's own printed fixed-point count, then the single averaged number at the end
+Limits:
+  - MUST: compute every chip's fixed-point count from that element's own explicit action (here, a
+    permutation's cycle decomposition), never from a formula copied in without checking it against
+    the group actually being drawn — a formula that's right for one group's parity is often wrong
+    for another's.
+  - MUST NOT: omit any group element from the table to save space — the average is only meaningful,
+    and only checkable by the reader, over the WHOLE group; a partial average is a different,
+    smaller number that happens to look similar.
+Source: [Wikipedia — Burnside's lemma](https://en.wikipedia.org/wiki/Burnside%27s_lemma) ·
+  [Wikipedia — Necklace (combinatorics)](https://en.wikipedia.org/wiki/Necklace_(combinatorics))
+  for the specific counting problem this page applies it to.
+Example: built inline in `visualizations/A000029/viz.html` (the section-2 IIFE building
+  `.bf-chip`/`.bf-row` elements from `cyclesOfPerm()`)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

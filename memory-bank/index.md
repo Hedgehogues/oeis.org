@@ -26,8 +26,9 @@
   MarkedAsymmetry, CayleyTable, SelfCancelDiagonal, MergedResultStrip, StateMap, OrbitRing,
   DivisorChips, IncidenceMatrixPair, LogGrowthChart, UnrealizedPlaceholder, MiniRecap,
   CombinationFork, RunLengthEncoding, FixedPointOverlay, FundamentalDomainPlot, DivisorPairFan,
-  NonClosingTable, NonConvergingTrace, FractionalPartHistogram, RepresentationGrid (the catalog-
-  and shell-level invariants live in the two specs below, not as blocks of their own)
+  NonClosingTable, NonConvergingTrace, FractionalPartHistogram, RepresentationGrid,
+  BurnsideFixedPointTable (the catalog- and shell-level invariants live in the two specs below, not
+  as blocks of their own)
 - [approaches](specs/approaches.md) — Status: draft — requirements on the IDEA in a device record:
   atomic, recognizable from the situation, canonical source where one exists, no mention of a
   specific sequence
@@ -46,7 +47,7 @@
   [specs/tasks/A000007.md](specs/tasks/A000007.md) · [specs/tasks/A000012.md](specs/tasks/A000012.md) ·
   [specs/tasks/A000027.md](specs/tasks/A000027.md) · [specs/tasks/A000030.md](specs/tasks/A000030.md) ·
   [specs/tasks/A000018.md](specs/tasks/A000018.md) · [specs/tasks/A000021.md](specs/tasks/A000021.md) ·
-  [specs/tasks/A000024.md](specs/tasks/A000024.md)
+  [specs/tasks/A000024.md](specs/tasks/A000024.md) · [specs/tasks/A000029.md](specs/tasks/A000029.md)
   — the applied instances of `tasks.md`'s format; linked from each `sequences/A{NNNNNN}/README.md`
 
 ### Pictures — all of them inside the memory bank

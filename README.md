@@ -44,6 +44,7 @@ that exact fault and confirming it fails.
 | [A000018](sequences/A000018) | Positive integers ≤ 2ⁿ of form x²+16y² | Matches OEIS for `n = 0..20`, independently re-derived per value |
 | [A000021](sequences/A000021) | Positive integers ≤ 2ⁿ of form x²+12y² | Matches OEIS for `n = 0..18`; thin entry, borrows A000018's page |
 | [A000024](sequences/A000024) | Positive integers ≤ 2ⁿ of form x²+10y² | Matches OEIS for `n = 0..18`; thin entry, borrows A000018's page |
+| [A000029](sequences/A000029) | Bracelets: necklaces with turning over | Matches OEIS for `n = 0..19`, Burnside-checked |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -52,6 +53,7 @@ that exact fault and confirming it fails.
 [![The four boring rows](memory-bank/visualizations/A000005/screenshots/full.png)](memory-bank/visualizations/A000005/viz.html)
 [![Same rule, two fates](memory-bank/visualizations/A000030/screenshots/full.png)](memory-bank/visualizations/A000030/viz.html)
 [![Counting without double-counting](memory-bank/visualizations/A000018/screenshots/full.png)](memory-bank/visualizations/A000018/viz.html)
+[![Average, don't search](memory-bank/visualizations/A000029/screenshots/full.png)](memory-bank/visualizations/A000029/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
