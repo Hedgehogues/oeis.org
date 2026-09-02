@@ -857,3 +857,41 @@ Source: [Wikipedia — Inclusion–exclusion principle](https://en.wikipedia.org
 Example: built inline in `visualizations/A000023/viz.html` (`bucketsOf()`, the `.bucket`/`.plus`/
   `.minus` CSS classes)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::RankSignedTally]
+Class: entity
+Standard name: — (no established name for the diagram; the underlying combinatorial object it
+  tallies — a partition's rank — is Dyson's, with an established Wikipedia article)
+Essence: List every member of one finite, fully-enumerated set (every partition of `n`), mark each
+  one individually by the parity of a computed statistic, then sum with sign (+1 per even, −1 per
+  odd) — so a signed total is a literal count of two visibly-marked groups, not a number asserted
+  to fall out of an abstract series.
+Recognized by: the argument's total is defined as (count with property A) minus (count with
+  property B) over a SINGLE fully-listed enumeration — distinct from
+  [device::SignedBucketSum](#devicesignedbucketsum), which sums closed-form BUCKET sizes over a
+  parameter `k` rather than marking individual already-enumerated objects one at a time
+General case: applies to any signed count over a finite, individually-listable set where the sign
+  comes from the parity of a per-object statistic (a partition's rank, a permutation's inversion
+  count, any other discrete invariant) — the full list must be shown, not a representative sample,
+  or the tally cannot be verified by the reader
+Picture: ![Rank signed tally](visualizations/A000025/screenshots/list.png) and
+  ![signed tally](visualizations/A000025/screenshots/signed-tally.png) —
+  `visualizations/A000025/viz.html`, sections 2a (all 11 partitions of 6, each bordered by rank
+  parity) and 3a (the two colour-matched counts summed to the signed total)
+Reading order: the full marked list first (register every member and its own colour), then the two
+  per-colour counts, then the signed sum that follows from them — never the bare total before the
+  list that produced it
+Limits:
+  - MUST: show every member of the enumeration, not a sample — the same completeness requirement
+    [device::PartitionBijectionMatch](#devicepartitionbijectionmatch) states for its two columns,
+    applied here to one marked list instead of two matched ones.
+  - MUST: the summary counts in the tally step MUST use the same two colours as the list step's
+    borders — a count badge in an unrelated colour breaks the direct visual trace from "how many of
+    each colour" back to "which ones are in the list above" (principle 8).
+Source: [Wikipedia — Rank of a partition](https://en.wikipedia.org/wiki/Rank_of_a_partition)
+  (states the definition used here — largest part minus number of parts — and attributes it to
+  Freeman Dyson, 1944) · [Wikipedia — Mock theta function](https://en.wikipedia.org/wiki/Mock_theta_function)
+  (states Ramanujan's `f(q)` formula this device's totals are checked against)
+Example: built inline in `visualizations/A000025/viz.html` (`partEl()`, the `.part.even`/`.part.odd`
+  CSS classes, the section-3a tally IIFE)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

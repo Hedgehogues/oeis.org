@@ -260,6 +260,19 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000025/viz.html`,
+    outDir: `${VIZ}/A000025/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['rank.png', { css: '#cardRank' }],
+      ['list.png', { css: '#cardList' }],
+      ['signed-tally.png', { css: '#cardTally' }],   // device::RankSignedTally
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();

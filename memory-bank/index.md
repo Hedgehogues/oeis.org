@@ -28,8 +28,8 @@
   CombinationFork, RunLengthEncoding, FixedPointOverlay, FundamentalDomainPlot, DivisorPairFan,
   NonClosingTable, NonConvergingTrace, FractionalPartHistogram, RepresentationGrid,
   BurnsideFixedPointTable, IncrementalTally, PartitionBijectionMatch, TotientSieveStrip,
-  SignedBucketSum (the catalog- and shell-level invariants live in the two specs below, not as
-  blocks of their own)
+  SignedBucketSum, RankSignedTally (the catalog- and shell-level invariants live in the two specs
+  below, not as blocks of their own)
 - [approaches](specs/approaches.md) — Status: draft — requirements on the IDEA in a device record:
   atomic, recognizable from the situation, canonical source where one exists, no mention of a
   specific sequence
@@ -54,7 +54,8 @@
   [specs/tasks/A000009.md](specs/tasks/A000009.md) · [specs/tasks/A000010.md](specs/tasks/A000010.md) ·
   [specs/tasks/A000020.md](specs/tasks/A000020.md) · [specs/tasks/A000023.md](specs/tasks/A000023.md) ·
   [specs/tasks/A000006.md](specs/tasks/A000006.md) · [specs/tasks/A000015.md](specs/tasks/A000015.md) ·
-  [specs/tasks/A000026.md](specs/tasks/A000026.md) · [specs/tasks/A000028.md](specs/tasks/A000028.md)
+  [specs/tasks/A000026.md](specs/tasks/A000026.md) · [specs/tasks/A000028.md](specs/tasks/A000028.md) ·
+  [specs/tasks/A000025.md](specs/tasks/A000025.md)
   — the applied instances of `tasks.md`'s format; linked from each `sequences/A{NNNNNN}/README.md`
 
 ### Pictures — all of them inside the memory bank
