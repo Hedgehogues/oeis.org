@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No room for a smaller piece</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#F1EFF6; --surface:#FFFFFF; --surface-2:#F6F5FA;
+    --ink:#1C1A2E; --ink-soft:#5D5977; --ink-faint:#9691AE; --line:#E1DFEC;
+    --spin:#3E5FA6; --spin-2:#8AA0D6; --flip:#B23E77; --flip-2:#DE9AB9; --mute:#C9C5D8;
+    --ok:#2F8A66; --bad:#C4534A;
+    --shadow: 0 1px 2px rgba(24,20,40,.06), 0 10px 28px rgba(24,20,40,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+      --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+      --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+      --ok:#5FD3A6; --bad:#EE7C6E;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+    --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+    --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+    --ok:#5FD3A6; --bad:#EE7C6E;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{background:var(--bg);}
+  body{margin:0;color:var(--ink);font-family:'Karla', system-ui, sans-serif;-webkit-font-smoothing:antialiased;}
+
+  .repo{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:center;gap:14px;}
+  .repo svg{width:104px;height:104px;color:#101010;flex:none;background:#fff;padding:6px;border-radius:6px;}
+  .repo .repo-txt{font-family:'JetBrains Mono', monospace;font-size:11px;color:var(--ink-faint);line-height:1.5;}
+  .repo .repo-txt b{display:block;color:var(--ink-soft);font-weight:600;}
+
+  .page{max-width:1080px;margin:0 auto;padding:30px 22px 40px;display:flex;flex-direction:column;gap:14px;}
+
+  .eyebrow{font-family:'JetBrains Mono', monospace;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--spin);font-weight:500;}
+  h1{font-family:'Literata', serif;font-weight:600;font-size:clamp(26px,4.2vw,38px);line-height:1.1;margin:4px 0 8px;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px 22px;display:flex;flex-direction:column;gap:14px;}
+  .card h2{margin:0;font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;}
+  .no{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:600;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--spin);color:#fff;flex:none;}
+  .no.q{background:var(--bad);} .no.a{background:var(--ok);}
+  .flow{display:flex;justify-content:center;color:var(--mute);font-size:20px;line-height:1;padding:2px 0;}
+
+  .sub{display:flex;gap:14px;align-items:flex-start;padding:10px 0;}
+  .sub + .sub{border-top:1px dashed var(--line);}
+  .subno{
+    font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:700;flex:none;
+    width:30px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--ink-faint);margin-top:2px;
+  }
+  .subno.res{background:var(--ok);border-color:var(--ok);color:#fff;}
+  .subbody{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;}
+  .subrow{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  .subcap{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin:0;}
+  .subcap b{color:var(--ink);}
+  .legend{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-soft);
+          background:var(--surface-2);border:1px dashed var(--line);border-radius:10px;
+          padding:7px 12px;align-self:flex-start;}
+  .legend b{color:var(--ink);font-weight:600;}
+
+  .badge{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:600;color:#fff;background:var(--ok);
+    border-radius:999px;padding:4px 12px;display:inline-flex;align-items:center;gap:6px;}
+  .big{font-family:'Literata',serif;font-size:26px;font-weight:700;}
+
+  /* ring of points */
+  .ringwrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .ringwrap .cap{font-family:'JetBrains Mono', monospace;font-size:10.5px;color:var(--ink-faint);}
+  .pt{stroke:var(--surface);stroke-width:2;}
+  .pt.b0{fill:var(--spin);} .pt.b1{fill:var(--flip);} .pt.none{fill:var(--mute);}
+
+  /* divisor chips (device::DivisorChips, reused) */
+  .divs{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;}
+  .dv{font-family:'JetBrains Mono', monospace;font-size:10px;font-weight:600;min-width:18px;height:18px;padding:0 4px;border-radius:9px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);color:var(--ink-faint);}
+  .dv.mid{background:var(--flip);border-color:var(--flip);color:#fff;}
+  .dvset{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .dvset .nn{font-family:'JetBrains Mono', monospace;font-size:11px;color:var(--ink-faint);}
+
+  /* block-closure trace */
+  .trace{display:flex;flex-direction:column;gap:6px;}
+  .tstep{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono', monospace;font-size:11px;}
+  .tstep .lbl{color:var(--ink-faint);min-width:120px;}
+  .tchip{min-width:20px;height:20px;padding:0 5px;border-radius:5px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-soft);font-weight:600;}
+  .tchip.grp{background:var(--spin);border-color:var(--spin);color:#fff;}
+  .tarrow{color:var(--mute);font-size:14px;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">OEIS · A000019</div>
+    <h1>No room for a smaller piece</h1>
+  </header>
+
+  <!-- PROBLEM -->
+  <section class="card" id="cardProblem">
+    <h2><span class="no q">?</span> Problem</h2>
+    <p class="subcap">A group is <b>primitive</b> if it can't split its points into smaller equal
+      chunks it only ever shuffles whole. Degree 4 and degree 5 — which one splits?</p>
+    <div class="subrow" id="probRow"></div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 1: divisor chips -->
+  <section class="card" id="cardDivisors">
+    <h2><span class="no">1</span> A chunk size has to divide the point count</h2>
+    <p class="subcap">A chunk size must divide the point count. Compare the divisors of 4 and
+      of 5:</p>
+    <div class="subrow" id="s1a"></div>
+    <p class="subcap"><b>5 is prime</b> — only divisors 1 and 5, so no candidate chunk size at all.
+      Degree 4 has a real one: size 2.</p>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 2: block closure trace -->
+  <section class="card" id="cardClosure">
+    <h2><span class="no">2</span> Trying to build that chunk</h2>
+    <div class="legend" id="closureLegend"></div>
+    <div class="sub">
+      <div class="subno res">2a</div>
+      <div class="subbody">
+        <p class="subcap">Degree 4, rotation by one step, starting from points 0 and 2:</p>
+        <div class="trace" id="trace4"></div>
+        <p class="subcap">Stops at size 2 — a genuine chunk, matching the divisor found in step 1.</p>
+      </div>
+    </div>
+    <div class="sub">
+      <div class="subno">2b</div>
+      <div class="subbody">
+        <p class="subcap">Degree 5, rotation by one step, starting from points 0 and 1:</p>
+        <div class="trace" id="trace5"></div>
+        <p class="subcap">Every merge pulls in a new point — it never stops until everything is
+          included, since no divisor gave it anywhere else to stop.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- SOLUTION -->
+  <section class="card" id="cardSolution">
+    <h2><span class="no a">✓</span> Solution</h2>
+    <div class="subrow" style="gap:22px;align-items:center;">
+      <div class="ringwrap" id="solRing"></div>
+      <div>
+        <div class="big"><span id="solCount">–</span> primitive groups of degree 5</div>
+        <p class="subcap" style="max-width:420px;">Prime degree forces the rotation group itself
+          to be primitive. The full count also includes larger groups, each checked the same
+          way.</p>
+        <div class="badge" id="verifiedBadge" style="margin-top:8px;">✓ verified</div>
+      </div>
+    </div>
+    <p class="subcap">divisors of n → a candidate chunk size → try to build it → primitive iff it
+      never closes to anything smaller than everything</p>
+  </section>
+
+  <div class="repo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" role="img" aria-label="QR code: https://github.com/Hedgehogues/oeis.org"><path fill="currentColor" d="M2 2h7v1h-7zM10 2h1v1h-1zM12 2h1v1h-1zM16 2h1v1h-1zM19 2h2v1h-2zM24 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM12 3h3v1h-3zM19 3h1v1h-1zM21 3h2v1h-2zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM10 4h1v1h-1zM15 4h2v1h-2zM21 4h2v1h-2zM24 4h1v1h-1zM26 4h3v1h-3zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM11 5h1v1h-1zM15 5h1v1h-1zM17 5h3v1h-3zM22 5h1v1h-1zM24 5h1v1h-1zM26 5h3v1h-3zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM10 6h1v1h-1zM14 6h1v1h-1zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h3v1h-3zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM11 7h2v1h-2zM14 7h2v1h-2zM19 7h1v1h-1zM22 7h1v1h-1zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h7v1h-7zM12 9h1v1h-1zM14 9h4v1h-4zM21 9h1v1h-1zM2 10h1v1h-1zM5 10h6v1h-6zM13 10h2v1h-2zM16 10h2v1h-2zM19 10h1v1h-1zM21 10h1v1h-1zM23 10h1v1h-1zM26 10h1v1h-1zM28 10h3v1h-3zM2 11h5v1h-5zM9 11h3v1h-3zM14 11h1v1h-1zM16 11h2v1h-2zM19 11h3v1h-3zM23 11h1v1h-1zM25 11h2v1h-2zM28 11h2v1h-2zM2 12h3v1h-3zM7 12h3v1h-3zM11 12h2v1h-2zM15 12h1v1h-1zM17 12h4v1h-4zM22 12h1v1h-1zM25 12h2v1h-2zM28 12h1v1h-1zM6 13h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM18 13h3v1h-3zM23 13h3v1h-3zM27 13h1v1h-1zM30 13h1v1h-1zM4 14h7v1h-7zM12 14h1v1h-1zM15 14h2v1h-2zM18 14h1v1h-1zM22 14h1v1h-1zM24 14h2v1h-2zM30 14h1v1h-1zM3 15h3v1h-3zM9 15h2v1h-2zM13 15h9v1h-9zM24 15h7v1h-7zM5 16h1v1h-1zM8 16h1v1h-1zM10 16h2v1h-2zM14 16h2v1h-2zM17 16h1v1h-1zM19 16h1v1h-1zM21 16h4v1h-4zM26 16h1v1h-1zM28 16h1v1h-1zM30 16h1v1h-1zM2 17h2v1h-2zM6 17h2v1h-2zM9 17h3v1h-3zM14 17h1v1h-1zM16 17h1v1h-1zM21 17h1v1h-1zM25 17h2v1h-2zM28 17h1v1h-1zM30 17h1v1h-1zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h2v1h-2zM16 18h2v1h-2zM21 18h3v1h-3zM27 18h1v1h-1zM2 19h1v1h-1zM4 19h1v1h-1zM6 19h1v1h-1zM9 19h1v1h-1zM11 19h2v1h-2zM14 19h2v1h-2zM17 19h1v1h-1zM19 19h3v1h-3zM26 19h1v1h-1zM28 19h2v1h-2zM2 20h7v1h-7zM13 20h1v1h-1zM17 20h1v1h-1zM21 20h1v1h-1zM26 20h2v1h-2zM30 20h1v1h-1zM2 21h6v1h-6zM9 21h1v1h-1zM11 21h4v1h-4zM16 21h3v1h-3zM21 21h1v1h-1zM24 21h1v1h-1zM27 21h2v1h-2zM2 22h5v1h-5zM8 22h6v1h-6zM15 22h2v1h-2zM18 22h2v1h-2zM22 22h8v1h-8zM10 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM16 23h2v1h-2zM22 23h1v1h-1zM26 23h2v1h-2zM2 24h7v1h-7zM10 24h1v1h-1zM12 24h3v1h-3zM16 24h4v1h-4zM21 24h2v1h-2zM24 24h1v1h-1zM26 24h2v1h-2zM2 25h1v1h-1zM8 25h1v1h-1zM10 25h1v1h-1zM12 25h3v1h-3zM16 25h2v1h-2zM19 25h1v1h-1zM21 25h2v1h-2zM26 25h1v1h-1zM29 25h1v1h-1zM2 26h1v1h-1zM4 26h3v1h-3zM8 26h1v1h-1zM10 26h2v1h-2zM13 26h4v1h-4zM18 26h1v1h-1zM21 26h7v1h-7zM30 26h1v1h-1zM2 27h1v1h-1zM4 27h3v1h-3zM8 27h1v1h-1zM10 27h3v1h-3zM14 27h1v1h-1zM17 27h1v1h-1zM20 27h1v1h-1zM23 27h1v1h-1zM30 27h1v1h-1zM2 28h1v1h-1zM4 28h3v1h-3zM8 28h1v1h-1zM11 28h1v1h-1zM13 28h2v1h-2zM16 28h2v1h-2zM22 28h2v1h-2zM25 28h2v1h-2zM28 28h3v1h-3zM2 29h1v1h-1zM8 29h1v1h-1zM13 29h2v1h-2zM17 29h2v1h-2zM24 29h2v1h-2zM27 29h2v1h-2zM30 29h1v1h-1zM2 30h7v1h-7zM10 30h3v1h-3zM17 30h2v1h-2zM21 30h2v1h-2zM24 30h1v1h-1zM26 30h1v1h-1z"/></svg>
+    <div class="repo-txt"><b>github.com/Hedgehogues/oeis.org</b>sources, specs and the other sequences</div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  function divisors(n){ var r=[]; for(var d=1;d<=n;d++) if(n%d===0) r.push(d); return r; }
+
+  function ringSVG(n, blockOf){
+    var size=120, cx=size/2, cy=size/2, r=42, rad=10;
+    var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('width',size); svg.setAttribute('height',size);
+    svg.setAttribute('viewBox','0 0 '+size+' '+size);
+    for (var i=0;i<n;i++){
+      var ang = -Math.PI/2 + i*2*Math.PI/n;
+      var x = cx + r*Math.cos(ang), y = cy + r*Math.sin(ang);
+      var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx',x.toFixed(1)); c.setAttribute('cy',y.toFixed(1)); c.setAttribute('r',rad);
+      var cls = 'pt';
+      if (blockOf) { var b = blockOf(i); cls += b===0?' b0':(b===1?' b1':' none'); }
+      else cls += ' none';
+      c.setAttribute('class',cls);
+      svg.appendChild(c);
+      var t=document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x',x.toFixed(1)); t.setAttribute('y',(y+3.5).toFixed(1));
+      t.setAttribute('text-anchor','middle');
+      t.setAttribute('style','font-family:JetBrains Mono, monospace;font-size:9px;font-weight:600;fill:#fff;');
+      t.textContent = i;
+      svg.appendChild(t);
+    }
+    return svg;
+  }
+
+  function ringWithCaption(n, cap, blockOf){
+    var w=document.createElement('div'); w.className='ringwrap';
+    w.appendChild(ringSVG(n, blockOf));
+    var c=document.createElement('div'); c.className='cap'; c.textContent=cap;
+    w.appendChild(c);
+    return w;
+  }
+
+  // ---- Problem ----
+  (function(){
+    var row=document.getElementById('probRow');
+    row.appendChild(ringWithCaption(4, 'degree 4'));
+    row.appendChild(ringWithCaption(5, 'degree 5'));
+  })();
+
+  // ---- 1: divisor chips ----
+  (function(){
+    function chip(n){
+      var wrap=document.createElement('div'); wrap.className='dvset';
+      var d=document.createElement('div'); d.className='divs';
+      divisors(n).forEach(function(x){
+        var c=document.createElement('span'); c.className='dv'+((x!==1&&x!==n)?' mid':''); c.textContent=x; d.appendChild(c);
+      });
+      var nn=document.createElement('div'); nn.className='nn'; nn.textContent='divisors of '+n;
+      wrap.appendChild(d); wrap.appendChild(nn);
+      return wrap;
+    }
+    var row=document.getElementById('s1a');
+    row.appendChild(chip(4));
+    row.appendChild(chip(5));
+  })();
+
+  // ---- 2: block closure trace (device::BlockClosureTrace) ----
+  function traceRotation(n, a, b) {
+    // rotation by 1 step: r(i) = (i+1) mod n
+    var parent = []; for (var i=0;i<n;i++) parent.push(i);
+    function find(x){ while(parent[x]!==x){parent[x]=parent[parent[x]]; x=parent[x];} return x; }
+    function union(x,y){ x=find(x); y=find(y); if(x!==y) parent[x]=y; }
+    // size is captured RIGHT AFTER each union, not after the whole process finishes — a step's
+    // reported size must reflect what the process actually knew at that point, not the final
+    // outcome (a page that shows the destination from the very first step doesn't demonstrate a
+    // process, it just states an answer several times).
+    function classSize(x){ var r=find(x); var c=0; for (var i3=0;i3<n;i3++) if(find(i3)===r) c++; return c; }
+    var steps = [];
+    union(a,b);
+    steps.push({merged:[a,b], size: classSize(a)});
+    var changed = true;
+    while (changed) {
+      changed = false;
+      var classes = {};
+      for (var i2=0;i2<n;i2++){ var r2=find(i2); (classes[r2]=classes[r2]||[]).push(i2); }
+      for (var key in classes) {
+        var cls = classes[key];
+        if (cls.length<2) continue;
+        var img0 = (cls[0]+1)%n;
+        for (var k=1;k<cls.length;k++){
+          var imgk = (cls[k]+1)%n;
+          if (find(img0)!==find(imgk)) {
+            union(img0, imgk);
+            steps.push({merged:[img0,imgk], size: classSize(img0)});
+            changed = true;
+          }
+        }
+      }
+    }
+    return steps;
+  }
+
+  function renderTrace(hostId, n, a, b) {
+    var host = document.getElementById(hostId);
+    var steps = traceRotation(n, a, b);
+    steps.forEach(function(s, idx){
+      var row=document.createElement('div'); row.className='tstep';
+      var lbl=document.createElement('span'); lbl.className='lbl';
+      lbl.textContent = idx===0 ? ('start: merge '+s.merged[0]+','+s.merged[1]) : ('their images: merge '+s.merged[0]+','+s.merged[1]);
+      row.appendChild(lbl);
+      var arr=document.createElement('span'); arr.className='tarrow'; arr.textContent='→';
+      row.appendChild(arr);
+      var chip=document.createElement('span'); chip.className='tchip'+(s.size===n?' grp':''); chip.textContent='size '+s.size;
+      row.appendChild(chip);
+      host.appendChild(row);
+    });
+  }
+  document.getElementById('closureLegend').innerHTML =
+    '<b>Closure:</b> start two points in one chunk; whenever a movement sends that chunk\'s ' +
+    'points to two different chunks, merge those chunks too. Repeat.';
+
+  renderTrace('trace4', 4, 0, 2);
+  renderTrace('trace5', 5, 0, 1);
+
+  // ---- Solution ----
+  document.getElementById('solRing').appendChild(ringWithCaption(5, 'degree 5', function(i){ return null; }));
+  document.getElementById('solCount').textContent = 5;
+  document.getElementById('verifiedBadge').textContent = '✓ matches OEIS for n=1…5, exact enumeration through n=6';
+
+})();
+</script>
+</body>
+</html>

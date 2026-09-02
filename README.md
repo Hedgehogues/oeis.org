@@ -59,6 +59,7 @@ that exact fault and confirming it fails.
 | [A000028](sequences/A000028) | Numbers with an odd exponent 1-bit sum | Matches OEIS for `n = 1..67`; soundness and completeness both independently checked |
 | [A000025](sequences/A000025) | Coefficients of Ramanujan's mock theta function f(q) | Matches OEIS for `n = 0..59`; independently re-derived via partition rank through `n = 75` |
 | [A000014](sequences/A000014) | Series-reduced trees with n nodes | Matches OEIS for `n = 0..20`; independent labeled construction agrees through `n = 9` |
+| [A000019](sequences/A000019) | Primitive permutation groups of degree n | Matches OEIS for `n = 1..6`; exact (not approximate) enumeration, honest wall at `n = 7` |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -79,6 +80,7 @@ that exact fault and confirming it fails.
 [![Counting 1-bits in the exponents](memory-bank/visualizations/A000028/screenshots/full.png)](memory-bank/visualizations/A000028/viz.html)
 [![What the coefficients count](memory-bank/visualizations/A000025/screenshots/full.png)](memory-bank/visualizations/A000025/viz.html)
 [![No vertex allowed to be a pass-through](memory-bank/visualizations/A000014/screenshots/full.png)](memory-bank/visualizations/A000014/viz.html)
+[![No room for a smaller piece](memory-bank/visualizations/A000019/screenshots/full.png)](memory-bank/visualizations/A000019/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
@@ -116,6 +118,11 @@ A000014's wall is the same shape but for a different reason: its own constructio
 combinatorial explosion entirely (leaf-addition growth of canonical trees, not Prüfer sequences),
 so `n=20` finishes in 34.8 s — but the growing POOL of distinct canonical trees itself exhausts a
 4 GB heap partway through `n=22`, well before time would have been the limit.
+A000019 hits the sharpest wall of any sequence here: enumerating every subgroup of `S_n` (not an
+approximation — an earlier draft that closed only pairs of generators happened to give the right
+small-`n` answers without being provably complete, and was replaced) reaches `n=6` in 229.5 s
+(~3.83 min); `n=7`'s subgroup lattice (`S_7` has 5,040 elements) was not attempted, extrapolated
+from the ×9 growth already seen from `n=5` to `n=6` to take many hours.
 A000002, A000003, A000005 and A000030 are not
 combinatorial searches at all — A000002's construction is linear (ten million terms in under a
 tenth of a second), A000003's and A000005's are `O(√n)` per term, A000030's is `O(log₁₀n)` per term

@@ -929,3 +929,40 @@ Source: [Wikipedia — Homeomorphism (graph theory)](https://en.wikipedia.org/wi
 Example: built inline in `visualizations/A000014/viz.html` (`drawTree()`, the
   `.tnode.ok`/`.tnode.bad`/`.tnode.branch` CSS classes)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::BlockClosureTrace]
+Class: entity
+Standard name: — (no established name for the diagram; the underlying algorithm — repeatedly
+  merging a candidate block with the images the group's action forces into it, until stable — is
+  the standard "minimal block containing a pair" construction from permutation group theory, e.g.
+  Dixon & Mortimer, *Permutation Groups*, though not packaged there as a named diagram)
+Essence: Starting from two points placed in one candidate chunk, list each forced merge step — a
+  group element sends one chunk's points to two different chunks, so those chunks merge too — as a
+  row ending in the chunk's current size, until the process stabilizes; a chunk that stabilizes
+  below the total point count is a genuine nontrivial block, one that grows all the way to
+  everything demonstrates there was no valid chunk size after all.
+Recognized by: the argument needs to show WHY a specific group either does or does not admit a
+  nontrivial way to partition its points into equal chunks it only shuffles as wholes — asserting
+  "primitive" or "imprimitive" as a bare label gives the reader nothing to check it against
+General case: applies to any transitive action of a finite group on a finite set; the trace always
+  terminates (there are finitely many points to merge) and its final chunk size is a genuine
+  divisor of the total point count, matching whatever [device::DivisorChips](#devicedivisorchips)
+  already identified as a candidate
+Picture: ![Block closure trace](visualizations/A000019/screenshots/closure.png) —
+  `visualizations/A000019/viz.html`, section 2 (degree 4 stopping at chunk size 2; degree 5 forced
+  all the way to size 5)
+Reading order: the starting pair first, then each merge row top to bottom (which chunks combined,
+  the running size), then the final chip — reading the final size alone without the rows above it
+  would read as an assertion, not a demonstration
+Limits:
+  - MUST: show every merge step the algorithm actually performs, not a summary of the first and
+    last — a trace that skips steps to save space is exactly the count-with-no-source-cells fault
+    principle 8 rules out, applied to a process instead of a table.
+  - MUST: mark the final chip distinctly (here, filled solid) whenever its size equals the total
+    point count, since that is the specific outcome that means "no nontrivial block was found",
+    not merely "the process finished".
+Source: [Wikipedia — Primitive permutation group](https://en.wikipedia.org/wiki/Primitive_permutation_group) ·
+  [Wikipedia — Block (permutation group theory)](https://en.wikipedia.org/wiki/Block_(permutation_group_theory))
+Example: built inline in `visualizations/A000019/viz.html` (`traceRotation()`, `renderTrace()`, the
+  `.trace`/`.tstep`/`.tchip` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

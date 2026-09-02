@@ -286,6 +286,18 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000019/viz.html`,
+    outDir: `${VIZ}/A000019/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['divisors.png', { css: '#cardDivisors' }],       // device::DivisorChips (reused)
+      ['closure.png', { css: '#cardClosure' }],         // device::BlockClosureTrace
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();
