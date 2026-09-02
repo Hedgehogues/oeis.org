@@ -24,6 +24,7 @@ const checks = [
   ['catalog', 'device records still describe live elements'],
   ['pages', 'notation, QR, themes, self-containment'],
   ['captions', 'legends stay one-line, step narration stays within budget'],
+  ['svg-bounds', 'no SVG text is clipped by its own viewBox'],
   ['code-split', 'implementation and proof stay independent'],
   ['qr', 'the QR decodes out of the captured snapshot'],
   ['sequences', 'each sequence reproduces its published terms'],

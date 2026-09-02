@@ -292,11 +292,34 @@ by memory, not by a check" gap principle 9's own history already names, just nev
   measured them. `A000001` and `A000003` each had one legend over the limit too (28 and 47 words),
   found only because the same check ran against every page, not just the one being edited.
 
+## 18. An SVG's own viewBox needs margin for text, not just for the shapes
+
+An SVG's outermost element clips anything outside its `viewBox` by default. A bar's rectangle is
+usually sized well inside that box on purpose, so nobody notices the box itself has zero margin —
+until a text label sits close enough to an edge that its font ascender, or the width of a
+`text-anchor="end"` string, crosses that edge. Nothing about this shows up by reading the
+coordinates: `y="4"` and `x="38"` both look like ordinary, small, reasonable numbers on their own.
+
+- MUST: a `viewBox` used for any chart carrying `<text>` includes enough margin on every edge a
+  label can approach — sized from the actual rendered font metrics and string width, not guessed.
+- MUST NOT: fix a clipped label by moving the text further from the edge it's clipped against —
+  that only shrinks the chart's usable plotting area for the same reason the original margin was
+  missing. Widen the `viewBox` itself (expand it around the existing coordinates, which are
+  otherwise untouched) so the plotted content keeps its position and scale.
+- Precedent: `A100001`'s `#growth` log-scale bar chart (`viewBox="0 0 760 268"`) placed its topmost
+  value label at `y="4"` and its axis labels at `x="38"` with `text-anchor="end"` — both look
+  ordinary in the source. Rendered, the value label's ascender and roughly half of the widest axis
+  label ("1 000 000") fell outside the box and were silently cut, on every capture of this page
+  since it was built, including the one already committed. Found only by patching the label's `y`
+  in a live page and comparing screenshots by eye — nothing else in this catalog renders a page and
+  measures real layout. Fixed by widening the `viewBox` to `"-35 -10 795 278"`, which reveals the
+  same coordinates rather than moving them.
+
 Trigger: any request to explain an OEIS sequence with a picture — a new device record, a
 per-sequence page, an edit to an existing visualization; an invocation of the `explain-sequence`
 skill; adding or editing any `[device::*]` record.
 Mechanization: `node memory-bank/verify/all.mjs` exits non-zero on a violation of principles 9, 11,
-14, 15, 16 and 17, and every one of those checks was proved by reintroducing the exact fault it
+14, 15, 16, 17 and 18, and every one of those checks was proved by reintroducing the exact fault it
 exists for rather than merely written:
 
 | # | check | the fault it was tested against |
@@ -307,6 +330,7 @@ exists for rather than merely written:
 | 15 | `verify/pages.mjs` | restoring the old teal accent and a different page ground |
 | 16 | `verify/qr.mjs` | re-theming the QR and shrinking it, then re-capturing |
 | 17 | `verify/captions.mjs` | a legend or step caption growing past its word budget, page over page, unnoticed |
+| 18 | `verify/svg-bounds.mjs` | restoring `A100001`'s original `viewBox`, which silently clips its topmost axis and value labels again |
 
 The rest stay judgement calls, and saying so is the point of listing them: principles 1, 2, 7 and
 12 are about whether a decomposition is honest, which no script decides — principle 17 mechanizes
