@@ -298,6 +298,19 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000022/viz.html`,
+    outDir: `${VIZ}/A000022/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['peel.png', { css: '#cardPeel' }],
+      ['dichotomy.png', { css: '#cardDichotomy' }],
+      ['identity.png', { css: '#cardIdentity' }],
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();

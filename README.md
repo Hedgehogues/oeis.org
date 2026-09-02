@@ -60,6 +60,7 @@ that exact fault and confirming it fails.
 | [A000025](sequences/A000025) | Coefficients of Ramanujan's mock theta function f(q) | Matches OEIS for `n = 0..59`; independently re-derived via partition rank through `n = 75` |
 | [A000014](sequences/A000014) | Series-reduced trees with n nodes | Matches OEIS for `n = 0..20`; independent labeled construction agrees through `n = 9` |
 | [A000019](sequences/A000019) | Primitive permutation groups of degree n | Matches OEIS for `n = 1..6`; exact (not approximate) enumeration, honest wall at `n = 7` |
+| [A000022](sequences/A000022) | Centered hydrocarbons with n atoms | Matches OEIS for `n = 0..19`; independent labeled construction agrees through `n = 9` |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -81,6 +82,7 @@ that exact fault and confirming it fails.
 [![What the coefficients count](memory-bank/visualizations/A000025/screenshots/full.png)](memory-bank/visualizations/A000025/viz.html)
 [![No vertex allowed to be a pass-through](memory-bank/visualizations/A000014/screenshots/full.png)](memory-bank/visualizations/A000014/viz.html)
 [![No room for a smaller piece](memory-bank/visualizations/A000019/screenshots/full.png)](memory-bank/visualizations/A000019/viz.html)
+[![One center or two](memory-bank/visualizations/A000022/screenshots/full.png)](memory-bank/visualizations/A000022/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
