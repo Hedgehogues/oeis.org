@@ -196,11 +196,9 @@
           fractional part of <code>n·log<sub>10</sub>(2)</code>. The same 10 bins, for
           <code>n = 1..1,000,000</code>:</p>
         <div class="decbars" id="s4a"></div>
-        <p class="subcap">Dead <b>uniform</b> — every bin gets almost exactly 10%. This is the
-          equidistribution theorem: because <code>log<sub>10</sub>(2)</code> is irrational, its
-          multiples never repeat a pattern and fill every bin equally. Step 2's skew is what breaks
-          Benford's law for plain counting; this uniformity is what lets it hold for powers of
-          two.</p>
+        <p class="subcap">Dead <b>uniform</b> — every bin gets ~10%. Because
+          <code>log<sub>10</sub>(2)</code> is irrational, its multiples never repeat and fill every
+          bin equally — the opposite of step 2's skew, and why Benford holds for powers of two.</p>
       </div>
     </div>
   </section>
@@ -348,9 +346,8 @@
     });
   }
   document.getElementById('skewLegend').innerHTML =
-    'The leading digit of a whole number is decided entirely by the <b>fractional part of log<sub>10</sub>(n)</b> ' +
-    '— split into 10 equal bins from 0.0 to 1.0, this is where those fractional parts land for ' +
-    'every whole number from 1 to 1,000,000.';
+    'The leading digit is decided by the <b>fractional part of log<sub>10</sub>(n)</b> — 10 bins ' +
+    'from 0.0 to 1.0, where n up to 1,000,000 lands.';
   decileBars(document.getElementById('s2a'), function(n){ return Math.log10(n)%1; }, 1000000, 'skew');
   decileBars(document.getElementById('s4a'), function(n){ return (n*LOG10_2)%1; }, 1000000, 'uniform');
 
