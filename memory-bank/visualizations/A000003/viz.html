@@ -342,10 +342,8 @@
   var allForms = reducedForms(N);
 
   document.getElementById('domainLegend').innerHTML =
-    'Each reduced <code>(a, b, c)</code> plots as one point <b>τ = (−b + i·√56) / (2a)</b> in the ' +
-    'upper half-plane — position, not decoration. The shaded region is the standard ' +
-    '<b>fundamental domain</b> of the modular group: every reduced form of <i>any</i> discriminant ' +
-    'lands inside it, never outside.';
+    'Each reduced <code>(a, b, c)</code> plots as one point. The shaded region is the ' +
+    '<b>fundamental domain</b> — every reduced form lands inside it, never outside.';
 
   document.getElementById('s3a').appendChild(buildPlot(allForms, N, 260));
 

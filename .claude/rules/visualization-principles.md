@@ -269,12 +269,35 @@ not in a caption beside it. Every page therefore ends with a QR code to
   and enlarging to 104px, after which both pages' `full.png` decoded to the repo URL on the first
   attempt.
 
+## 17. A legend stays one line and per-step narration grows only with the number of steps, both by measurement
+
+Principle 1's "state it once, as a one-line legend" and principle 12's per-step captions were, until
+this principle, held only by judgement — nobody re-read every page each time a new one shipped to
+check whether the growing pile of definitions and step narration was still short. It wasn't: across
+the five pages that existed when this was checked, legend and narration word counts climbed with
+every later page (`A000001` -> `A000002` -> `A000003` -> `A000005`), and two of `A000005`'s own
+legends had grown into full paragraphs (37 and 36 words) with nothing to flag it — the exact "held
+by memory, not by a check" gap principle 9's own history already names, just never closed for length.
+
+- MUST: a `.legend` element's rendered text stays at or under 25 words — roughly one sentence,
+  matching principle 1's own "one-line" wording.
+- MUST: a page's `.subcap` paragraphs average at or under 25 words each. This is an AVERAGE, not a
+  flat per-page total, on purpose — principle 12 deliberately lets a page with more genuine steps
+  carry more narration; the budget scales with step count instead of penalizing a longer, honestly
+  decomposed chain.
+- Precedent: `A000005`'s two legends ("The operation, stated once: combine two rows f and g by
+  splitting n into every pair d × (n/d)...", 37 words; "Each cell is the row above combined with
+  the row to its left...", 36 words) and its twelve step captions (averaging 33.2 words) were all
+  trimmed to fit — without cutting any of the three devices they explain — once a check finally
+  measured them. `A000001` and `A000003` each had one legend over the limit too (28 and 47 words),
+  found only because the same check ran against every page, not just the one being edited.
+
 Trigger: any request to explain an OEIS sequence with a picture — a new device record, a
 per-sequence page, an edit to an existing visualization; an invocation of the `explain-sequence`
 skill; adding or editing any `[device::*]` record.
 Mechanization: `node memory-bank/verify/all.mjs` exits non-zero on a violation of principles 9, 11,
-14, 15 and 16, and every one of those checks was proved by reintroducing the exact fault it exists
-for rather than merely written:
+14, 15, 16 and 17, and every one of those checks was proved by reintroducing the exact fault it
+exists for rather than merely written:
 
 | # | check | the fault it was tested against |
 |---|---|---|
@@ -283,17 +306,21 @@ for rather than merely written:
 | 14 | `verify/catalog.mjs` | renaming the element a device record describes, leaving the record pointing at nothing |
 | 15 | `verify/pages.mjs` | restoring the old teal accent and a different page ground |
 | 16 | `verify/qr.mjs` | re-theming the QR and shrinking it, then re-capturing |
+| 17 | `verify/captions.mjs` | a legend or step caption growing past its word budget, page over page, unnoticed |
 
 The rest stay judgement calls, and saying so is the point of listing them: principles 1, 2, 7 and
-12 are about whether a decomposition is honest, which no script decides. Principles 4, 6 and 10
-need a human looking at a rendered screenshot — nothing static distinguishes a merged bar from four
-touching ones, or a visible marker from an invisible one. Principles 3, 5, 8 and 13 have cheap
-greps (a header/body class distinction; a bare arrow glyph with no adjacent label; a count badge
-with no highlighted cells nearby; Cyrillic in a tracked file) that are run by hand and have not
-been worth wiring up.
+12 are about whether a decomposition is honest, which no script decides — principle 17 mechanizes
+only their LENGTH, not whether a given definition or step is worth stating at all. Principles 4, 6
+and 10 need a human looking at a rendered screenshot — nothing static distinguishes a merged bar
+from four touching ones, or a visible marker from an invisible one. Principles 3, 5, 8 and 13 have
+cheap greps (a header/body class distinction; a bare arrow glyph with no adjacent label; a count
+badge with no highlighted cells nearby; Cyrillic in a tracked file) that are run by hand and have
+not been worth wiring up.
 
 The history this file records is the argument for the table above. Every principle in it was
 learned from a correction rather than from foresight, and two were learned twice: the marker legend
 was deleted, restored after the reader asked what the shapes meant, then deleted again by a later
 redesign and noticed only when a check was finally written for it. The compensation so far has been
-the reader's own questions, which is exactly what should not be the mechanism going forward.
+the reader's own questions, which is exactly what should not be the mechanism going forward —
+principle 17 exists because that pattern was about to repeat a third time, on text length instead of
+a deleted legend, and nobody had asked yet.

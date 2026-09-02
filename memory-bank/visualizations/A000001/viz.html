@@ -586,8 +586,8 @@
     sample.appendChild(el('rect',{x:9,y:17,width:38,height:22,rx:2,'class':'flf'}));
     sample.appendChild(el('circle',{cx:41,cy:19,r:4.6,'class':'marker'}));
     var txt=document.createElement('div');
-    txt.innerHTML='<b>The white dot marks one corner.</b> Shapes here are symmetric, so a movement '+
-                  'would look like nothing happened — the dot is what shows where the shape went.';
+    txt.innerHTML='<b>The white dot marks one corner</b> — without it, a symmetric shape\'s movement '+
+                  'would look like nothing happened.';
     lg.appendChild(sample); lg.appendChild(txt);
     s1aHost.appendChild(lg);
   })();

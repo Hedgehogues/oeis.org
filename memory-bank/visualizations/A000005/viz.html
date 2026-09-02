@@ -151,12 +151,11 @@
   <!-- PROBLEM -->
   <section class="card" id="cardProblem">
     <h2><span class="no q">?</span> Problem</h2>
-    <p class="subcap">Four sequences from the encyclopedia, written out. Each one is completely
-      described by its own definition — there is no hidden rule to uncover, and nothing to predict:</p>
+    <p class="subcap">Four sequences from the encyclopedia. Each is completely described by its own
+      definition — no hidden rule, nothing to predict:</p>
     <div id="probRows" style="display:flex;flex-direction:column;gap:6px;"></div>
-    <p class="subcap">So why is any of them worth an entry? <b>Because they are not really rows —
-      they are the constants of an operation</b>, and that operation produces this page's own
-      sequence, <code>d(n)</code>, the number of divisors of <code>n</code>.</p>
+    <p class="subcap">So why do these count as entries? <b>They are the constants of one
+      operation</b> — which produces this page's own sequence, <code>d(n)</code>.</p>
   </section>
 
   <div class="flow">&darr;</div>
@@ -170,9 +169,8 @@
     <div class="sub">
       <div class="subno">1a</div>
       <div class="subbody">
-        <p class="subcap">Take <code>n = 12</code>. Every divisor <code>d</code> is paired with its
-          cofactor <code>12/d</code>; each pair contributes one term, and the terms are added up.
-          Here both functions are the all-1s row, so every term is <code>1 × 1</code>:</p>
+        <p class="subcap"><code>n = 12</code>: each divisor <code>d</code> pairs with cofactor
+          <code>12/d</code>. Both rows here are all-1s, so every term is <code>1 × 1</code>:</p>
         <div id="s1a"></div>
       </div>
     </div>
@@ -180,9 +178,8 @@
     <div class="sub">
       <div class="subno res">1b</div>
       <div class="subbody">
-        <p class="subcap">Six pairs, so the total is 6 — which is exactly how many divisors 12 has.
-          Run the same fan at every <code>n</code> and the all-1s row, combined with itself,
-          writes out A000005:</p>
+        <p class="subcap">Six pairs, total 6 — exactly the divisor count of 12. Run the fan at
+          every <code>n</code>: all-1s combined with itself writes out A000005:</p>
         <div id="s1b"></div>
       </div>
     </div>
@@ -197,8 +194,8 @@
     <div class="sub">
       <div class="subno res">2a</div>
       <div class="subbody">
-        <p class="subcap">Combine each of the four rows with each other. Four of the sixteen cells
-          land on something that is <b>not one of the four</b> — those are marked:</p>
+        <p class="subcap">Combine each of the four rows with each other — 4 of the 16 cells land
+          on something <b>not among the four</b>:</p>
         <div id="s2a"></div>
         <p class="subcap" id="s2aCap"></p>
       </div>
@@ -214,16 +211,15 @@
       <div class="subno">3a</div>
       <div class="subbody">
         <p class="subcap">One row does nothing when combined with anything — it leaves every
-          partner unchanged. That makes it the operation's <b>identity</b>, the "1" of this algebra:</p>
+          partner unchanged, the operation's <b>identity</b>, the "1" of this algebra:</p>
         <div id="s3a" style="display:flex;flex-direction:column;gap:6px;"></div>
       </div>
     </div>
     <div class="sub">
       <div class="subno res">3b</div>
       <div class="subbody">
-        <p class="subcap">And the all-1s row has an <b>inverse</b>: combine it with the Möbius
-          function and the identity row comes back, position by position. That is Möbius inversion,
-          and it is what makes this an algebra rather than a table of coincidences:</p>
+        <p class="subcap">The all-1s row has an <b>inverse</b>: combined with Möbius, the identity
+          row returns — Möbius inversion, the reason this is an algebra:</p>
         <div class="kover" id="s3b"></div>
       </div>
     </div>
@@ -234,18 +230,16 @@
   <!-- SOLUTION -->
   <section class="card" id="cardSolution">
     <h2><span class="no a">✓</span> Solution</h2>
-    <p class="subcap">The last row rebuilds itself. Write the 12 fractions <code>k/12</code> in
-      lowest terms and sort them by the denominator each one lands on — the buckets are exactly the
-      divisors of 12, and their sizes are Euler's totient at each:</p>
+    <p class="subcap">The last row rebuilds itself: sort 12 fractions <code>k/12</code> (lowest
+      terms) by denominator — buckets are the divisors of 12, sized by Euler's totient:</p>
     <div class="divs" id="solDivs" style="margin-bottom:2px;"></div>
     <div class="buckets" id="solBuckets"></div>
     <div class="subrow" style="gap:18px;align-items:center;">
       <div id="solRecap" style="display:flex;flex-direction:column;gap:4px;"></div>
       <div>
         <div class="big" id="solTotal">–</div>
-        <p class="subcap" style="max-width:400px;">Every one of the 12 fractions lands in exactly
-          one bucket, so the bucket sizes sum back to 12. Done at every <code>n</code>, that is the
-          plain row <code>1, 2, 3, 4, …</code> reconstructed out of the others.</p>
+        <p class="subcap" style="max-width:400px;">Every fraction lands in one bucket, so sizes
+          sum to 12 — reconstructing the plain row <code>1, 2, 3, 4, …</code> from the others.</p>
         <div class="badge" id="verifiedBadge" style="margin-top:8px;">✓ verified</div>
       </div>
     </div>
@@ -306,10 +300,9 @@
   /* ---- 1: the divisor-pair fan ---- */
   (function(){
     document.getElementById('opLegend').innerHTML =
-      'The operation, stated once: <b>combine two rows f and g by splitting n into every pair ' +
-      'd × (n/d), taking f(d)·g(n/d) for each pair, and adding the results.</b> ' +
-      '<span style="color:var(--spin);font-weight:600;">blue</span> is the divisor d, ' +
-      '<span style="color:var(--flip);font-weight:600;">pink</span> its cofactor n/d.';
+      '<b>combine rows f and g</b>: split n into pairs d × (n/d), take f(d)·g(n/d), add the results. ' +
+      '<span style="color:var(--spin);font-weight:600;">blue</span> is d, ' +
+      '<span style="color:var(--flip);font-weight:600;">pink</span> is n/d.';
 
     var n=12, ds=divisors(n);
     var fan=document.createElement('div'); fan.className='fan';
@@ -343,9 +336,8 @@
   /* ---- 2: the non-closing table ---- */
   (function(){
     document.getElementById('tableLegend').innerHTML =
-      'Each cell is the row above combined with the row to its left. ' +
-      '<b>A pink cell landed outside the four headers</b> — the combination produced a function ' +
-      'that is not one of the rows being combined.';
+      'Each cell combines the row above with the row left of it. ' +
+      '<b>A pink cell escapes the four headers</b> — a new function.';
 
     var N=40;
     var actorRows = ACTORS.map(function(A){ return row(A[2],N); });
@@ -382,10 +374,8 @@
     });
     document.getElementById('s2a').appendChild(grid);
     document.getElementById('s2aCap').innerHTML =
-      '<b>'+escaped+' of '+(ACTORS.length*ACTORS.length)+' cells escape.</b> The four rows are ' +
-      'closed under nothing: combining them produces the divisor count, the sum of divisors, and ' +
-      'n·d(n) — none of which is on any header. That is why these rows earn entries: they are the ' +
-      'constants of an algebra whose products are the interesting functions.';
+      '<b>'+escaped+' of '+(ACTORS.length*ACTORS.length)+' cells escape</b> — these rows make d(n), ' +
+      'σ(n), n·d(n), none on any header. They are the constants.';
   })();
 
   /* ---- 3: identity and inverse ---- */

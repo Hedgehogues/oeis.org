@@ -23,6 +23,7 @@ const checks = [
   ['benford', 'the statistical claims A000030\'s page embeds'],
   ['catalog', 'device records still describe live elements'],
   ['pages', 'notation, QR, themes, self-containment'],
+  ['captions', 'legends stay one-line, step narration stays within budget'],
   ['code-split', 'implementation and proof stay independent'],
   ['qr', 'the QR decodes out of the captured snapshot'],
   ['sequences', 'each sequence reproduces its published terms'],
