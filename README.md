@@ -52,6 +52,7 @@ that exact fault and confirming it fails.
 | [A000009](sequences/A000009) | Partitions of n into distinct parts | Matches OEIS for `n = 0..55`; Euler's theorem witnessed as an explicit bijection |
 | [A000010](sequences/A000010) | Euler's totient function | Matches OEIS for `n = 1..69`; product formula, prime case and multiplicativity independently re-derived |
 | [A000020](sequences/A000020) | Primitive polynomials of degree n over GF(2) | Matches OEIS for `n = 2..37` (`n=1` resolved against OEIS's own correction) |
+| [A000023](sequences/A000023) | Permutations signed by fixed-point parity | Matches OEIS for `n = 0..12`, two independent formulas agree |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -65,6 +66,7 @@ that exact fault and confirming it fails.
 [![Two disguises, one count](memory-bank/visualizations/A000009/screenshots/full.png)](memory-bank/visualizations/A000009/viz.html)
 [![One prime at a time](memory-bank/visualizations/A000010/screenshots/full.png)](memory-bank/visualizations/A000010/viz.html)
 [![One full lap or several short ones](memory-bank/visualizations/A000020/screenshots/full.png)](memory-bank/visualizations/A000020/viz.html)
+[![Add the even, subtract the odd](memory-bank/visualizations/A000023/screenshots/full.png)](memory-bank/visualizations/A000023/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
@@ -94,9 +96,10 @@ entry by entry rather than reporting a yes.
 
 Both searches are exhaustive, so both hit a wall quickly — A000001 at `n=9`, A100001 past `n=13` —
 and each file's header states the measured range instead of hiding it. For A000001 that wall is the
-sequence's own subject matter restated as a runtime. A000018 hits a wall of a different kind: not
-combinatorial explosion but the size of the sieve array itself — `n=30` (a 1.07 GB byte array)
-finishes in seconds, `n=32` (4.3 GB) does not finish within 70 seconds and was stopped.
+sequence's own subject matter restated as a runtime. A000023's search is `n!` permutations and hits
+the same kind of wall — `n=12` in 18.1 s, `n=13` not attempted. A000018 hits a wall of a different
+kind: not combinatorial explosion but the size of the sieve array itself — `n=30` (a 1.07 GB byte
+array) finishes in seconds, `n=32` (4.3 GB) does not finish within 70 seconds and was stopped.
 A000002, A000003, A000005 and A000030 are not
 combinatorial searches at all — A000002's construction is linear (ten million terms in under a
 tenth of a second), A000003's and A000005's are `O(√n)` per term, A000030's is `O(log₁₀n)` per term

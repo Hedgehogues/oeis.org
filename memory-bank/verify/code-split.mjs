@@ -28,11 +28,13 @@ const SEQ = path.join(REPO, 'sequences');
 let failed = 0;
 const fail = (msg) => { failed++; console.log(`FAIL  ${msg}`); };
 
-// a numeric array literal with at least this many entries reads as a table of answers
+// a numeric array literal with at least this many entries reads as a table of answers — plain
+// numbers or BigInt literals (a trailing `n`, needed once a sequence's values outgrow safe
+// integers, e.g. A000023's signed factorial-sized terms)
 const TABLE_LEN = 6;
 const longArrays = (src) => {
   const out = [];
-  for (const m of src.matchAll(/\[\s*(-?\d+(?:\s*,\s*-?\d+){5,})\s*\]/g)) {
+  for (const m of src.matchAll(/\[\s*(-?\d+n?(?:\s*,\s*-?\d+n?){5,})\s*\]/g)) {
     out.push(m[1].split(',').length);
   }
   return out;

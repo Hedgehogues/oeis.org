@@ -822,3 +822,38 @@ Source: [Wikipedia — Euler's totient function](https://en.wikipedia.org/wiki/E
 Example: built inline in `visualizations/A000010/viz.html` (`strip()`, the `.cell`/`.struck`/
   `.strikenow` CSS classes)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::SignedBucketSum]
+Class: entity
+Standard name: — (no established name for the diagram; the underlying identity is a direct
+  application of the standard [inclusion–exclusion
+  principle](https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle))
+Essence: Partition a total count into buckets by a discrete parameter `k`, compute each bucket's
+  own closed-form size, and sum them with alternating sign by the parity of `k` — so an
+  inclusion–exclusion total is a row of signed bars actually adding to the stated answer, not a
+  formula whose cancellation the reader is asked to trust.
+Recognized by: the argument's total is defined as an alternating sum over buckets (choose-and-count
+  by a parameter, sign by that parameter's parity) — asserting only the final number hides exactly
+  the cancellation between positive and negative buckets that makes the identity work
+General case: applies to any signed count expressible as `sum_k (-1)^k * (closed-form bucket
+  size)` — permutations counted by fixed-point count, subsets counted by a forbidden-element
+  parameter, or any other inclusion–exclusion sum over a finite range of `k`
+Picture: ![Signed bucket sum](visualizations/A000023/screenshots/buckets.png) —
+  `visualizations/A000023/viz.html`, section 1a (all 5 fixed-point-count buckets for `n=4`, signed
+  and summed to `a(4)`)
+Reading order: each bucket's raw, unsigned count first, then its sign (colour plus a printed `+`/
+  `−`), then the running sum that follows in the next frame — never the pre-signed total before the
+  buckets that produced it
+Limits:
+  - MUST: show every bucket's own unsigned count next to its sign, not a pre-signed value alone —
+    the same un-sourced-count discipline principle 8 states for any claimed total, applied here to
+    an alternating sum specifically, where hiding the raw count also hides which buckets cancel.
+  - MUST: give added (even-`k`) and subtracted (odd-`k`) buckets visually distinct colours — an
+    alternating sum with no visible alternation reads as an ordinary bar chart, and the reader has
+    no way to see why some buckets subtract.
+Source: [Wikipedia — Inclusion–exclusion principle](https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle) ·
+  [Wikipedia — Derangement](https://en.wikipedia.org/wiki/Derangement) (the `D(n-k)` term each
+  bucket's size depends on)
+Example: built inline in `visualizations/A000023/viz.html` (`bucketsOf()`, the `.bucket`/`.plus`/
+  `.minus` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

@@ -200,6 +200,19 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000023/viz.html`,
+    outDir: `${VIZ}/A000023/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['buckets.png', { css: '#cardBuckets' }],           // device::SignedBucketSum
+      ['sum.png', { css: '#cardSum' }],
+      ['recurrence.png', { css: '#cardRecurrence' }],
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();
