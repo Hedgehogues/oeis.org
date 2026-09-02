@@ -50,6 +50,7 @@ that exact fault and confirming it fails.
 | [A000016](sequences/A000016) | Outputs of a complementing shift register | Matches OEIS for `n = 0..19`; no picture, no catalogued device fits |
 | [A000008](sequences/A000008) | Ways of making change for n cents | Matches OEIS for `n = 0..60`, independently enumerated |
 | [A000009](sequences/A000009) | Partitions of n into distinct parts | Matches OEIS for `n = 0..55`; Euler's theorem witnessed as an explicit bijection |
+| [A000010](sequences/A000010) | Euler's totient function | Matches OEIS for `n = 1..69`; product formula, prime case and multiplicativity independently re-derived |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -59,6 +60,9 @@ that exact fault and confirming it fails.
 [![Same rule, two fates](memory-bank/visualizations/A000030/screenshots/full.png)](memory-bank/visualizations/A000030/viz.html)
 [![Counting without double-counting](memory-bank/visualizations/A000018/screenshots/full.png)](memory-bank/visualizations/A000018/viz.html)
 [![Average, don't search](memory-bank/visualizations/A000029/screenshots/full.png)](memory-bank/visualizations/A000029/viz.html)
+[![One coin at a time](memory-bank/visualizations/A000008/screenshots/full.png)](memory-bank/visualizations/A000008/viz.html)
+[![Two disguises, one count](memory-bank/visualizations/A000009/screenshots/full.png)](memory-bank/visualizations/A000009/viz.html)
+[![One prime at a time](memory-bank/visualizations/A000010/screenshots/full.png)](memory-bank/visualizations/A000010/viz.html)
 [![One coin at a time](memory-bank/visualizations/A000008/screenshots/full.png)](memory-bank/visualizations/A000008/viz.html)
 [![Two disguises, one count](memory-bank/visualizations/A000009/screenshots/full.png)](memory-bank/visualizations/A000009/viz.html)
 

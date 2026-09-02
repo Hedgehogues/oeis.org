@@ -784,3 +784,41 @@ Source: [Wikipedia — Glaisher's theorem](https://en.wikipedia.org/wiki/Glaishe
 Example: built inline in `visualizations/A000009/viz.html` (`oddToDistinct()`, the section-3a IIFE
   building `.prow`/`.arrow` pairs)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::TotientSieveStrip]
+Class: entity
+Standard name: — (no established name for the diagram; Wikipedia's own article on Euler's totient
+  function describes the identical process in prose — "half of the twenty integers from 1 to 20
+  are divisible by 2, leaving ten; a fifth of those are divisible by 5, leaving eight" — without
+  ever drawing it)
+Essence: Show every integer `1..n` as one cell in a strip; for each DISTINCT prime factor of `n`,
+  in turn, strike every still-standing cell that is a multiple of it, captioning the fraction just
+  removed and the count left standing — so the product formula's each `(1 − 1/p)` factor is a
+  visible pass over the strip, not a term in a formula taken on faith.
+Recognized by: the argument needs to show WHY multiplying by `(1 − 1/p)` for each distinct prime
+  factor gives the count of integers coprime to `n`, rather than only stating the formula and
+  checking it computes the right number
+General case: applies to any `n`; a prime `n` shows exactly one pass striking every cell but the
+  last, the visual signature of `phi(p) = p − 1`; a highly composite `n` needs one pass per distinct
+  prime factor regardless of how many times that prime divides `n`, since repeated factors change
+  no further cell's fate once the first pass for that prime has run
+Picture: ![Totient sieve strip](visualizations/A000010/screenshots/strike5.png) —
+  `visualizations/A000010/viz.html`, sections 2a/3a (striking multiples of 2, then 5, from 1..20)
+  and the Solution section's final strip
+Reading order: the legend defining "struck" first, then the strip's own cells left to right,
+  registering which are freshly struck THIS pass versus already gone from an earlier one, then the
+  caption's stated fraction and running count
+Limits:
+  - MUST: strike only cells not already struck by an earlier pass, and render an earlier pass's
+    strikes in a visually DIFFERENT, quieter style than the current pass's fresh strikes — a
+    reader needs to see which fraction belongs to THIS prime, not a cumulative blur of every prime
+    struck so far.
+  - MUST: state the "struck = shares a factor with n" convention once, explicitly, before the
+    first pass (principle 1) — an unexplained color change between panels reads as a rendering
+    glitch, not a finding.
+Source: [Wikipedia — Euler's totient function](https://en.wikipedia.org/wiki/Euler%27s_totient_function)
+  (states the product formula and, in prose, the exact worked example — `n=20`, primes 2 and 5 —
+  this device draws)
+Example: built inline in `visualizations/A000010/viz.html` (`strip()`, the `.cell`/`.struck`/
+  `.strikenow` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

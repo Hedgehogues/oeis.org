@@ -58,7 +58,8 @@ MUST/MUST NOT/SHALL/SHOULD/SHOULD NOT/MAY as in RFC 2119. Terms live in `_terms.
 [device::RepresentationGrid](../_terms.md#devicerepresentationgrid),
 [device::BurnsideFixedPointTable](../_terms.md#deviceburnsidefixedpointtable),
 [device::IncrementalTally](../_terms.md#deviceincrementaltally),
-[device::PartitionBijectionMatch](../_terms.md#devicepartitionbijectionmatch).
+[device::PartitionBijectionMatch](../_terms.md#devicepartitionbijectionmatch),
+[device::TotientSieveStrip](../_terms.md#devicetotientsievestrip).
 
 ## Scope
 **In scope:** the idea fields of `[device::*]` records — `Essence`, `Recognized by`,
@@ -111,7 +112,7 @@ existing record from its own README.
 ### Bounded Context and Aggregate Root
 - `device` — the only context. It has no separate aggregate-root record: the catalog-level
   invariants (schema, sourcing discipline) ARE the requirements below, not a block of their own.
-  `_terms.md` holds only the entities — the twenty-three `[device::*]` records themselves.
+  `_terms.md` holds only the entities — the twenty-four `[device::*]` records themselves.
 
 ## Requirements
 > Statement — acceptance criterion — status.
@@ -119,7 +120,7 @@ existing record from its own README.
 ### MUST
 - Every record MUST carry Essence / Recognized by / General case / Source, and MUST NOT carry a
   field about a specific sequence — **MUST-entry-schema** — criterion: grepping each mandatory
-  heading yields as many lines as there are device records (23); there is no `Used in:` field.
+  heading yields as many lines as there are device records (24); there is no `Used in:` field.
   Status: done.
 - "Essence" MUST be a single sentence without formulas — **MUST-essence-plain** — criterion: the
   field contains no inline math notation beyond the plain word "n". Status: done.
@@ -133,8 +134,8 @@ existing record from its own README.
   contrasted..."), not a description of the drawing itself. Status: done.
 - Every record MUST carry its own `Source:` field, honestly stating "no established name found"
   when that's true rather than inventing or stretching a citation — **MUST-source** — criterion:
-  `grep -c '^Source:'` in `_terms.md` equals the number of device records (23). Status: done (23 of
-  23; 17 honestly cite no established name for the diagram itself, some still sourcing the
+  `grep -c '^Source:'` in `_terms.md` equals the number of device records (24). Status: done (24 of
+  24; 18 honestly cite no established name for the diagram itself, some still sourcing the
   underlying math concept where one exists).
 - Where a `Source:` field cites a URL, it MUST be encyclopedic (Wikipedia or an equivalent
   reference work) and MUST resolve over the network — **MUST-canonical-source** /
@@ -147,7 +148,8 @@ existing record from its own README.
   `Dirichlet_convolution`, `Run_chart`, `Law_of_large_numbers`, `Histogram`,
   `Equidistribution_theorem`, `Benford%27s_law`, `Quadratic_form` — all 200) and again on
   2026-09-02 (`Burnside%27s_lemma`, `Necklace_(combinatorics)`, `Change-making_problem`,
-  `Dynamic_programming` — all 200). Status: done.
+  `Dynamic_programming` — all 200) and again on 2026-09-02 (`Glaisher%27s_theorem`,
+  `Partition_(number_theory)`, `Euler%27s_totient_function` — all 200). Status: done.
 - The catalog — `_terms.md`'s `[device::*]` records — MUST NOT hold ANYTHING about a specific
   sequence — no OEIS number, no specific numeric example, not even a "used in" backlink —
   **MUST-no-task-specifics** — criterion: `_terms.md` contains no `[A{NNNNNN}::*]` records and no
@@ -173,7 +175,7 @@ existing record from its own README.
   than assumed — **SHOULD-standard-name**. Status: done for the six devices with a real standard
   name (`CayleyTable`, `LogGrowthChart`, `RunLengthEncoding`, `FundamentalDomainPlot`,
   `FractionalPartHistogram`, `BurnsideFixedPointTable`); honestly marked absent for the other
-  sixteen.
+  eighteen.
 
 ## Links
 - Records this spec governs: the `[device::*]` blocks in `memory-bank/_terms.md`.
