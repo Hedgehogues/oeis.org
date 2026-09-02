@@ -46,6 +46,7 @@ that exact fault and confirming it fails.
 | [A000024](sequences/A000024) | Positive integers ≤ 2ⁿ of form x²+10y² | Matches OEIS for `n = 0..18`; thin entry, borrows A000018's page |
 | [A000029](sequences/A000029) | Bracelets: necklaces with turning over | Matches OEIS for `n = 0..19`, Burnside-checked |
 | [A000011](sequences/A000011) | Necklaces where complements are equivalent | Matches OEIS for `n = 0..19`; thin entry, borrows A000029's page |
+| [A000013](sequences/A000013) | Necklaces, colors swapped, no turning over | Matches OEIS for `n = 0..19`; thin entry, borrows A000029's page |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)

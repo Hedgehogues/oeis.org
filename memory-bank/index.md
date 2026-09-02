@@ -48,7 +48,7 @@
   [specs/tasks/A000027.md](specs/tasks/A000027.md) · [specs/tasks/A000030.md](specs/tasks/A000030.md) ·
   [specs/tasks/A000018.md](specs/tasks/A000018.md) · [specs/tasks/A000021.md](specs/tasks/A000021.md) ·
   [specs/tasks/A000024.md](specs/tasks/A000024.md) · [specs/tasks/A000029.md](specs/tasks/A000029.md) ·
-  [specs/tasks/A000011.md](specs/tasks/A000011.md)
+  [specs/tasks/A000011.md](specs/tasks/A000011.md) · [specs/tasks/A000013.md](specs/tasks/A000013.md)
   — the applied instances of `tasks.md`'s format; linked from each `sequences/A{NNNNNN}/README.md`
 
 ### Pictures — all of them inside the memory bank
