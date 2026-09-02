@@ -40,12 +40,14 @@ that exact fault and confirming it fails.
 | [A000007](sequences/A000007) | Characteristic function of {0} | Matches OEIS for `n = 0..33`; identity property checked to `n = 60`, thin entry |
 | [A000012](sequences/A000012) | The all 1's sequence | Matches OEIS for `n = 0..33`; four convolution relations checked to `n = 200`, thin entry |
 | [A000027](sequences/A000027) | The positive integers | Matches OEIS for `n = 1..26`; three relations and the bucket argument checked to `n = 200`, thin entry |
+| [A000030](sequences/A000030) | Initial digit of n | Matches OEIS for `n = 0..109`; never-settles and Benford-contrast claims independently re-derived |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
 [![The self-describing sequence](memory-bank/visualizations/A000002/screenshots/full.png)](memory-bank/visualizations/A000002/viz.html)
 [![Where the classes land](memory-bank/visualizations/A000003/screenshots/full.png)](memory-bank/visualizations/A000003/viz.html)
 [![The four boring rows](memory-bank/visualizations/A000005/screenshots/full.png)](memory-bank/visualizations/A000005/viz.html)
+[![Same rule, two fates](memory-bank/visualizations/A000030/screenshots/full.png)](memory-bank/visualizations/A000030/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
@@ -75,11 +77,15 @@ entry by entry rather than reporting a yes.
 
 Both searches are exhaustive, so both hit a wall quickly — A000001 at `n=9`, A100001 past `n=13` —
 and each file's header states the measured range instead of hiding it. For A000001 that wall is the
-sequence's own subject matter restated as a runtime. A000002, A000003 and A000005 are not
+sequence's own subject matter restated as a runtime. A000002, A000003, A000005 and A000030 are not
 combinatorial searches at all — A000002's construction is linear (ten million terms in under a
-tenth of a second), A000003's and A000005's are `O(√n)` per term — so their headers state the
-honest opposite: no wall found, the practical limit is memory or the size of the search net, not
-time.
+tenth of a second), A000003's and A000005's are `O(√n)` per term, A000030's is `O(log₁₀n)` per term
+— so their headers state the honest opposite: no wall found, the practical limit is memory or the
+size of the search net, not time. A000030's real content isn't its per-term rule at all but a
+statistical claim about it (leading-digit frequencies never settle) — that claim gets its own
+independent re-derivation in
+[`memory-bank/verify/benford.mjs`](memory-bank/verify/benford.mjs), the same role
+`verify/group-tables.mjs` plays for A000001's embedded group tables.
 
 ## The page is live; the pictures above are a snapshot of it
 
@@ -95,8 +101,9 @@ editing a page's markup; a stale screenshot next to a changed page is a bug.
 
 Correctness of what a page CLAIMS lives one level up from the picture itself:
 [`memory-bank/verify/`](memory-bank/verify/) independently re-checks anything a page embeds as an
-algebraic or numeric fact (group tables — latin square, associativity, identity, self-inverse
-count) before that check's real output is cited as evidence in the sequence's own spec.
+algebraic, numeric or statistical fact (group tables — latin square, associativity, identity,
+self-inverse count; A000030's never-settles and Benford-contrast claims) before that check's real
+output is cited as evidence in the sequence's own spec.
 
 ## Repository layout, and what it's copied from
 

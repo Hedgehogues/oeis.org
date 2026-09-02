@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Same rule, two fates</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#F1EFF6; --surface:#FFFFFF; --surface-2:#F6F5FA;
+    --ink:#1C1A2E; --ink-soft:#5D5977; --ink-faint:#9691AE; --line:#E1DFEC;
+    --spin:#3E5FA6; --spin-2:#8AA0D6; --flip:#B23E77; --flip-2:#DE9AB9; --mute:#C9C5D8;
+    --ok:#2F8A66; --bad:#C4534A;
+    --shadow: 0 1px 2px rgba(24,20,40,.06), 0 10px 28px rgba(24,20,40,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+      --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+      --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+      --ok:#5FD3A6; --bad:#EE7C6E;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#131126; --surface:#1B1830; --surface-2:#211E3A;
+    --ink:#EDEBF7; --ink-soft:#B4AFD1; --ink-faint:#726D91; --line:#332F52;
+    --spin:#7C9BE8; --spin-2:#3E4F86; --flip:#E86FAE; --flip-2:#7A3A5C; --mute:#4A4568;
+    --ok:#5FD3A6; --bad:#EE7C6E;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{background:var(--bg);}
+  body{margin:0;color:var(--ink);font-family:'Karla', system-ui, sans-serif;-webkit-font-smoothing:antialiased;}
+
+  .repo{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:center;gap:14px;}
+  .repo svg{width:104px;height:104px;color:#101010;flex:none;background:#fff;padding:6px;border-radius:6px;}
+  .repo .repo-txt{font-family:'JetBrains Mono', monospace;font-size:11px;color:var(--ink-faint);line-height:1.5;}
+  .repo .repo-txt b{display:block;color:var(--ink-soft);font-weight:600;}
+
+  .page{max-width:1080px;margin:0 auto;padding:30px 22px 40px;display:flex;flex-direction:column;gap:14px;}
+
+  .eyebrow{font-family:'JetBrains Mono', monospace;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--spin);font-weight:500;}
+  h1{font-family:'Literata', serif;font-weight:600;font-size:clamp(26px,4.2vw,38px);line-height:1.1;margin:4px 0 8px;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px 22px;display:flex;flex-direction:column;gap:14px;}
+  .card h2{margin:0;font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;}
+  .no{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:600;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--spin);color:#fff;flex:none;}
+  .no.q{background:var(--bad);} .no.a{background:var(--ok);}
+  .flow{display:flex;justify-content:center;color:var(--mute);font-size:20px;line-height:1;padding:2px 0;}
+
+  .sub{display:flex;gap:14px;align-items:flex-start;padding:10px 0;}
+  .sub + .sub{border-top:1px dashed var(--line);}
+  .subno{
+    font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:700;flex:none;
+    width:30px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--ink-faint);margin-top:2px;
+  }
+  .subno.res{background:var(--ok);border-color:var(--ok);color:#fff;}
+  .subbody{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;}
+  .subrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .subcap{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin:0;}
+  .subcap b{color:var(--ink);}
+  .subcap code{font-family:'JetBrains Mono', monospace;background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:0 3px;}
+
+  .legend{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-soft);
+          background:var(--surface-2);border:1px dashed var(--line);border-radius:10px;
+          padding:7px 12px;align-self:flex-start;}
+  .legend b{color:var(--ink);font-weight:600;}
+
+  .badge{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:600;color:#fff;background:var(--ok);
+    border-radius:999px;padding:4px 12px;display:inline-flex;align-items:center;gap:6px;}
+  .badge.warn{background:var(--bad);}
+
+  /* ---- digit-frequency bars: shared shape for the Problem frame and step-3 Benford bars ---- */
+  .dbars{display:flex;align-items:flex-end;gap:6px;height:150px;}
+  .dbar{display:flex;flex-direction:column;align-items:center;gap:4px;width:34px;}
+  .dbar .stack{width:100%;height:120px;position:relative;display:flex;align-items:flex-end;}
+  .dbar .fill{width:100%;background:var(--spin);border-radius:4px 4px 0 0;position:relative;}
+  .dbar .pct{font-family:'JetBrains Mono', monospace;font-size:9.5px;color:var(--ink-soft);}
+  .dbar .lbl{font-family:'JetBrains Mono', monospace;font-size:10px;font-weight:700;color:var(--ink-faint);}
+  .dbar .pred{position:absolute;left:-2px;right:-2px;height:2px;background:var(--bad);}
+
+  /* ---- non-converging trace (device::NonConvergingTrace) ---- */
+  .trace{display:flex;flex-direction:column;gap:2px;}
+  .trace svg{width:100%;height:180px;display:block;}
+  .trace-pts circle{fill:var(--flip);stroke:var(--surface);stroke-width:2;}
+  .trace-line{fill:none;stroke:var(--flip-2);stroke-width:2;stroke-dasharray:4 3;}
+  .trace-lbl{font-family:'JetBrains Mono', monospace;font-size:10px;fill:var(--ink-soft);}
+  .trace-val{font-family:'JetBrains Mono', monospace;font-size:10.5px;font-weight:700;fill:var(--ink);}
+
+  /* ---- fractional-part decile bars (device::FractionalPartHistogram), reused twice ---- */
+  .decbars{display:flex;align-items:flex-end;gap:5px;height:140px;}
+  .decbar{width:26px;display:flex;flex-direction:column;align-items:center;gap:3px;}
+  .decbar .stack{width:100%;height:110px;display:flex;align-items:flex-end;position:relative;}
+  .decbar .fill{width:100%;border-radius:3px 3px 0 0;}
+  .decbar.uniform .fill{background:var(--ok);}
+  .decbar.skew .fill{background:var(--flip);}
+  .decbar .pct{font-family:'JetBrains Mono', monospace;font-size:9px;color:var(--ink-soft);}
+  .refline{position:absolute;left:-3px;right:-3px;border-top:1.5px dashed var(--ink-faint);}
+
+  .stat{font-family:'Literata',serif;font-size:22px;font-weight:700;}
+  .mini{transform:scale(.62);transform-origin:top left;width:161%;margin-bottom:-70px;}
+
+  @media (max-width:640px){ .dbars,.decbars{flex-wrap:wrap;height:auto;} }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">OEIS · A000030</div>
+    <h1>Same rule, two fates</h1>
+  </header>
+
+  <!-- PROBLEM -->
+  <section class="card" id="cardProblem">
+    <h2><span class="no q">?</span> Problem</h2>
+    <p class="subcap">Take the leading digit of every whole number from 1 to 999, and count how
+      often each digit (1 through 9) shows up first. Every count comes out to exactly
+      <b>111</b> — the same, flat 11.1% for every digit.</p>
+    <div class="dbars" id="probBars"></div>
+    <p class="subcap">Does this stay flat as we count further, or was 999 just a convenient place
+      to stop?</p>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 1: never settles -->
+  <section class="card" id="cardTrace">
+    <h2><span class="no">1</span> Keep counting — it never settles</h2>
+    <div class="sub">
+      <div class="subno res">1a</div>
+      <div class="subbody">
+        <p class="subcap">Track just digit <b>1</b>'s share as the count goes further: at
+          <code>N=999</code> it's the 11.1% above. Push past the next power of ten and it lurches;
+          push past the one after that and it swings back.</p>
+        <div class="trace" id="s1a"></div>
+        <p class="subcap"><b>There is no limit here.</b> However far you count, the next power of
+          ten sends the share somewhere else again — this is not a slow approach to a fixed value,
+          it oscillates forever.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 2: mechanism -->
+  <section class="card" id="cardSkew">
+    <h2><span class="no">2</span> Why: where the numbers actually sit</h2>
+    <div class="legend" id="skewLegend"></div>
+    <div class="sub">
+      <div class="subno">2a</div>
+      <div class="subbody">
+        <div class="decbars" id="s2a"></div>
+        <p class="subcap">Heavily <b>skewed</b> toward the high end. The bins aren't visited
+          equally often, so neither are the digits they decide — and nothing evens this out as you
+          count further, which is exactly the oscillation in step 1.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 3: same function, different input -->
+  <section class="card" id="cardBenford">
+    <h2><span class="no">3</span> Same rule, a different input</h2>
+    <div class="sub">
+      <div class="subno res">3a</div>
+      <div class="subbody">
+        <p class="subcap">Apply the exact same "take the leading digit" rule to the powers of two
+          (<code>1, 2, 4, 8, 16, 32, …</code> — OEIS
+          <a href="https://oeis.org/A008952" style="color:var(--ink-soft);">A008952</a>) instead of
+          the plain counting numbers. Frequencies among the first million powers:</p>
+        <div class="dbars" id="s3a"></div>
+        <div class="legend"><span style="display:inline-flex;align-items:center;gap:5px;"><span
+            style="width:14px;height:2px;background:var(--bad);display:inline-block;"></span>
+          <b>dashed line</b></span> marks Benford's law's predicted share for that digit — observed
+          and predicted line up on every one.</div>
+        <p class="subcap">These bars <b>settle</b> and stay settled — pushing the count further
+          doesn't move them, unlike step 1.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- 4: why THIS one settles -->
+  <section class="card" id="cardUniform">
+    <h2><span class="no">4</span> Why this one settles</h2>
+    <div class="sub">
+      <div class="subno res">4a</div>
+      <div class="subbody">
+        <p class="subcap">The leading digit of <code>2<sup>n</sup></code> is decided by the
+          fractional part of <code>n·log<sub>10</sub>(2)</code>. The same 10 bins, for
+          <code>n = 1..1,000,000</code>:</p>
+        <div class="decbars" id="s4a"></div>
+        <p class="subcap">Dead <b>uniform</b> — every bin gets almost exactly 10%. This is the
+          equidistribution theorem: because <code>log<sub>10</sub>(2)</code> is irrational, its
+          multiples never repeat a pattern and fill every bin equally. Step 2's skew is what breaks
+          Benford's law for plain counting; this uniformity is what lets it hold for powers of
+          two.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flow">&darr;</div>
+
+  <!-- SOLUTION -->
+  <section class="card" id="cardSolution">
+    <h2><span class="no a">✓</span> Solution</h2>
+    <p class="subcap">One digit-extraction rule, two different inputs, two different fates:</p>
+    <div class="subrow" style="gap:28px;align-items:flex-start;">
+      <div style="flex:1;min-width:220px;">
+        <div class="stat" style="color:var(--flip);">A000030</div>
+        <p class="subcap">leading digit of <code>n</code> — <b>never settles</b></p>
+        <div class="mini"><div class="trace" id="solTrace"></div></div>
+      </div>
+      <div style="flex:1;min-width:220px;">
+        <div class="stat" style="color:var(--ok);">A008952</div>
+        <p class="subcap">leading digit of <code>2<sup>n</sup></code> — <b>settles on Benford</b></p>
+        <div class="mini"><div class="dbars" id="solBars"></div></div>
+      </div>
+    </div>
+    <div class="badge" id="verifiedBadge">✓ verified</div>
+    <p class="subcap">Benford's law is a property of the <b>input's logarithm</b>, not of "taking a
+      leading digit" itself.</p>
+  </section>
+
+  <div class="repo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" role="img" aria-label="QR code: https://github.com/Hedgehogues/oeis.org"><path fill="currentColor" d="M2 2h7v1h-7zM10 2h1v1h-1zM12 2h1v1h-1zM16 2h1v1h-1zM19 2h2v1h-2zM24 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM12 3h3v1h-3zM19 3h1v1h-1zM21 3h2v1h-2zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM10 4h1v1h-1zM15 4h2v1h-2zM21 4h2v1h-2zM24 4h1v1h-1zM26 4h3v1h-3zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM11 5h1v1h-1zM15 5h1v1h-1zM17 5h3v1h-3zM22 5h1v1h-1zM24 5h1v1h-1zM26 5h3v1h-3zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM10 6h1v1h-1zM14 6h1v1h-1zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h3v1h-3zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM11 7h2v1h-2zM14 7h2v1h-2zM19 7h1v1h-1zM22 7h1v1h-1zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h7v1h-7zM12 9h1v1h-1zM14 9h4v1h-4zM21 9h1v1h-1zM2 10h1v1h-1zM5 10h6v1h-6zM13 10h2v1h-2zM16 10h2v1h-2zM19 10h1v1h-1zM21 10h1v1h-1zM23 10h1v1h-1zM26 10h1v1h-1zM28 10h3v1h-3zM2 11h5v1h-5zM9 11h3v1h-3zM14 11h1v1h-1zM16 11h2v1h-2zM19 11h3v1h-3zM23 11h1v1h-1zM25 11h2v1h-2zM28 11h2v1h-2zM2 12h3v1h-3zM7 12h3v1h-3zM11 12h2v1h-2zM15 12h1v1h-1zM17 12h4v1h-4zM22 12h1v1h-1zM25 12h2v1h-2zM28 12h1v1h-1zM6 13h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM18 13h3v1h-3zM23 13h3v1h-3zM27 13h1v1h-1zM30 13h1v1h-1zM4 14h7v1h-7zM12 14h1v1h-1zM15 14h2v1h-2zM18 14h1v1h-1zM22 14h1v1h-1zM24 14h2v1h-2zM30 14h1v1h-1zM3 15h3v1h-3zM9 15h2v1h-2zM13 15h9v1h-9zM24 15h7v1h-7zM5 16h1v1h-1zM8 16h1v1h-1zM10 16h2v1h-2zM14 16h2v1h-2zM17 16h1v1h-1zM19 16h1v1h-1zM21 16h4v1h-4zM26 16h1v1h-1zM28 16h1v1h-1zM30 16h1v1h-1zM2 17h2v1h-2zM6 17h2v1h-2zM9 17h3v1h-3zM14 17h1v1h-1zM16 17h1v1h-1zM21 17h1v1h-1zM25 17h2v1h-2zM28 17h1v1h-1zM30 17h1v1h-1zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h2v1h-2zM16 18h2v1h-2zM21 18h3v1h-3zM27 18h1v1h-1zM2 19h1v1h-1zM4 19h1v1h-1zM6 19h1v1h-1zM9 19h1v1h-1zM11 19h2v1h-2zM14 19h2v1h-2zM17 19h1v1h-1zM19 19h3v1h-3zM26 19h1v1h-1zM28 19h2v1h-2zM2 20h7v1h-7zM13 20h1v1h-1zM17 20h1v1h-1zM21 20h1v1h-1zM26 20h2v1h-2zM30 20h1v1h-1zM2 21h6v1h-6zM9 21h1v1h-1zM11 21h4v1h-4zM16 21h3v1h-3zM21 21h1v1h-1zM24 21h1v1h-1zM27 21h2v1h-2zM2 22h5v1h-5zM8 22h6v1h-6zM15 22h2v1h-2zM18 22h2v1h-2zM22 22h8v1h-8zM10 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM16 23h2v1h-2zM22 23h1v1h-1zM26 23h2v1h-2zM2 24h7v1h-7zM10 24h1v1h-1zM12 24h3v1h-3zM16 24h4v1h-4zM21 24h2v1h-2zM24 24h1v1h-1zM26 24h2v1h-2zM2 25h1v1h-1zM8 25h1v1h-1zM10 25h1v1h-1zM12 25h3v1h-3zM16 25h2v1h-2zM19 25h1v1h-1zM21 25h2v1h-2zM26 25h1v1h-1zM29 25h1v1h-1zM2 26h1v1h-1zM4 26h3v1h-3zM8 26h1v1h-1zM10 26h2v1h-2zM13 26h4v1h-4zM18 26h1v1h-1zM21 26h7v1h-7zM30 26h1v1h-1zM2 27h1v1h-1zM4 27h3v1h-3zM8 27h1v1h-1zM10 27h3v1h-3zM14 27h1v1h-1zM17 27h1v1h-1zM20 27h1v1h-1zM23 27h1v1h-1zM30 27h1v1h-1zM2 28h1v1h-1zM4 28h3v1h-3zM8 28h1v1h-1zM11 28h1v1h-1zM13 28h2v1h-2zM16 28h2v1h-2zM22 28h2v1h-2zM25 28h2v1h-2zM28 28h3v1h-3zM2 29h1v1h-1zM8 29h1v1h-1zM13 29h2v1h-2zM17 29h2v1h-2zM24 29h2v1h-2zM27 29h2v1h-2zM30 29h1v1h-1zM2 30h7v1h-7zM10 30h3v1h-3zM17 30h2v1h-2zM21 30h2v1h-2zM24 30h1v1h-1zM26 30h1v1h-1z"/></svg>
+    <div class="repo-txt"><b>github.com/Hedgehogues/oeis.org</b>sources, specs and the other sequences</div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  function leadingDigit(n){
+    if(n===0) return 0;
+    n=Math.floor(Math.abs(n));
+    while(n>=10) n=Math.floor(n/10);
+    return n;
+  }
+  const LOG10_2 = Math.log10(2);
+  function leadingDigitPow2Fast(n){
+    const frac = (n*LOG10_2) % 1;
+    return Math.floor(Math.pow(10, frac));
+  }
+  const BENFORD = {1:30.103,2:17.609,3:12.494,4:9.691,5:7.918,6:6.695,7:5.799,8:5.115,9:4.576};
+
+  function digitFreqRow(mount, freqs, opts){
+    opts = opts || {};
+    freqs.forEach(function(f){
+      var col=document.createElement('div'); col.className='dbar';
+      var stack=document.createElement('div'); stack.className='stack';
+      var fill=document.createElement('div'); fill.className='fill';
+      var h = Math.max(2, f.pct*3.2);
+      fill.style.height=h+'px';
+      var pct=document.createElement('div'); pct.className='pct'; pct.textContent=f.pct.toFixed(1)+'%';
+      fill.appendChild(pct);
+      if(opts.predicted){
+        var pred=document.createElement('div'); pred.className='pred';
+        var predH = Math.max(2, opts.predicted[f.digit]*3.2);
+        pred.style.bottom=predH+'px';
+        fill.appendChild(pred);
+      }
+      stack.appendChild(fill);
+      var lbl=document.createElement('div'); lbl.className='lbl'; lbl.textContent=f.digit;
+      col.appendChild(stack); col.appendChild(lbl);
+      mount.appendChild(col);
+    });
+  }
+
+  // ---- Problem: leading-digit frequency, N=999 (each digit exactly 111/999) ----
+  (function(){
+    var counts={}; for(var d=1;d<=9;d++) counts[d]=0;
+    for(var n=1;n<=999;n++) counts[leadingDigit(n)]++;
+    var freqs=[]; for(var d=1;d<=9;d++) freqs.push({digit:d, pct:100*counts[d]/999});
+    digitFreqRow(document.getElementById('probBars'), freqs);
+  })();
+
+  // ---- 1a: non-converging trace (device::NonConvergingTrace) ----
+  function digit1Share(N){
+    var c=0; for(var n=1;n<=N;n++) if(leadingDigit(n)===1) c++;
+    return 100*c/N;
+  }
+  function buildTrace(mount){
+    var samples=[999,1999,5000,9999,99999,199999];
+    var vals=samples.map(digit1Share);
+    var W=760,H=180,padL=36,padR=20,padT=20,padB=28;
+    var maxV=60, minV=0;
+    function X(i){ return padL + i*((W-padL-padR)/(samples.length-1)); }
+    function Y(v){ return H-padB - (v-minV)/(maxV-minV)*(H-padT-padB); }
+    var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 '+W+' '+H);
+    // gridline at 0
+    var axis=document.createElementNS('http://www.w3.org/2000/svg','line');
+    axis.setAttribute('x1',padL); axis.setAttribute('x2',W-padR);
+    axis.setAttribute('y1',Y(0)); axis.setAttribute('y2',Y(0));
+    axis.setAttribute('stroke','var(--line)'); axis.setAttribute('stroke-width','1');
+    svg.appendChild(axis);
+    var pathD='';
+    vals.forEach(function(v,i){ pathD += (i===0?'M':'L') + X(i).toFixed(1)+' '+Y(v).toFixed(1)+' '; });
+    var path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('class','trace-line'); path.setAttribute('d',pathD);
+    svg.appendChild(path);
+    vals.forEach(function(v,i){
+      var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('class','trace-pts'); c.setAttribute('cx',X(i)); c.setAttribute('cy',Y(v)); c.setAttribute('r',5);
+      svg.appendChild(c);
+      var val=document.createElementNS('http://www.w3.org/2000/svg','text');
+      val.setAttribute('class','trace-val'); val.setAttribute('x',X(i)); val.setAttribute('y',Y(v)-10);
+      val.setAttribute('text-anchor','middle'); val.textContent=v.toFixed(1)+'%';
+      svg.appendChild(val);
+      var lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
+      lbl.setAttribute('class','trace-lbl'); lbl.setAttribute('x',X(i)); lbl.setAttribute('y',H-8);
+      lbl.setAttribute('text-anchor','middle'); lbl.textContent='N='+samples[i];
+      svg.appendChild(lbl);
+    });
+    mount.appendChild(svg);
+  }
+  buildTrace(document.getElementById('s1a'));
+
+  // ---- decile bars (device::FractionalPartHistogram), reused for skewed and uniform inputs ----
+  // scale shared by BOTH calls (skewed and uniform), so the two charts stay directly comparable —
+  // fixed to the .stack container's real 110px height at a ceiling of 26% (above the skewed data's
+  // actual 22.9% max, found by running the skewed case first — a scale guessed independently of the
+  // data overflowed the container upward, painting bars on top of the legend text above them).
+  var DECBAR_MAXPCT = 26, DECBAR_PXPERPCT = 108 / DECBAR_MAXPCT;
+  function decileBars(mount, fracFn, N, cls){
+    var bins=new Array(10).fill(0);
+    for(var n=1;n<=N;n++){ bins[Math.floor(fracFn(n)*10)]++; }
+    bins.forEach(function(c,i){
+      var pct=100*c/N;
+      var col=document.createElement('div'); col.className='decbar '+cls;
+      var stack=document.createElement('div'); stack.className='stack';
+      var ref=document.createElement('div'); ref.className='refline'; ref.style.bottom=(10*DECBAR_PXPERPCT)+'px';
+      var fill=document.createElement('div'); fill.className='fill';
+      fill.style.height=Math.max(2, pct*DECBAR_PXPERPCT)+'px';
+      var p=document.createElement('div'); p.className='pct'; p.textContent=pct.toFixed(1)+'%';
+      stack.appendChild(ref); stack.appendChild(fill);
+      col.appendChild(stack); col.appendChild(p);
+      mount.appendChild(col);
+    });
+  }
+  document.getElementById('skewLegend').innerHTML =
+    'The leading digit of a whole number is decided entirely by the <b>fractional part of log<sub>10</sub>(n)</b> ' +
+    '— split into 10 equal bins from 0.0 to 1.0, this is where those fractional parts land for ' +
+    'every whole number from 1 to 1,000,000.';
+  decileBars(document.getElementById('s2a'), function(n){ return Math.log10(n)%1; }, 1000000, 'skew');
+  decileBars(document.getElementById('s4a'), function(n){ return (n*LOG10_2)%1; }, 1000000, 'uniform');
+
+  // ---- 3a: A008952 (2^n) leading-digit frequency vs Benford, K=1e6 ----
+  function pow2Freqs(K){
+    var counts={}; for(var d=1;d<=9;d++) counts[d]=0;
+    for(var n=0;n<K;n++) counts[leadingDigitPow2Fast(n)]++;
+    var freqs=[]; for(var d=1;d<=9;d++) freqs.push({digit:d, pct:100*counts[d]/K});
+    return freqs;
+  }
+  var pow2K = 1000000;
+  digitFreqRow(document.getElementById('s3a'), pow2Freqs(pow2K), {predicted: BENFORD});
+
+  // ---- Solution: shrunk callbacks (device::MiniRecap) ----
+  buildTrace(document.getElementById('solTrace'));
+  digitFreqRow(document.getElementById('solBars'), pow2Freqs(pow2K), {predicted: BENFORD});
+  document.getElementById('verifiedBadge').textContent =
+    '✓ matches OEIS for n=0…109, statistics independently re-derived (memory-bank/verify/benford.mjs)';
+
+})();
+</script>
+</body>
+</html>

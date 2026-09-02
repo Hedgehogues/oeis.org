@@ -565,3 +565,79 @@ Source: [Wikipedia — Closure (mathematics)](https://en.wikipedia.org/wiki/Clos
 Example: built inline in `visualizations/A000005/viz.html` (the section-2a IIFE, the
   `.nct`/`.nc-cell.escape`/`.nc-cell.stay` CSS classes)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::NonConvergingTrace]
+Class: entity
+Standard name: — (no established name for this specific diagram; it is a
+  [run chart](https://en.wikipedia.org/wiki/Run_chart) — a standard, generically-named "measure
+  plotted against an increasing index" chart — deployed here to show the ABSENCE of the
+  convergence the [law of large numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers)
+  ordinarily promises a running proportion, rather than to show that convergence itself)
+Essence: Plot a running statistic (a proportion, a share) at several successive, widening sample
+  sizes, connected point to point, with each point's own value printed beside it — so a claim that
+  the statistic has NO limit is a directly readable zigzag with no settling amplitude, not an
+  assertion about a limit the reader is asked to take on faith.
+Recognized by: the argument's punchline is that a quantity computed over a growing range does NOT
+  approach a fixed value no matter how far the range extends — the opposite situation from a
+  typical convergence plot, where the whole point is a value settling down
+General case: applies to any statistic of a growing prefix (of the integers, of a sequence's own
+  terms) whose limiting behavior is being demonstrated, whether it converges or — as here —
+  provably does not; the diagram is honest in either direction as long as the sampled points are
+  not cherry-picked to exaggerate or hide the real behavior
+Picture: ![Non-converging trace](visualizations/A000030/screenshots/non-converging-trace.png) —
+  `visualizations/A000030/viz.html`, section 1a (digit-1's share of leading digits among `1..N`,
+  plotted at six widening `N`) and the Solution section's shrunk reuse of the same drawing
+Reading order: the connecting line's own SHAPE first (does it flatten out or keep swinging), then
+  each point's printed value, then the axis labels naming which `N` each point is at
+Limits:
+  - MUST: sample at least one `N` on each side of a value the reader might mistake for a limit (here,
+    both a lurch far above and a swing back below 999's flat 11.1%) — a trace sampled only at
+    points that happen to agree would understate the oscillation instead of demonstrating it.
+  - MUST: print each point's own numeric value beside it, not only its visual height — the same
+    discipline [device::LogGrowthChart](#deviceloggrowthchart) states for scale-compressed bars,
+    applied here to a statistic rather than a raw magnitude.
+Source: [Wikipedia — Run chart](https://en.wikipedia.org/wiki/Run_chart) for the chart type;
+  [Wikipedia — Law of large numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers) for the
+  convergence concept whose absence this specific instance demonstrates.
+Example: built inline in `visualizations/A000030/viz.html` (`buildTrace()`, the
+  `.trace-line`/`.trace-pts`/`.trace-val` CSS/SVG classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::FractionalPartHistogram]
+Class: entity
+Standard name: Histogram (of a fractional-part / equidistribution sample)
+Essence: Bucket a large sample of fractional parts into equal-width bins and draw each bin's share
+  as a bar, with a fixed reference line marking what a perfectly even split would look like — so
+  "these values are (or are not) evenly spread" is a shape compared against one drawn line, not a
+  table of nine-plus numbers the reader has to scan for a pattern.
+Recognized by: the argument depends on whether a sampled quantity is spread evenly across its
+  range or piled up in part of it, and that spread is what a downstream claim (which digit leads
+  most often, whether a limit exists) is actually decided by
+General case: applies to the fractional part of any real-valued function of an index, sampled over
+  a large range; by Weyl's [equidistribution theorem](https://en.wikipedia.org/wiki/Equidistribution_theorem),
+  `{k·α}` is uniform for irrational `α` and this device renders that flatness directly, while a
+  skewed input (here, `{log10(n)}`) renders as visibly uneven bars against the same reference line
+Picture: ![Fractional-part histogram](visualizations/A000030/screenshots/skew-bars.png) and
+  ![uniform case](visualizations/A000030/screenshots/uniform-bars.png) —
+  `visualizations/A000030/viz.html`, sections 2a (skewed) and 4a (uniform) — the SAME device, same
+  bin count, same reference line, applied to two different inputs so the contrast is a shape
+  comparison rather than two unrelated charts
+Reading order: the dashed reference line first (what "even" looks like, stated once), then the bar
+  heights against it, then each bar's own printed percentage
+Limits:
+  - MUST: compute the bar-height scale from the actual data being plotted (or a stated, shared
+    ceiling used consistently across every reuse), never a fixed pixel-per-percent guessed without
+    checking the real range — a first version scaled every device's instance independently and the
+    skewed case's tallest bar (22.9%) overflowed its own container upward, painting directly on top
+    of the card's legend text above it with no error and no visible sign anything was wrong (the
+    same class of fault [device::FundamentalDomainPlot](#devicefundamentaldomainplot)'s Limits
+    record for a fixed aspect ratio guessed independently of the plotted range).
+  - MUST: use the SAME scale and SAME reference-line position across every reuse of the device on
+    one page — a device reused specifically to contrast "skewed" against "uniform" makes a false
+    visual claim if the two instances are independently rescaled to each look equally full.
+Source: [Wikipedia — Histogram](https://en.wikipedia.org/wiki/Histogram) for the chart type;
+  [Wikipedia — Equidistribution theorem](https://en.wikipedia.org/wiki/Equidistribution_theorem)
+  for the specific mathematical fact the uniform case demonstrates.
+Example: built inline in `visualizations/A000030/viz.html` (`decileBars()`, the shared
+  `DECBAR_MAXPCT`/`DECBAR_PXPERPCT` scale constants, the `.decbar`/`.refline` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

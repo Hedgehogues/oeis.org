@@ -26,8 +26,8 @@
   MarkedAsymmetry, CayleyTable, SelfCancelDiagonal, MergedResultStrip, StateMap, OrbitRing,
   DivisorChips, IncidenceMatrixPair, LogGrowthChart, UnrealizedPlaceholder, MiniRecap,
   CombinationFork, RunLengthEncoding, FixedPointOverlay, FundamentalDomainPlot, DivisorPairFan,
-  NonClosingTable (the catalog- and shell-level invariants live in the two specs below, not as
-  blocks of their own)
+  NonClosingTable, NonConvergingTrace, FractionalPartHistogram (the catalog- and shell-level
+  invariants live in the two specs below, not as blocks of their own)
 - [approaches](specs/approaches.md) — Status: draft — requirements on the IDEA in a device record:
   atomic, recognizable from the situation, canonical source where one exists, no mention of a
   specific sequence
@@ -44,7 +44,7 @@
   [specs/tasks/A000002.md](specs/tasks/A000002.md) · [specs/tasks/A000003.md](specs/tasks/A000003.md) ·
   [specs/tasks/A000005.md](specs/tasks/A000005.md) · [specs/tasks/A000004.md](specs/tasks/A000004.md) ·
   [specs/tasks/A000007.md](specs/tasks/A000007.md) · [specs/tasks/A000012.md](specs/tasks/A000012.md) ·
-  [specs/tasks/A000027.md](specs/tasks/A000027.md)
+  [specs/tasks/A000027.md](specs/tasks/A000027.md) · [specs/tasks/A000030.md](specs/tasks/A000030.md)
   — the applied instances of `tasks.md`'s format; linked from each `sequences/A{NNNNNN}/README.md`
 
 ### Pictures — all of them inside the memory bank
@@ -67,6 +67,9 @@ problem's own folder there holds no picture files, and neither does a sequence's
   line; here the check is committed so anyone can re-run it. Every one of these was tested by
   reintroducing the exact fault it exists for:
   - `verify/group-tables.mjs` — the multiplication tables the pages draw really are groups
+  - `verify/benford.mjs` — A000030's page-embedded statistical claims (A008952's Benford
+    convergence, the equidistribution mechanism) hold up against an independent, from-scratch
+    re-derivation, not just the fast method the page itself uses
   - `verify/catalog.mjs` — every device record still describes an element that exists on its page,
     from a crop `capture.mjs` really produces, and no two records share one
   - `verify/pages.mjs` — the marker convention is stated, the QR is present and pinned outside the

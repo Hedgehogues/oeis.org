@@ -20,6 +20,7 @@ const REPO = path.resolve(HERE, '../..');
 
 const checks = [
   ['group-tables', 'the multiplication tables the pages draw'],
+  ['benford', 'the statistical claims A000030\'s page embeds'],
   ['catalog', 'device records still describe live elements'],
   ['pages', 'notation, QR, themes, self-containment'],
   ['code-split', 'implementation and proof stay independent'],

@@ -111,6 +111,20 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000030/viz.html`,
+    outDir: `${VIZ}/A000030/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['non-converging-trace.png', { css: '#cardTrace' }],        // device::NonConvergingTrace
+      ['skew-bars.png', { css: '#cardSkew' }],                    // device::FractionalPartHistogram
+      ['benford-bars.png', { css: '#cardBenford' }],
+      ['uniform-bars.png', { css: '#cardUniform' }],              // device::FractionalPartHistogram (reused)
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();
