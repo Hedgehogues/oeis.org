@@ -161,6 +161,19 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000009/viz.html`,
+    outDir: `${VIZ}/A000009/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['lists.png', { css: '#cardLists' }],
+      ['rule.png', { css: '#cardRule' }],
+      ['bijection.png', { css: '#cardBijection' }],   // device::PartitionBijectionMatch
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();

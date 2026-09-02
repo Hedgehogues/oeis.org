@@ -747,3 +747,40 @@ Source: [Wikipedia — Change-making problem](https://en.wikipedia.org/wiki/Chan
 Example: built inline in `visualizations/A000008/viz.html` (`waysStaged()`, the `.stage`/`.cell`
   CSS classes, the section-2a IIFE highlighting `.src1`/`.src2`)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::PartitionBijectionMatch]
+Class: entity
+Standard name: — (no established name for the diagram; the underlying mathematical fact this
+  device witnesses — for Euler's theorem specifically — is a special case of
+  [Wikipedia's Glaisher's theorem](https://en.wikipedia.org/wiki/Glaisher%27s_theorem))
+Essence: List every member of one enumeration (partitions of `n` satisfying restriction A) in one
+  column, every member of a second enumeration (restriction B) in a second column, and draw one
+  arrow per pair connecting each restriction-A member to the specific restriction-B member an
+  EXPLICIT, stated rule sends it to — so "these two counts are equal" becomes a visible one-to-one
+  pairing of actual objects, not a coincidence between two numbers.
+Recognized by: the argument's punchline is that two DIFFERENTLY-restricted enumerations of the same
+  size-`n` object turn out to have the same count, and the reason is a concrete rule matching
+  members one to one — not two independently-computed totals that merely happen to agree
+General case: applies to any bijective-proof claim between two finite enumerations of the same
+  object (partitions, tilings, sequences) where an explicit rule (not merely an existence argument)
+  produces the pairing — the rule itself must be stated once, near the diagram, or the arrows carry
+  no more information than an unlabeled line
+Picture: ![Partition bijection match](visualizations/A000009/screenshots/bijection.png) —
+  `visualizations/A000009/viz.html`, section 3a (all 6 odd-parts partitions of 8, arrows to their
+  matching distinct-parts partitions)
+Reading order: one full column first (register what's being enumerated), then the second column,
+  then the arrows row by row — never the arrows before either column has been seen once on its own
+Limits:
+  - MUST: state the matching RULE once, explicitly, before or beside the diagram (principle 1) — an
+    arrow with no stated rule behind it is exactly the unlabeled-connector fault principle 5 rules
+    out, applied to a pairing instead of a single transform step.
+  - MUST: show every member of both enumerations paired, not a representative sample — a partial
+    diagram claiming a full bijection while only showing some pairs cannot actually witness
+    "one-to-one", only "some correspondence exists".
+Source: [Wikipedia — Glaisher's theorem](https://en.wikipedia.org/wiki/Glaisher%27s_theorem)
+  (states plainly: "When d=2 this becomes the special case known as Euler's theorem, that the
+  number of partitions of n into distinct parts is equal to the number of partitions of n into odd
+  parts") · [Wikipedia — Partition (number theory)](https://en.wikipedia.org/wiki/Partition_(number_theory))
+Example: built inline in `visualizations/A000009/viz.html` (`oddToDistinct()`, the section-3a IIFE
+  building `.prow`/`.arrow` pairs)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

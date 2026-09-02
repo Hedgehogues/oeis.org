@@ -49,6 +49,7 @@ that exact fault and confirming it fails.
 | [A000013](sequences/A000013) | Necklaces, colors swapped, no turning over | Matches OEIS for `n = 0..19`; thin entry, borrows A000029's page |
 | [A000016](sequences/A000016) | Outputs of a complementing shift register | Matches OEIS for `n = 0..19`; no picture, no catalogued device fits |
 | [A000008](sequences/A000008) | Ways of making change for n cents | Matches OEIS for `n = 0..60`, independently enumerated |
+| [A000009](sequences/A000009) | Partitions of n into distinct parts | Matches OEIS for `n = 0..55`; Euler's theorem witnessed as an explicit bijection |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -59,6 +60,7 @@ that exact fault and confirming it fails.
 [![Counting without double-counting](memory-bank/visualizations/A000018/screenshots/full.png)](memory-bank/visualizations/A000018/viz.html)
 [![Average, don't search](memory-bank/visualizations/A000029/screenshots/full.png)](memory-bank/visualizations/A000029/viz.html)
 [![One coin at a time](memory-bank/visualizations/A000008/screenshots/full.png)](memory-bank/visualizations/A000008/viz.html)
+[![Two disguises, one count](memory-bank/visualizations/A000009/screenshots/full.png)](memory-bank/visualizations/A000009/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
