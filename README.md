@@ -41,6 +41,7 @@ that exact fault and confirming it fails.
 | [A000012](sequences/A000012) | The all 1's sequence | Matches OEIS for `n = 0..33`; four convolution relations checked to `n = 200`, thin entry |
 | [A000027](sequences/A000027) | The positive integers | Matches OEIS for `n = 1..26`; three relations and the bucket argument checked to `n = 200`, thin entry |
 | [A000030](sequences/A000030) | Initial digit of n | Matches OEIS for `n = 0..109`; never-settles and Benford-contrast claims independently re-derived |
+| [A000018](sequences/A000018) | Positive integers ≤ 2ⁿ of form x²+16y² | Matches OEIS for `n = 0..20`, independently re-derived per value |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -48,6 +49,7 @@ that exact fault and confirming it fails.
 [![Where the classes land](memory-bank/visualizations/A000003/screenshots/full.png)](memory-bank/visualizations/A000003/viz.html)
 [![The four boring rows](memory-bank/visualizations/A000005/screenshots/full.png)](memory-bank/visualizations/A000005/viz.html)
 [![Same rule, two fates](memory-bank/visualizations/A000030/screenshots/full.png)](memory-bank/visualizations/A000030/viz.html)
+[![Counting without double-counting](memory-bank/visualizations/A000018/screenshots/full.png)](memory-bank/visualizations/A000018/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
@@ -77,7 +79,10 @@ entry by entry rather than reporting a yes.
 
 Both searches are exhaustive, so both hit a wall quickly — A000001 at `n=9`, A100001 past `n=13` —
 and each file's header states the measured range instead of hiding it. For A000001 that wall is the
-sequence's own subject matter restated as a runtime. A000002, A000003, A000005 and A000030 are not
+sequence's own subject matter restated as a runtime. A000018 hits a wall of a different kind: not
+combinatorial explosion but the size of the sieve array itself — `n=30` (a 1.07 GB byte array)
+finishes in seconds, `n=32` (4.3 GB) does not finish within 70 seconds and was stopped.
+A000002, A000003, A000005 and A000030 are not
 combinatorial searches at all — A000002's construction is linear (ten million terms in under a
 tenth of a second), A000003's and A000005's are `O(√n)` per term, A000030's is `O(log₁₀n)` per term
 — so their headers state the honest opposite: no wall found, the practical limit is memory or the

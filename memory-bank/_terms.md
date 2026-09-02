@@ -641,3 +641,38 @@ Source: [Wikipedia — Histogram](https://en.wikipedia.org/wiki/Histogram) for t
 Example: built inline in `visualizations/A000030/viz.html` (`decileBars()`, the shared
   `DECBAR_MAXPCT`/`DECBAR_PXPERPCT` scale constants, the `.decbar`/`.refline` CSS classes)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::RepresentationGrid]
+Class: entity
+Standard name: — (no established name found for the diagram; the underlying idea — an integer
+  represented by a fixed two-variable form — is standard number theory, see
+  [Wikipedia — Quadratic form](https://en.wikipedia.org/wiki/Quadratic_form))
+Essence: Lay out small integer inputs `(x, y)` as a 2D grid, compute each cell's output under a
+  fixed formula, and visually link any two or more cells that land on the identical output — so
+  "how many distinct outputs are there" reads as a count of merged groups rather than a count of
+  grid cells, which would silently overcount whenever two different inputs hit the same value.
+Recognized by: the argument's count is of DISTINCT outputs of a function sampled over a bounded
+  grid of inputs, and at least one collision (two different inputs producing the same output) is
+  expected and matters to the count — silently counting grid cells instead would overcount
+General case: applies to any two-parameter integer-valued function sampled over a bounded grid of
+  non-negative integer inputs wherever input collisions are possible, not only to a specific
+  quadratic form; the device's whole point is showing at least one real collision, not merely
+  presenting the grid
+Picture: ![Representation grid](visualizations/A000018/screenshots/representation-grid.png) —
+  `visualizations/A000018/viz.html`, section 1a (the 5×5 grid of `x²+16y²` for `x,y=0..4`, with the
+  two cells landing on 16 linked)
+Reading order: the grid's raw values first (one per cell), then the linked pair sharing a value,
+  then the caption stating the count of DISTINCT values is what the argument actually needs
+Limits:
+  - MUST: the linked/merged cells in the drawn example MUST be a real, checked collision — never a
+    illustrative pair chosen because it looks plausible; the same discipline
+    [device::CombinationFork](#devicecombinationfork)'s Limits state for its own duplicate branch.
+  - MUST NOT: state a final distinct-value count anywhere on the page without this device (or an
+    equivalent worked example) first showing at least one real collision being caught — a count
+    with no shown collision teaches nothing about why deduplication is the actual work being done.
+Source: no canonical citation for the diagram itself;
+  [Wikipedia — Quadratic form](https://en.wikipedia.org/wiki/Quadratic_form) for the underlying
+  concept of a form's representation of an integer.
+Example: built inline in `visualizations/A000018/viz.html` (`buildGrid()`, the
+  `.rg-cell`/`.rg-link` CSS/SVG classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

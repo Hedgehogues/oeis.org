@@ -125,6 +125,18 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000018/viz.html`,
+    outDir: `${VIZ}/A000018/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['representation-grid.png', { css: '#cardGrid' }],          // device::RepresentationGrid
+      ['condition.png', { css: '#cardCondition' }],
+      ['solution.png', { css: '#cardSolution' }],                 // device::LogGrowthChart (reused)
+    ],
+  },
 ];
 
 const browser = await chromium.launch();
