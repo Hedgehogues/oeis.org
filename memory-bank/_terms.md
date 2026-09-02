@@ -895,3 +895,37 @@ Source: [Wikipedia — Rank of a partition](https://en.wikipedia.org/wiki/Rank_o
 Example: built inline in `visualizations/A000025/viz.html` (`partEl()`, the `.part.even`/`.part.odd`
   CSS classes, the section-3a tally IIFE)
 Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)
+
+## [device::DegreeTwoCollapse]
+Class: entity
+Standard name: — (no established name for the diagram; the underlying graph-theory fact it draws —
+  removing a degree-2 vertex and merging its two edges into one produces a graph
+  [homeomorphic](https://en.wikipedia.org/wiki/Homeomorphism_(graph_theory)) to the original — is
+  standard and citable, the specific before/after picture of it is not)
+Essence: Draw a small graph with every vertex labelled by its own degree, colour the one vertex
+  whose degree disqualifies it from a stated rule, then draw the SAME graph again with that vertex
+  erased and its two edges merged into one — so "this shape reduces to that other, already-counted
+  shape" is a literal before/after picture rather than an asserted equivalence.
+Recognized by: the argument needs to show WHY a specific candidate object fails a structural rule
+  by exhibiting the exact local operation that removes the failure, rather than only stating the
+  rule and letting the reader take the disqualification on faith
+General case: applies to any degree-based (or other locally-checkable) structural condition on a
+  graph where a single disqualifying vertex/edge can be removed or merged in a well-defined way
+  that provably preserves membership in a smaller, already-understood case — the two drawn graphs
+  must be the same object before and after, never redrawn from scratch to look tidier
+Picture: ![Degree-two collapse](visualizations/A000014/screenshots/collapse.png) —
+  `visualizations/A000014/viz.html`, section 2a (the 3-node path, its degree-2 vertex erased, the
+  resulting 2-node edge)
+Reading order: the labelled-degree graph first (find the disqualifying vertex by its own printed
+  number), then the labelled operation arrow, then the resulting graph — never the result before
+  the operation that produced it
+Limits:
+  - MUST: print every vertex's own degree on the vertex itself (principle 8's "a count shows its
+    source", applied to a structural property instead of a tally) — a vertex coloured "bad" with no
+    printed reason asks the reader to trust the colour instead of checking it.
+  - MUST: label the transforming arrow with the specific operation performed (principle 5) — a bare
+    arrow between two graphs states nothing about why they're related.
+Source: [Wikipedia — Homeomorphism (graph theory)](https://en.wikipedia.org/wiki/Homeomorphism_(graph_theory))
+Example: built inline in `visualizations/A000014/viz.html` (`drawTree()`, the
+  `.tnode.ok`/`.tnode.bad`/`.tnode.branch` CSS classes)
+Spec: [approaches](specs/approaches.md) · [visualizations](specs/visualizations.md)

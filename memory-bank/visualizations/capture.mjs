@@ -273,6 +273,19 @@ const jobs = [
       ['solution.png', { css: '#cardSolution' }],
     ],
   },
+  {
+    file: `${VIZ}/A000014/viz.html`,
+    outDir: `${VIZ}/A000014/screenshots`,
+    width: 1000,
+    full: 'full.png',
+    crops: [
+      ['problem.png', { css: '#cardProblem' }],
+      ['condition.png', { css: '#cardCondition' }],
+      ['collapse.png', { css: '#cardCollapse' }],     // device::DegreeTwoCollapse
+      ['bigger.png', { css: '#cardBigger' }],
+      ['solution.png', { css: '#cardSolution' }],
+    ],
+  },
 ];
 
 const browser = await chromium.launch();

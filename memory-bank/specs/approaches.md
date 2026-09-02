@@ -61,7 +61,8 @@ MUST/MUST NOT/SHALL/SHOULD/SHOULD NOT/MAY as in RFC 2119. Terms live in `_terms.
 [device::PartitionBijectionMatch](../_terms.md#devicepartitionbijectionmatch),
 [device::TotientSieveStrip](../_terms.md#devicetotientsievestrip),
 [device::SignedBucketSum](../_terms.md#devicesignedbucketsum),
-[device::RankSignedTally](../_terms.md#deviceranksignedtally).
+[device::RankSignedTally](../_terms.md#deviceranksignedtally),
+[device::DegreeTwoCollapse](../_terms.md#devicedegreetwocollapse).
 
 ## Scope
 **In scope:** the idea fields of `[device::*]` records — `Essence`, `Recognized by`,
@@ -114,7 +115,7 @@ existing record from its own README.
 ### Bounded Context and Aggregate Root
 - `device` — the only context. It has no separate aggregate-root record: the catalog-level
   invariants (schema, sourcing discipline) ARE the requirements below, not a block of their own.
-  `_terms.md` holds only the entities — the twenty-six `[device::*]` records themselves.
+  `_terms.md` holds only the entities — the twenty-seven `[device::*]` records themselves.
 
 ## Requirements
 > Statement — acceptance criterion — status.
@@ -122,7 +123,7 @@ existing record from its own README.
 ### MUST
 - Every record MUST carry Essence / Recognized by / General case / Source, and MUST NOT carry a
   field about a specific sequence — **MUST-entry-schema** — criterion: grepping each mandatory
-  heading yields as many lines as there are device records (26); there is no `Used in:` field.
+  heading yields as many lines as there are device records (27); there is no `Used in:` field.
   Status: done.
 - "Essence" MUST be a single sentence without formulas — **MUST-essence-plain** — criterion: the
   field contains no inline math notation beyond the plain word "n". Status: done.
@@ -136,8 +137,8 @@ existing record from its own README.
   contrasted..."), not a description of the drawing itself. Status: done.
 - Every record MUST carry its own `Source:` field, honestly stating "no established name found"
   when that's true rather than inventing or stretching a citation — **MUST-source** — criterion:
-  `grep -c '^Source:'` in `_terms.md` equals the number of device records (26). Status: done (26 of
-  26; 20 honestly cite no established name for the diagram itself, some still sourcing the
+  `grep -c '^Source:'` in `_terms.md` equals the number of device records (27). Status: done (27 of
+  27; 21 honestly cite no established name for the diagram itself, some still sourcing the
   underlying math concept where one exists).
 - Where a `Source:` field cites a URL, it MUST be encyclopedic (Wikipedia or an equivalent
   reference work) and MUST resolve over the network — **MUST-canonical-source** /
@@ -153,7 +154,8 @@ existing record from its own README.
   `Dynamic_programming` — all 200) and again on 2026-09-02 (`Glaisher%27s_theorem`,
   `Partition_(number_theory)`, `Euler%27s_totient_function` — all 200) and again on 2026-09-02
   (`Inclusion%E2%80%93exclusion_principle`, `Derangement` — both 200) and again on 2026-09-02
-  (`Rank_of_a_partition`, `Mock_theta_function` — both 200). Status: done.
+  (`Rank_of_a_partition`, `Mock_theta_function` — both 200) and again on 2026-09-02
+  (`Homeomorphism_(graph_theory)` — 200). Status: done.
 - The catalog — `_terms.md`'s `[device::*]` records — MUST NOT hold ANYTHING about a specific
   sequence — no OEIS number, no specific numeric example, not even a "used in" backlink —
   **MUST-no-task-specifics** — criterion: `_terms.md` contains no `[A{NNNNNN}::*]` records and no
@@ -179,8 +181,9 @@ existing record from its own README.
   than assumed — **SHOULD-standard-name**. Status: done for the six devices with a real standard
   name (`CayleyTable`, `LogGrowthChart`, `RunLengthEncoding`, `FundamentalDomainPlot`,
   `FractionalPartHistogram`, `BurnsideFixedPointTable`); honestly marked absent for the other
-  twenty, `RankSignedTally` included (the diagram itself has no established name; the rank
-  statistic it tallies does, cited to Dyson via Wikipedia).
+  twenty-one, `RankSignedTally` and `DegreeTwoCollapse` included (in both cases the diagram itself
+  has no established name, while the underlying mathematical fact it draws — a partition's rank, a
+  graph homeomorphism — does, and is cited).
 
 ## Links
 - Records this spec governs: the `[device::*]` blocks in `memory-bank/_terms.md`.

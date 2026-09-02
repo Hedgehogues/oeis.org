@@ -58,6 +58,7 @@ that exact fault and confirming it fails.
 | [A000026](sequences/A000026) | Mosaic numbers | Matches OEIS for `n = 1..72`; fixed-point claim checked in the direction OEIS actually states |
 | [A000028](sequences/A000028) | Numbers with an odd exponent 1-bit sum | Matches OEIS for `n = 1..67`; soundness and completeness both independently checked |
 | [A000025](sequences/A000025) | Coefficients of Ramanujan's mock theta function f(q) | Matches OEIS for `n = 0..59`; independently re-derived via partition rank through `n = 75` |
+| [A000014](sequences/A000014) | Series-reduced trees with n nodes | Matches OEIS for `n = 0..20`; independent labeled construction agrees through `n = 9` |
 
 [![Points = lines](memory-bank/visualizations/A100001/screenshots/full.png)](memory-bank/visualizations/A100001/viz.html)
 [![Census of symmetries](memory-bank/visualizations/A000001/screenshots/full.png)](memory-bank/visualizations/A000001/viz.html)
@@ -77,6 +78,7 @@ that exact fault and confirming it fails.
 [![An if, not an iff](memory-bank/visualizations/A000026/screenshots/full.png)](memory-bank/visualizations/A000026/viz.html)
 [![Counting 1-bits in the exponents](memory-bank/visualizations/A000028/screenshots/full.png)](memory-bank/visualizations/A000028/viz.html)
 [![What the coefficients count](memory-bank/visualizations/A000025/screenshots/full.png)](memory-bank/visualizations/A000025/viz.html)
+[![No vertex allowed to be a pass-through](memory-bank/visualizations/A000014/screenshots/full.png)](memory-bank/visualizations/A000014/viz.html)
 
 Each sequence's own directory README has the write-up — the approach, why it works, and the
 pictures of the ideas it uses — and links to its RFC-style spec (requirements and acceptance
@@ -110,6 +112,10 @@ sequence's own subject matter restated as a runtime. A000023's search is `n!` pe
 the same kind of wall — `n=12` in 18.1 s, `n=13` not attempted. A000018 hits a wall of a different
 kind: not combinatorial explosion but the size of the sieve array itself — `n=30` (a 1.07 GB byte
 array) finishes in seconds, `n=32` (4.3 GB) does not finish within 70 seconds and was stopped.
+A000014's wall is the same shape but for a different reason: its own construction avoids labeled
+combinatorial explosion entirely (leaf-addition growth of canonical trees, not Prüfer sequences),
+so `n=20` finishes in 34.8 s — but the growing POOL of distinct canonical trees itself exhausts a
+4 GB heap partway through `n=22`, well before time would have been the limit.
 A000002, A000003, A000005 and A000030 are not
 combinatorial searches at all — A000002's construction is linear (ten million terms in under a
 tenth of a second), A000003's and A000005's are `O(√n)` per term, A000030's is `O(log₁₀n)` per term
